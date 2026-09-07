@@ -1,0 +1,405 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1169DEFA3877CFEC1F48F38B /* DockerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D3F0964BFA0BC4929A98E /* DockerService.swift */; };
+		1C0641163F04A4B6BB9DCCAF /* ContainerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 526043D356814596DD620A68 /* ContainerRow.swift */; };
+		4B79CF83386F92503050A00D /* PortScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FB646B2C156FD14769A155 /* PortScanner.swift */; };
+		5A2775BCB343B2BA19D81F88 /* ProcessInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCD49DDD2A2EA19071912A0 /* ProcessInspector.swift */; };
+		5E361FDED3727F855B46840E /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351A0D477FDB03F241D1DA82 /* AppSettings.swift */; };
+		6C4BF15514931AB70870E68A /* ShellRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494CC176B6F0333A66300870 /* ShellRunner.swift */; };
+		7254EF760135D8D210DEEFEE /* PortRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0851D15B9D7CC42CCCA5814B /* PortRow.swift */; };
+		79689067200EC449793A2392 /* ProjectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B40F773F412F84A61F5748A /* ProjectInfo.swift */; };
+		862A0883691E4821939D2501 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002BAD4DA6C1DBE30F32B9B7 /* PaywallView.swift */; };
+		89F9AB9245E591C730766118 /* LicenseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E730BFFA11B9EF98DCF17AE /* LicenseManager.swift */; };
+		8AF0B8364E06F136550A4E54 /* DockerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3FA9200F28960C58A3A758 /* DockerContainer.swift */; };
+		C0925ECA8E5F2455B6CD5825 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755C33F16B8B5B62D296A506 /* SettingsView.swift */; };
+		C17BD1A539EDAB7D70AC4AA1 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69353E72933431C404895374 /* DashboardView.swift */; };
+		C1A54F5D815B45EE2EDF995B /* ListeningPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118DB886820B28808B24B15C /* ListeningPort.swift */; };
+		D080D58553B1481A8AC4CDBB /* PortsideApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB83C883AAF22B2978122F84 /* PortsideApp.swift */; };
+		FB4D941DCE08F658BF655648 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A0E1839C88A7F970F6C3D3 /* AppState.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		002BAD4DA6C1DBE30F32B9B7 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		0851D15B9D7CC42CCCA5814B /* PortRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortRow.swift; sourceTree = "<group>"; };
+		118DB886820B28808B24B15C /* ListeningPort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningPort.swift; sourceTree = "<group>"; };
+		2E730BFFA11B9EF98DCF17AE /* LicenseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseManager.swift; sourceTree = "<group>"; };
+		351A0D477FDB03F241D1DA82 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		494CC176B6F0333A66300870 /* ShellRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellRunner.swift; sourceTree = "<group>"; };
+		526043D356814596DD620A68 /* ContainerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerRow.swift; sourceTree = "<group>"; };
+		69353E72933431C404895374 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		693F1329B8E0E6246DD06F45 /* Portside.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Portside.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		755C33F16B8B5B62D296A506 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		80A0E1839C88A7F970F6C3D3 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		84FB646B2C156FD14769A155 /* PortScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortScanner.swift; sourceTree = "<group>"; };
+		8B40F773F412F84A61F5748A /* ProjectInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInfo.swift; sourceTree = "<group>"; };
+		8CCD49DDD2A2EA19071912A0 /* ProcessInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInspector.swift; sourceTree = "<group>"; };
+		C99D3F0964BFA0BC4929A98E /* DockerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockerService.swift; sourceTree = "<group>"; };
+		DC3FA9200F28960C58A3A758 /* DockerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockerContainer.swift; sourceTree = "<group>"; };
+		EB83C883AAF22B2978122F84 /* PortsideApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortsideApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		075852CDBC31825DDA40AD24 = {
+			isa = PBXGroup;
+			children = (
+				D2BD9F6E06D5CB93DB055915 /* Portside */,
+				928487CCFFBC672CF1357E1C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1F72B348FD8BE6DBF3198D82 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				351A0D477FDB03F241D1DA82 /* AppSettings.swift */,
+				80A0E1839C88A7F970F6C3D3 /* AppState.swift */,
+				EB83C883AAF22B2978122F84 /* PortsideApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		58A72CCF54F1F88789C29FBB /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				C99D3F0964BFA0BC4929A98E /* DockerService.swift */,
+				84FB646B2C156FD14769A155 /* PortScanner.swift */,
+				8CCD49DDD2A2EA19071912A0 /* ProcessInspector.swift */,
+				494CC176B6F0333A66300870 /* ShellRunner.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		7EBF685DE98E4D6955AD0B9D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				526043D356814596DD620A68 /* ContainerRow.swift */,
+				69353E72933431C404895374 /* DashboardView.swift */,
+				002BAD4DA6C1DBE30F32B9B7 /* PaywallView.swift */,
+				0851D15B9D7CC42CCCA5814B /* PortRow.swift */,
+				755C33F16B8B5B62D296A506 /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		928487CCFFBC672CF1357E1C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				693F1329B8E0E6246DD06F45 /* Portside.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9910EB765AA901D42AD8A8F3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				DC3FA9200F28960C58A3A758 /* DockerContainer.swift */,
+				118DB886820B28808B24B15C /* ListeningPort.swift */,
+				8B40F773F412F84A61F5748A /* ProjectInfo.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		AEF146157DC4087F6493FCE4 /* Licensing */ = {
+			isa = PBXGroup;
+			children = (
+				2E730BFFA11B9EF98DCF17AE /* LicenseManager.swift */,
+			);
+			path = Licensing;
+			sourceTree = "<group>";
+		};
+		D2BD9F6E06D5CB93DB055915 /* Portside */ = {
+			isa = PBXGroup;
+			children = (
+				1F72B348FD8BE6DBF3198D82 /* App */,
+				AEF146157DC4087F6493FCE4 /* Licensing */,
+				9910EB765AA901D42AD8A8F3 /* Models */,
+				58A72CCF54F1F88789C29FBB /* Services */,
+				7EBF685DE98E4D6955AD0B9D /* Views */,
+			);
+			path = Portside;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		33787C076DE4FA1D34181976 /* Portside */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8F2003AB031E14069B5977BD /* Build configuration list for PBXNativeTarget "Portside" */;
+			buildPhases = (
+				9599B929AAB731001A4F201C /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Portside;
+			packageProductDependencies = (
+			);
+			productName = Portside;
+			productReference = 693F1329B8E0E6246DD06F45 /* Portside.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		62758E0A41282DD2024CFCF0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					33787C076DE4FA1D34181976 = {
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = FB51DF0BBE9FFC726AFE7FB7 /* Build configuration list for PBXProject "Portside" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 075852CDBC31825DDA40AD24;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 928487CCFFBC672CF1357E1C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				33787C076DE4FA1D34181976 /* Portside */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9599B929AAB731001A4F201C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E361FDED3727F855B46840E /* AppSettings.swift in Sources */,
+				FB4D941DCE08F658BF655648 /* AppState.swift in Sources */,
+				1C0641163F04A4B6BB9DCCAF /* ContainerRow.swift in Sources */,
+				C17BD1A539EDAB7D70AC4AA1 /* DashboardView.swift in Sources */,
+				8AF0B8364E06F136550A4E54 /* DockerContainer.swift in Sources */,
+				1169DEFA3877CFEC1F48F38B /* DockerService.swift in Sources */,
+				89F9AB9245E591C730766118 /* LicenseManager.swift in Sources */,
+				C1A54F5D815B45EE2EDF995B /* ListeningPort.swift in Sources */,
+				862A0883691E4821939D2501 /* PaywallView.swift in Sources */,
+				7254EF760135D8D210DEEFEE /* PortRow.swift in Sources */,
+				4B79CF83386F92503050A00D /* PortScanner.swift in Sources */,
+				D080D58553B1481A8AC4CDBB /* PortsideApp.swift in Sources */,
+				5A2775BCB343B2BA19D81F88 /* ProcessInspector.swift in Sources */,
+				79689067200EC449793A2392 /* ProjectInfo.swift in Sources */,
+				C0925ECA8E5F2455B6CD5825 /* SettingsView.swift in Sources */,
+				6C4BF15514931AB70870E68A /* ShellRunner.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		3B410C286FBC31D7368CD133 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		3FFDFA4D14B60FCAB327BB76 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sajid.Portside;
+				PRODUCT_NAME = Portside;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		5A4B27DE61BAA0AD019B84FE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sajid.Portside;
+				PRODUCT_NAME = Portside;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		91A952469DB6D670722D5113 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8F2003AB031E14069B5977BD /* Build configuration list for PBXNativeTarget "Portside" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5A4B27DE61BAA0AD019B84FE /* Debug */,
+				3FFDFA4D14B60FCAB327BB76 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FB51DF0BBE9FFC726AFE7FB7 /* Build configuration list for PBXProject "Portside" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B410C286FBC31D7368CD133 /* Debug */,
+				91A952469DB6D670722D5113 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 62758E0A41282DD2024CFCF0 /* Project object */;
+}
