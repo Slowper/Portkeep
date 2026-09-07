@@ -35,6 +35,7 @@ struct PanelChrome: ViewModifier {
             content
                 .clipShape(shape)
                 .glassEffect(.regular, in: shape)
+                .background { PanelShadow(shape: shape) }
         } else {
             content
                 .background(VisualEffectView())
@@ -47,7 +48,30 @@ struct PanelChrome: ViewModifier {
                 .overlay {
                     shape.strokeBorder(.black.opacity(0.25), lineWidth: 0.5)
                 }
+                .background { PanelShadow(shape: shape) }
         }
+    }
+}
+
+/// A drop shadow that follows the panel's rounded shape and is fully
+/// transparent *inside* it, so Liquid Glass keeps sampling the desktop.
+/// The window's own shadow is disabled because AppKit computes it from a
+/// rectangular opaque region when glass is involved (visible as a square rim).
+struct PanelShadow: View {
+    let shape: RoundedRectangle
+
+    var body: some View {
+        shape
+            .fill(Color.black)
+            .shadow(color: .black.opacity(0.30), radius: 22, y: 12)
+            .shadow(color: .black.opacity(0.22), radius: 3, y: 1)
+            .mask {
+                Rectangle()
+                    .padding(-200)
+                    .overlay { shape.blendMode(.destinationOut) }
+                    .compositingGroup()
+            }
+            .allowsHitTesting(false)
     }
 }
 

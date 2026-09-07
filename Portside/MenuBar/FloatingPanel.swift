@@ -15,7 +15,8 @@ final class FloatingPanel: NSPanel {
         collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
         isOpaque = false
         backgroundColor = .clear
-        hasShadow = true
+        // The SwiftUI content draws its own shaped shadow (see PanelShadow).
+        hasShadow = false
         hidesOnDeactivate = false
         isMovableByWindowBackground = false
         animationBehavior = .none

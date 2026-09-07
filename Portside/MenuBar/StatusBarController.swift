@@ -6,8 +6,12 @@ import SwiftUI
 /// menu bar and the SwiftUI panel content.
 @MainActor
 final class StatusBarController: NSObject {
+    /// Visible width of the glass panel.
     static let panelWidth: CGFloat = 420
     private static let panelGap: CGFloat = 6
+    /// Transparent margin around the visible panel (hosts the drop shadow).
+    private static var margin: CGFloat { PanelRootView.shadowMargin }
+    private static var windowWidth: CGFloat { panelWidth + margin * 2 }
 
     private let state: AppState
     private let statusItem: NSStatusItem
@@ -19,14 +23,15 @@ final class StatusBarController: NSObject {
     private var keyMonitor: Any?
     private var spaceObserver: NSObjectProtocol?
     private var observationTask: Task<Void, Never>?
-    private var desiredHeight: CGFloat = 200
+    /// Window height including the shadow margin.
+    private var desiredHeight: CGFloat = 200 + PanelRootView.shadowMargin * 2
 
     private(set) var isShown = false
 
     init(state: AppState) {
         self.state = state
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        panel = FloatingPanel(contentRect: NSRect(x: 0, y: 0, width: Self.panelWidth, height: 200))
+        panel = FloatingPanel(contentRect: NSRect(x: 0, y: 0, width: Self.windowWidth, height: 200 + Self.margin * 2))
 
         let root = PanelRootView()
             .environment(state)
@@ -163,20 +168,28 @@ final class StatusBarController: NSObject {
 
     // MARK: - Geometry
 
+    /// Window frame for a window of `height` (which includes the margins), such
+    /// that the *visible* panel is centred under the status item with a small gap.
     private func targetFrame(height: CGFloat) -> NSRect {
-        let width = Self.panelWidth
+        let width = Self.windowWidth
+        let margin = Self.margin
         guard let button = statusItem.button, let buttonWindow = button.window else {
             let screen = NSScreen.main?.visibleFrame ?? .zero
-            return NSRect(x: screen.midX - width / 2, y: screen.maxY - height, width: width, height: height)
+            return NSRect(x: screen.midX - width / 2, y: screen.maxY - height + margin, width: width, height: height)
         }
         let buttonFrame = buttonWindow.convertToScreen(button.convert(button.bounds, to: nil))
         let screen = buttonWindow.screen ?? NSScreen.main
         let visible = screen?.visibleFrame ?? buttonFrame
 
         var x = buttonFrame.midX - width / 2
-        x = min(max(x, visible.minX + 8), visible.maxX - width - 8)
-        let y = buttonFrame.minY - Self.panelGap - height
-        return NSRect(x: x, y: max(y, visible.minY + 8), width: width, height: height)
+        x = min(max(x, visible.minX + 8 - margin), visible.maxX - width - 8 + margin)
+        let y = buttonFrame.minY - Self.panelGap - height + margin
+        return NSRect(x: x, y: max(y, visible.minY + 8 - margin), width: width, height: height)
+    }
+
+    /// The visible panel's rect in window coordinates.
+    private var visibleContentRect: NSRect {
+        panel.frame.insetBy(dx: Self.margin, dy: Self.margin).offsetBy(dx: -panel.frame.minX, dy: -panel.frame.minY)
     }
 
     private func installPreferredHeightObserver() {
@@ -189,7 +202,7 @@ final class StatusBarController: NSObject {
     }
 
     private func applyHeight(_ height: CGFloat) {
-        let clamped = max(120, height)
+        let clamped = max(120 + Self.margin * 2, height)
         guard abs(clamped - desiredHeight) > 0.5 else { return }
         desiredHeight = clamped
         guard isShown else { return }
@@ -213,9 +226,16 @@ final class StatusBarController: NSObject {
             }
         }
 
-        // Clicks inside our own app but outside the panel (e.g. the Settings window).
+        // Clicks inside our own app but outside the visible panel: another of
+        // our windows, or the transparent shadow margin around the glass.
         insideClickMonitor = NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown, .otherMouseDown]) { [weak self] event in
-            if let self, event.window !== self.panel, event.window !== self.statusItem.button?.window, !self.state.isPinned {
+            guard let self, !self.state.isPinned else { return event }
+            if event.window === self.panel {
+                if !self.visibleContentRect.contains(event.locationInWindow) {
+                    self.hide()
+                    return nil
+                }
+            } else if event.window !== self.statusItem.button?.window {
                 self.hide()
             }
             return event

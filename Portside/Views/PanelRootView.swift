@@ -7,6 +7,9 @@ struct PanelRootView: View {
 
     private let maxListHeight: CGFloat = 470
 
+    /// Transparent margin around the visible panel that hosts the drop shadow.
+    static let shadowMargin: CGFloat = 30
+
     var body: some View {
         VStack(spacing: 0) {
             HeaderBar()
@@ -31,6 +34,7 @@ struct PanelRootView: View {
             }
         }
         .animation(.snappy(duration: 0.25), value: state.toast)
+        .padding(Self.shadowMargin)
         .reportHeight { height in
             NotificationCenter.default.post(name: .panelPreferredHeightDidChange, object: nil, userInfo: ["height": height])
         }
@@ -44,15 +48,24 @@ struct PanelRootView: View {
     // MARK: - List
 
     private var list: some View {
-        ScrollViewReader { proxy in
+        let isScrollable = listContentHeight > maxListHeight
+        return ScrollViewReader { proxy in
             ScrollView {
                 ListContent()
                     .padding(.horizontal, 10)
                     .padding(.vertical, 8)
                     .reportHeight { listContentHeight = $0 }
             }
-            .scrollIndicators(.automatic)
+            .scrollIndicators(.hidden)
             .frame(height: min(max(listContentHeight, 96), maxListHeight))
+            // Fade the bottom edge instead of showing a scrollbar track over glass.
+            .mask {
+                VStack(spacing: 0) {
+                    Color.black
+                    LinearGradient(colors: [.black, .black.opacity(isScrollable ? 0 : 1)], startPoint: .top, endPoint: .bottom)
+                        .frame(height: 26)
+                }
+            }
             .animation(.snappy(duration: 0.22), value: min(max(listContentHeight, 96), maxListHeight))
             .onChange(of: state.selectedRowID) { _, id in
                 guard let id else { return }
