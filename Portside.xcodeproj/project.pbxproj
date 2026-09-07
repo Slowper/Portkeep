@@ -7,42 +7,56 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06969044711DE31A61A10856 /* DashboardGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4021C71B3D0816081D0D668 /* DashboardGroup.swift */; };
 		1169DEFA3877CFEC1F48F38B /* DockerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D3F0964BFA0BC4929A98E /* DockerService.swift */; };
-		1C0641163F04A4B6BB9DCCAF /* ContainerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 526043D356814596DD620A68 /* ContainerRow.swift */; };
+		4572AFEA082E0C52A2C5EEAA /* HealthProber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87898ED0EBBB299A01110EB /* HealthProber.swift */; };
 		4B79CF83386F92503050A00D /* PortScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FB646B2C156FD14769A155 /* PortScanner.swift */; };
+		4DCF66F00AAB77270A73AE32 /* FloatingPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF85C66E13CF5F673A91B8E3 /* FloatingPanel.swift */; };
+		4DEB1599221BA81C3AC78157 /* EditorLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1A0EC6B4961904D606AABB /* EditorLauncher.swift */; };
 		5A2775BCB343B2BA19D81F88 /* ProcessInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCD49DDD2A2EA19071912A0 /* ProcessInspector.swift */; };
 		5E361FDED3727F855B46840E /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351A0D477FDB03F241D1DA82 /* AppSettings.swift */; };
 		6C4BF15514931AB70870E68A /* ShellRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494CC176B6F0333A66300870 /* ShellRunner.swift */; };
-		7254EF760135D8D210DEEFEE /* PortRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0851D15B9D7CC42CCCA5814B /* PortRow.swift */; };
 		79689067200EC449793A2392 /* ProjectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B40F773F412F84A61F5748A /* ProjectInfo.swift */; };
+		7C342F341633B6F37395D29C /* PanelRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1211C8EEDBEA988F9851CD0C /* PanelRootView.swift */; };
 		862A0883691E4821939D2501 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002BAD4DA6C1DBE30F32B9B7 /* PaywallView.swift */; };
 		89F9AB9245E591C730766118 /* LicenseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E730BFFA11B9EF98DCF17AE /* LicenseManager.swift */; };
 		8AF0B8364E06F136550A4E54 /* DockerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3FA9200F28960C58A3A758 /* DockerContainer.swift */; };
+		99522A8880D75E347A13C96F /* HotKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1109B194EF8C5BFF103D2716 /* HotKey.swift */; };
+		BB40A53F3D5BB0201785ADB5 /* GroupCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E7868B808D364B3266861D /* GroupCard.swift */; };
+		BDE297ED4C198A05D76FAE09 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5247FFFC1C0A7151501B03D6 /* StatusBarController.swift */; };
 		C0925ECA8E5F2455B6CD5825 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755C33F16B8B5B62D296A506 /* SettingsView.swift */; };
-		C17BD1A539EDAB7D70AC4AA1 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69353E72933431C404895374 /* DashboardView.swift */; };
 		C1A54F5D815B45EE2EDF995B /* ListeningPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118DB886820B28808B24B15C /* ListeningPort.swift */; };
 		D080D58553B1481A8AC4CDBB /* PortsideApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB83C883AAF22B2978122F84 /* PortsideApp.swift */; };
+		D2A744898B62DC67F1043744 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C00B2F242EFCA6688F4557 /* AppDelegate.swift */; };
+		DC298821C06C083B6354BDA2 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A483C4232B93ED8DD839782 /* Components.swift */; };
 		FB4D941DCE08F658BF655648 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A0E1839C88A7F970F6C3D3 /* AppState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		002BAD4DA6C1DBE30F32B9B7 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
-		0851D15B9D7CC42CCCA5814B /* PortRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortRow.swift; sourceTree = "<group>"; };
+		0A483C4232B93ED8DD839782 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		1109B194EF8C5BFF103D2716 /* HotKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKey.swift; sourceTree = "<group>"; };
 		118DB886820B28808B24B15C /* ListeningPort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningPort.swift; sourceTree = "<group>"; };
+		1211C8EEDBEA988F9851CD0C /* PanelRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelRootView.swift; sourceTree = "<group>"; };
 		2E730BFFA11B9EF98DCF17AE /* LicenseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseManager.swift; sourceTree = "<group>"; };
 		351A0D477FDB03F241D1DA82 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		494CC176B6F0333A66300870 /* ShellRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellRunner.swift; sourceTree = "<group>"; };
-		526043D356814596DD620A68 /* ContainerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerRow.swift; sourceTree = "<group>"; };
-		69353E72933431C404895374 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		5247FFFC1C0A7151501B03D6 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
+		55C00B2F242EFCA6688F4557 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		58E7868B808D364B3266861D /* GroupCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCard.swift; sourceTree = "<group>"; };
 		693F1329B8E0E6246DD06F45 /* Portside.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Portside.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		755C33F16B8B5B62D296A506 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		80A0E1839C88A7F970F6C3D3 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		84FB646B2C156FD14769A155 /* PortScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortScanner.swift; sourceTree = "<group>"; };
 		8B40F773F412F84A61F5748A /* ProjectInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInfo.swift; sourceTree = "<group>"; };
 		8CCD49DDD2A2EA19071912A0 /* ProcessInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInspector.swift; sourceTree = "<group>"; };
+		A87898ED0EBBB299A01110EB /* HealthProber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthProber.swift; sourceTree = "<group>"; };
+		AD1A0EC6B4961904D606AABB /* EditorLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorLauncher.swift; sourceTree = "<group>"; };
 		C99D3F0964BFA0BC4929A98E /* DockerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockerService.swift; sourceTree = "<group>"; };
 		DC3FA9200F28960C58A3A758 /* DockerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockerContainer.swift; sourceTree = "<group>"; };
+		E4021C71B3D0816081D0D668 /* DashboardGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardGroup.swift; sourceTree = "<group>"; };
 		EB83C883AAF22B2978122F84 /* PortsideApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortsideApp.swift; sourceTree = "<group>"; };
+		EF85C66E13CF5F673A91B8E3 /* FloatingPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -57,6 +71,7 @@
 		1F72B348FD8BE6DBF3198D82 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				55C00B2F242EFCA6688F4557 /* AppDelegate.swift */,
 				351A0D477FDB03F241D1DA82 /* AppSettings.swift */,
 				80A0E1839C88A7F970F6C3D3 /* AppState.swift */,
 				EB83C883AAF22B2978122F84 /* PortsideApp.swift */,
@@ -68,6 +83,8 @@
 			isa = PBXGroup;
 			children = (
 				C99D3F0964BFA0BC4929A98E /* DockerService.swift */,
+				AD1A0EC6B4961904D606AABB /* EditorLauncher.swift */,
+				A87898ED0EBBB299A01110EB /* HealthProber.swift */,
 				84FB646B2C156FD14769A155 /* PortScanner.swift */,
 				8CCD49DDD2A2EA19071912A0 /* ProcessInspector.swift */,
 				494CC176B6F0333A66300870 /* ShellRunner.swift */,
@@ -78,10 +95,10 @@
 		7EBF685DE98E4D6955AD0B9D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				526043D356814596DD620A68 /* ContainerRow.swift */,
-				69353E72933431C404895374 /* DashboardView.swift */,
+				0A483C4232B93ED8DD839782 /* Components.swift */,
+				58E7868B808D364B3266861D /* GroupCard.swift */,
+				1211C8EEDBEA988F9851CD0C /* PanelRootView.swift */,
 				002BAD4DA6C1DBE30F32B9B7 /* PaywallView.swift */,
-				0851D15B9D7CC42CCCA5814B /* PortRow.swift */,
 				755C33F16B8B5B62D296A506 /* SettingsView.swift */,
 			);
 			path = Views;
@@ -98,6 +115,7 @@
 		9910EB765AA901D42AD8A8F3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E4021C71B3D0816081D0D668 /* DashboardGroup.swift */,
 				DC3FA9200F28960C58A3A758 /* DockerContainer.swift */,
 				118DB886820B28808B24B15C /* ListeningPort.swift */,
 				8B40F773F412F84A61F5748A /* ProjectInfo.swift */,
@@ -113,11 +131,22 @@
 			path = Licensing;
 			sourceTree = "<group>";
 		};
+		C4B79FBACD6167BE8C410ECF /* MenuBar */ = {
+			isa = PBXGroup;
+			children = (
+				EF85C66E13CF5F673A91B8E3 /* FloatingPanel.swift */,
+				1109B194EF8C5BFF103D2716 /* HotKey.swift */,
+				5247FFFC1C0A7151501B03D6 /* StatusBarController.swift */,
+			);
+			path = MenuBar;
+			sourceTree = "<group>";
+		};
 		D2BD9F6E06D5CB93DB055915 /* Portside */ = {
 			isa = PBXGroup;
 			children = (
 				1F72B348FD8BE6DBF3198D82 /* App */,
 				AEF146157DC4087F6493FCE4 /* Licensing */,
+				C4B79FBACD6167BE8C410ECF /* MenuBar */,
 				9910EB765AA901D42AD8A8F3 /* Models */,
 				58A72CCF54F1F88789C29FBB /* Services */,
 				7EBF685DE98E4D6955AD0B9D /* Views */,
@@ -183,22 +212,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2A744898B62DC67F1043744 /* AppDelegate.swift in Sources */,
 				5E361FDED3727F855B46840E /* AppSettings.swift in Sources */,
 				FB4D941DCE08F658BF655648 /* AppState.swift in Sources */,
-				1C0641163F04A4B6BB9DCCAF /* ContainerRow.swift in Sources */,
-				C17BD1A539EDAB7D70AC4AA1 /* DashboardView.swift in Sources */,
+				DC298821C06C083B6354BDA2 /* Components.swift in Sources */,
+				06969044711DE31A61A10856 /* DashboardGroup.swift in Sources */,
 				8AF0B8364E06F136550A4E54 /* DockerContainer.swift in Sources */,
 				1169DEFA3877CFEC1F48F38B /* DockerService.swift in Sources */,
+				4DEB1599221BA81C3AC78157 /* EditorLauncher.swift in Sources */,
+				4DCF66F00AAB77270A73AE32 /* FloatingPanel.swift in Sources */,
+				BB40A53F3D5BB0201785ADB5 /* GroupCard.swift in Sources */,
+				4572AFEA082E0C52A2C5EEAA /* HealthProber.swift in Sources */,
+				99522A8880D75E347A13C96F /* HotKey.swift in Sources */,
 				89F9AB9245E591C730766118 /* LicenseManager.swift in Sources */,
 				C1A54F5D815B45EE2EDF995B /* ListeningPort.swift in Sources */,
+				7C342F341633B6F37395D29C /* PanelRootView.swift in Sources */,
 				862A0883691E4821939D2501 /* PaywallView.swift in Sources */,
-				7254EF760135D8D210DEEFEE /* PortRow.swift in Sources */,
 				4B79CF83386F92503050A00D /* PortScanner.swift in Sources */,
 				D080D58553B1481A8AC4CDBB /* PortsideApp.swift in Sources */,
 				5A2775BCB343B2BA19D81F88 /* ProcessInspector.swift in Sources */,
 				79689067200EC449793A2392 /* ProjectInfo.swift in Sources */,
 				C0925ECA8E5F2455B6CD5825 /* SettingsView.swift in Sources */,
 				6C4BF15514931AB70870E68A /* ShellRunner.swift in Sources */,
+				BDE297ED4C198A05D76FAE09 /* StatusBarController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
