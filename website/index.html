@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portkeep — local runtimes, on this Mac</title>
+  <meta name="description" content="Portkeep shows every listening port on your Mac, who started it, and lets you stop the process tree. Nothing leaves this Mac.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <p class="mark">Portkeep</p>
+    <nav>
+      <a href="privacy.html">Privacy</a>
+      <a href="#download">Download</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">macOS menu bar · local only</p>
+      <h1>See who owns :3000.<br>Stop the leftover tree.</h1>
+      <p class="lede">
+        Portkeep lists every listening port on this Mac, groups it by project,
+        and shows whether a human, Cursor, or Claude Code started it.
+        Stop the whole process tree. Reserve a stable port per worktree.
+        Agents get a CLI and MCP. Your ports never leave the machine.
+      </p>
+      <p class="cta" id="download">
+        <a class="button" href="downloads/Portkeep-1.0.0.dmg">Download for Mac</a>
+        <span class="fine">macOS 14+ · signed &amp; notarized · Sparkle updates</span>
+      </p>
+    </section>
+
+    <section>
+      <h2>What it does</h2>
+      <ul class="grid">
+        <li>
+          <strong>Who started this</strong>
+          Cursor Agent, Claude Code, your terminal, or an orphan reparented to launchd.
+        </li>
+        <li>
+          <strong>Stop the tree</strong>
+          Not just the pid on the port. The wrapper, the children, then SIGKILL if it hangs.
+        </li>
+        <li>
+          <strong>Stable ports</strong>
+          <code>portkeep alloc web</code> gives the same port back in this worktree.
+        </li>
+        <li>
+          <strong>For agents</strong>
+          CLI on your PATH and an MCP server. No guessing at EADDRINUSE.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Updates, like macOS</h2>
+      <p>
+        Settings → <strong>Check for Updates…</strong>
+        If there is a newer build, Portkeep downloads it and asks you to install.
+        It can also check once a day in the background. That check is the only
+        network the app uses, besides optional localhost health probes you turn on.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <a href="privacy.html">Privacy — nothing leaves this Mac</a>
+    <span>© 2026 Sajid Palagiri</span>
+  </footer>
+</body>
+</html>

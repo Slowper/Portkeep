@@ -16,7 +16,10 @@ final class StatusBarController: NSObject {
     private let state: AppState
     private let statusItem: NSStatusItem
     private let panel: FloatingPanel
+    /// SwiftUI panel content, hosted inside the glass surface.
     private let hostingView: NSHostingView<AnyView>
+    /// Shaped drop shadow, drawn in the transparent margin behind the glass.
+    private let shadowView: NSHostingView<PanelShadow>
 
     private var outsideClickMonitor: Any?
     private var insideClickMonitor: Any?
@@ -31,15 +34,19 @@ final class StatusBarController: NSObject {
     init(state: AppState) {
         self.state = state
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        panel = FloatingPanel(contentRect: NSRect(x: 0, y: 0, width: Self.windowWidth, height: 200 + Self.margin * 2))
+        let initialFrame = NSRect(x: 0, y: 0, width: Self.windowWidth, height: 200 + Self.margin * 2)
+        panel = FloatingPanel(contentRect: initialFrame)
 
         let root = PanelRootView()
             .environment(state)
         hostingView = NSHostingView(rootView: AnyView(root))
         hostingView.sizingOptions = []
+
+        shadowView = NSHostingView(rootView: PanelShadow(margin: Self.margin, radius: PanelChrome.radius))
+        shadowView.sizingOptions = []
         super.init()
 
-        panel.contentView = hostingView
+        panel.contentView = makeContentView(frame: initialFrame)
         configureStatusItem()
 
         state.dismissPanel = { [weak self] in self?.hide() }
@@ -47,6 +54,52 @@ final class StatusBarController: NSObject {
 
         installPreferredHeightObserver()
         observeMenuBarCount()
+    }
+
+    // MARK: - Content view
+
+    /// Layers: [shadow filling the window] → [glass surface inset by the margin → SwiftUI content].
+    ///
+    /// The glass is an AppKit `NSGlassEffectView` rather than SwiftUI's
+    /// `glassEffect`, because the SwiftUI modifier applies its blurred, tinted
+    /// backdrop to the whole hosting view in a borderless window and only shapes
+    /// the highlights. `NSGlassEffectView` confines everything to its own
+    /// rounded bounds.
+    private func makeContentView(frame: NSRect) -> NSView {
+        let container = NSView(frame: frame)
+        container.wantsLayer = true
+
+        shadowView.frame = container.bounds
+        shadowView.autoresizingMask = [.width, .height]
+        container.addSubview(shadowView)
+
+        let surfaceFrame = container.bounds.insetBy(dx: Self.margin, dy: Self.margin)
+        let surface: NSView
+        if #available(macOS 26.0, *) {
+            let glass = NSGlassEffectView(frame: surfaceFrame)
+            glass.cornerRadius = PanelChrome.radius
+            glass.style = .regular
+            hostingView.frame = glass.bounds
+            hostingView.autoresizingMask = [.width, .height]
+            glass.contentView = hostingView
+            surface = glass
+        } else {
+            let vibrancy = NSVisualEffectView(frame: surfaceFrame)
+            vibrancy.material = .popover
+            vibrancy.blendingMode = .behindWindow
+            vibrancy.state = .active
+            vibrancy.wantsLayer = true
+            vibrancy.layer?.cornerRadius = PanelChrome.radius
+            vibrancy.layer?.cornerCurve = .continuous
+            vibrancy.layer?.masksToBounds = true
+            hostingView.frame = vibrancy.bounds
+            hostingView.autoresizingMask = [.width, .height]
+            vibrancy.addSubview(hostingView)
+            surface = vibrancy
+        }
+        surface.autoresizingMask = [.width, .height]
+        container.addSubview(surface)
+        return container
     }
 
     // MARK: - Status item
@@ -63,11 +116,7 @@ final class StatusBarController: NSObject {
 
     private func updateStatusItem() {
         guard let button = statusItem.button else { return }
-        let config = NSImage.SymbolConfiguration(pointSize: 13, weight: .semibold)
-        let image = NSImage(systemSymbolName: "point.3.filled.connected.trianglepath.dotted", accessibilityDescription: "Portside")?
-            .withSymbolConfiguration(config)
-        image?.isTemplate = true
-        button.image = image
+        button.image = BrandMark.statusItemImage(pointSize: 16)
         let count = state.menuBarCount
         button.title = (state.settings.showCountInMenuBar && count > 0) ? " \(count)" : ""
         button.toolTip = count == 1 ? "1 dev port listening" : "\(count) dev ports listening"
@@ -103,15 +152,17 @@ final class StatusBarController: NSObject {
         let menu = NSMenu()
         menu.addItem(withTitle: "Refresh", action: #selector(refreshAction), keyEquivalent: "r").target = self
         menu.addItem(.separator())
+        menu.addItem(withTitle: "Check for Updates…", action: #selector(updatesAction), keyEquivalent: "").target = self
         menu.addItem(withTitle: "Settings…", action: #selector(settingsAction), keyEquivalent: ",").target = self
         menu.addItem(.separator())
-        menu.addItem(withTitle: "Quit Portside", action: #selector(quitAction), keyEquivalent: "q").target = self
+        menu.addItem(withTitle: "Quit Portkeep", action: #selector(quitAction), keyEquivalent: "q").target = self
         statusItem.menu = menu
         statusItem.button?.performClick(nil)
         statusItem.menu = nil
     }
 
     @objc private func refreshAction() { Task { await state.refresh() } }
+    @objc private func updatesAction() { AppUpdates.checkForUpdates() }
     @objc private func settingsAction() { openSettings() }
     @objc private func quitAction() { state.quit() }
 
@@ -193,11 +244,11 @@ final class StatusBarController: NSObject {
     }
 
     private func installPreferredHeightObserver() {
-        // The SwiftUI root reports its ideal height through a notification;
-        // we animate the window to match, keeping the top edge anchored.
+        // The SwiftUI root reports its ideal (visible) height through a
+        // notification; we animate the window to match, keeping the top edge anchored.
         NotificationCenter.default.addObserver(forName: .panelPreferredHeightDidChange, object: nil, queue: .main) { [weak self] note in
             guard let height = note.userInfo?["height"] as? CGFloat else { return }
-            Task { @MainActor in self?.applyHeight(height) }
+            Task { @MainActor in self?.applyHeight(height + Self.margin * 2) }
         }
     }
 
@@ -312,14 +363,10 @@ final class StatusBarController: NSObject {
 
     func openSettings() {
         hide()
-        NSApp.activate(ignoringOtherApps: true)
-        // SettingsLink does this under the hood; works for SwiftUI `Settings` scenes on macOS 14+.
-        if !NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil) {
-            NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
-        }
+        SettingsWindowController.shared.show(state: state)
     }
 }
 
 extension Notification.Name {
-    static let panelPreferredHeightDidChange = Notification.Name("PortsidePanelPreferredHeightDidChange")
+    static let panelPreferredHeightDidChange = Notification.Name("PortkeepPanelPreferredHeightDidChange")
 }

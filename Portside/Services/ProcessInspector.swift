@@ -5,6 +5,9 @@ struct ProcessMeta: Sendable, Hashable {
     var executable: String?
     /// Seconds since the process started.
     var uptime: TimeInterval?
+    /// Who started it and which process tree it belongs to. Resolved after
+    /// project detection, since "orphaned" needs to know it's a dev process.
+    var lineage: ProcessLineage?
 
     var uptimeLabel: String? {
         guard let uptime else { return nil }
@@ -22,12 +25,18 @@ struct ProcessMeta: Sendable, Hashable {
 /// Resolves what a listening process *is*: where it was started, which binary
 /// it runs, how long it's been alive, and which project it belongs to.
 enum ProcessInspector {
-    static func metadata(for pids: [Int32]) async -> [Int32: ProcessMeta] {
-        guard !pids.isEmpty else { return [:] }
+    struct Snapshot: Sendable {
+        var meta: [Int32: ProcessMeta]
+        var tree: ProcessTree
+    }
+
+    static func metadata(for pids: [Int32]) async -> Snapshot {
+        guard !pids.isEmpty else { return Snapshot(meta: [:], tree: ProcessTree(entries: [])) }
         let list = pids.map(String.init).joined(separator: ",")
 
         async let cwds = workingDirectories(list: list)
         async let psInfo = processInfo(list: list)
+        async let tree = ProcessTree.snapshot()
 
         var result: [Int32: ProcessMeta] = [:]
         for (pid, cwd) in await cwds {
@@ -37,7 +46,7 @@ enum ProcessInspector {
             result[pid, default: ProcessMeta()].executable = info.executable
             result[pid, default: ProcessMeta()].uptime = info.uptime
         }
-        return result
+        return Snapshot(meta: result, tree: await tree)
     }
 
     private static func workingDirectories(list: String) async -> [Int32: String] {

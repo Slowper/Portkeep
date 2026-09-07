@@ -12,3 +12,14 @@ xcuserdata/
 
 # Local tooling
 /tmp/
+dist/
+.relevance/
+Signing/sparkle_eddsa_private.b64
+*.dmg
+
+# Accidental compiler leftovers at repo root
+*.o
+*.d
+*.dia
+*.swiftdeps
+*.swiftconstvalues

@@ -7,12 +7,14 @@ enum RowRef: Hashable, Sendable {
     case port(ListeningPort)
     case containerPort(DockerContainer, Int)
     case container(DockerContainer)
+    case reserved(PortLease)
 
     var url: URL? {
         switch self {
         case .port(let port): port.url
         case .containerPort(_, let port): URL(string: "http://localhost:\(port)")
         case .container(let container): container.publishedPorts.first.flatMap { URL(string: "http://localhost:\($0)") }
+        case .reserved(let lease): URL(string: "http://localhost:\(lease.port)")
         }
     }
 }
@@ -27,6 +29,7 @@ final class AppState {
     private(set) var containers: [DockerContainer] = []
     private(set) var dockerAvailability: DockerAvailability = .unknown
     private(set) var health: [Int: ProbeResult] = [:]
+    private(set) var leases: [PortLease] = []
     private(set) var lastRefreshed: Date?
     private(set) var isRefreshing = false
     private(set) var hasLoadedOnce = false
@@ -50,6 +53,7 @@ final class AppState {
 
     let settings = AppSettings()
     let license = LicenseManager()
+    let remote = RemoteHub()
 
     /// Set by the status bar controller so views can ask to close the panel.
     @ObservationIgnored var dismissPanel: (() -> Void)?
@@ -59,6 +63,7 @@ final class AppState {
     @ObservationIgnored private var refreshLoop: Task<Void, Never>?
     @ObservationIgnored private var isPanelVisible = false
     @ObservationIgnored private var projectCache: [String: ProjectInfo?] = [:]
+    @ObservationIgnored private var processTree = ProcessTree(entries: [])
     @ObservationIgnored private var stopConfirmTask: Task<Void, Never>?
     @ObservationIgnored private var toastTask: Task<Void, Never>?
 
@@ -70,6 +75,7 @@ final class AppState {
     init() {
         showWelcome = !settings.hasSeenWelcome
         restartRefreshLoop()
+        remote.setSharing(settings.remoteSharingEnabled)
         Task { await refresh() }
     }
 
@@ -82,7 +88,8 @@ final class AppState {
 
     /// Count shown in the menu bar: things a developer started.
     var menuBarCount: Int {
-        sections.projects.reduce(0) { $0 + $1.ports.count }
+        sections.leftBehind.reduce(0) { $0 + $1.ports.count }
+            + sections.projects.reduce(0) { $0 + $1.ports.count }
             + sections.other.reduce(0) { $0 + $1.ports.count }
             + sections.containers.count
     }
@@ -95,6 +102,9 @@ final class AppState {
         isPanelVisible = true
         restartRefreshLoop()
         Task { await refresh() }
+        if settings.remoteSharingEnabled {
+            Task { await remote.refreshPeers() }
+        }
     }
 
     func panelDidDisappear() {
@@ -106,6 +116,7 @@ final class AppState {
 
     func settingsDidChange() {
         restartRefreshLoop()
+        remote.setSharing(settings.remoteSharingEnabled)
         Task { await refresh() }
     }
 
@@ -152,6 +163,7 @@ final class AppState {
             dockerAvailability = .unknown
         }
 
+        leases = (try? PortAllocator.allLeases()) ?? []
         rebuildSections()
 
         if settings.probeHealth {
@@ -166,8 +178,8 @@ final class AppState {
 
     private func resolveMetadata(for ports: [ListeningPort]) async {
         let pids = Array(Set(ports.filter { !$0.isDockerProxy && !AppSettings.isSystemProcess($0.command) }.map(\.pid)))
-        let fetched = await ProcessInspector.metadata(for: pids)
-        meta = fetched
+        let snapshot = await ProcessInspector.metadata(for: pids)
+        var fetched = snapshot.meta
 
         var resolved: [Int32: ProjectInfo] = [:]
         for (pid, info) in fetched {
@@ -180,7 +192,13 @@ final class AppState {
             projectCache[cwd] = project
             if let project { resolved[pid] = project }
         }
+
+        for pid in pids {
+            fetched[pid, default: ProcessMeta()].lineage = snapshot.tree.lineage(for: pid, cwd: fetched[pid]?.cwd, project: resolved[pid])
+        }
+        meta = fetched
         projects = resolved
+        processTree = snapshot.tree
     }
 
     private func rebuildSections() {
@@ -188,7 +206,8 @@ final class AppState {
             ports: visiblePorts,
             containers: settings.showDocker ? containers : [],
             meta: meta,
-            projects: projects
+            projects: projects,
+            leases: leases
         )
     }
 
@@ -231,6 +250,8 @@ final class AppState {
         case .port(let port): requestStop(port, rowID: id)
         case .container(let container), .containerPort(let container, _):
             requestContainerStop(container, rowID: id)
+        case .reserved(let lease):
+            release(lease)
         }
     }
 
@@ -289,25 +310,101 @@ final class AppState {
         if !isPinned { dismissPanel?() }
     }
 
+    func verdict(for port: ListeningPort) -> PolicyVerdict {
+        let info = meta[port.pid]
+        return Policy.evaluate(
+            command: port.command,
+            executable: info?.executable,
+            cwd: info?.cwd,
+            addresses: port.addresses,
+            origin: info?.lineage?.origin,
+            extraCommands: [info?.lineage?.rootCommand].compactMap { $0 }
+        )
+    }
+
+    func verdict(for container: DockerContainer) -> PolicyVerdict {
+        Policy.evaluateDocker(name: container.name, ports: container.ports)
+    }
+
+    func requestRemoteStop(peer: RemotePeer, listener: RemoteListenerDTO) {
+        let id = "remote:\(peer.deviceID):\(listener.port)"
+        requirePro {
+            if pendingStopID == id {
+                pendingStopID = nil
+                Task {
+                    do {
+                        try await remote.stop(peer: peer, port: listener.port, confirmLAN: listener.lan)
+                        showToast("Stopped :\(listener.port) on \(peer.name)", symbol: "stop.circle.fill")
+                    } catch {
+                        showToast(error.localizedDescription, symbol: "lock.fill")
+                    }
+                }
+            } else {
+                arm(id)
+                if listener.lan {
+                    showToast("LAN bind on \(peer.name) — click again to stop", symbol: "exclamationmark.triangle.fill")
+                }
+            }
+        }
+    }
+
     /// Two-step stop: first call arms, second call within 3s fires.
-    func requestStop(_ port: ListeningPort, rowID: String? = nil, force: Bool = false) {
+    /// Context-menu items pass `immediate` since choosing them is deliberate.
+    /// Policy can still deny, or force a confirm for LAN / protected break-glass.
+    func requestStop(_ port: ListeningPort, rowID: String? = nil, force: Bool = false, immediate: Bool = false) {
         let id = rowID ?? port.id
-        if pendingStopID == id || force {
-            pendingStopID = nil
-            terminate(port, force: force)
-        } else {
-            requirePro { arm(id) }
+        requirePro {
+            switch verdict(for: port) {
+            case .deny(let reason):
+                pendingStopID = nil
+                Audit.record(action: "policy_deny", ok: false, port: port.port, command: port.command, detail: reason)
+                showToast(reason, symbol: "lock.fill")
+            case .confirm(let reason):
+                if pendingStopID == id {
+                    pendingStopID = nil
+                    terminate(port, force: force)
+                } else {
+                    arm(id)
+                    showToast(reason, symbol: "exclamationmark.triangle.fill")
+                }
+            case .allow:
+                if pendingStopID == id || immediate || force {
+                    pendingStopID = nil
+                    terminate(port, force: force)
+                } else {
+                    arm(id)
+                }
+            }
         }
     }
 
     func requestContainerStop(_ container: DockerContainer, rowID: String) {
-        if pendingStopID == rowID {
-            pendingStopID = nil
-            perform(container.isRunning ? .stop : .start, on: container)
-        } else if container.isRunning {
-            requirePro { arm(rowID) }
-        } else {
+        if !container.isRunning {
             perform(.start, on: container)
+            return
+        }
+        requirePro {
+            switch verdict(for: container) {
+            case .deny(let reason):
+                pendingStopID = nil
+                Audit.record(action: "policy_deny", ok: false, command: container.name, detail: reason)
+                showToast(reason, symbol: "lock.fill")
+            case .confirm(let reason):
+                if pendingStopID == rowID {
+                    pendingStopID = nil
+                    perform(.stop, on: container)
+                } else {
+                    arm(rowID)
+                    showToast(reason, symbol: "exclamationmark.triangle.fill")
+                }
+            case .allow:
+                if pendingStopID == rowID {
+                    pendingStopID = nil
+                    perform(.stop, on: container)
+                } else {
+                    arm(rowID)
+                }
+            }
         }
     }
 
@@ -326,20 +423,136 @@ final class AppState {
         stopConfirmTask?.cancel()
     }
 
+    /// Stops the whole tree the listener belongs to (`npm run dev` → `node` →
+    /// `next-server`), not just the pid on the port. Killing only the leaf
+    /// leaves wrappers and siblings holding memory and, often, other ports.
     private func terminate(_ port: ListeningPort, force: Bool) {
-        requirePro {
-            let signal = force ? SIGKILL : SIGTERM
-            if kill(port.pid, signal) == 0 {
-                showToast("Stopped \(port.command) on :\(port.port)", symbol: "stop.circle.fill")
-            } else {
-                errorMessage = "Couldn't stop \(port.command) (pid \(port.pid)): \(String(cString: strerror(errno)))"
-                showToast("Couldn't stop \(port.command)", symbol: "exclamationmark.triangle.fill")
-            }
-            scheduleRefresh(after: 0.6)
+        let lineage = meta[port.pid]?.lineage
+        var pids = lineage?.treePIDs ?? []
+        if !pids.contains(port.pid) { pids.append(port.pid) }
+        let label = lineage?.rootCommand ?? port.command
+        let outcome = ProcessKiller.stop(pids: pids, force: force)
+        finishStop(outcome: outcome, pids: pids, label: label, port: port.port, force: force)
+    }
+
+    func release(_ lease: PortLease) {
+        do {
+            _ = try PortAllocator.release(name: nil, port: lease.port, at: nil)
+            leases.removeAll { $0.id == lease.id }
+            rebuildSections()
+            showToast("Released :\(lease.port) (\(lease.name))", symbol: "bookmark.slash")
+        } catch {
+            showToast("Couldn't release :\(lease.port)", symbol: "exclamationmark.triangle.fill")
         }
     }
 
+    /// Stops only the process on the port, leaving its parents and siblings alone.
+    func stopOnly(_ port: ListeningPort, force: Bool = false) {
+        requirePro {
+            switch verdict(for: port) {
+            case .deny(let reason):
+                Audit.record(action: "policy_deny", ok: false, port: port.port, command: port.command, detail: reason)
+                showToast(reason, symbol: "lock.fill")
+            case .confirm(let reason):
+                if pendingStopID == port.id {
+                    pendingStopID = nil
+                    stop(pids: [port.pid], label: port.command, port: port.port, force: force)
+                } else {
+                    arm(port.id)
+                    showToast(reason, symbol: "exclamationmark.triangle.fill")
+                }
+            case .allow:
+                stop(pids: [port.pid], label: port.command, port: port.port, force: force)
+            }
+        }
+    }
+
+    /// Stops every left-behind tree. Two-step like a single stop.
+    static let leftBehindStopID = "leftBehind:all"
+
+    func requestStopAllLeftBehind() {
+        if pendingStopID == Self.leftBehindStopID {
+            pendingStopID = nil
+            requirePro {
+                var pids = Set<Int32>()
+                var skipped = 0
+                for group in sections.leftBehind {
+                    let blocked = group.ports.contains { verdict(for: $0).isDenied }
+                    if blocked {
+                        skipped += 1
+                        if let port = group.ports.first {
+                            Audit.record(action: "policy_deny", ok: false, port: port.port, command: port.command, detail: "left-behind stop")
+                        }
+                        continue
+                    }
+                    if let lineage = group.lineage { pids.formUnion(lineage.treePIDs) }
+                    pids.formUnion(group.ports.map(\.pid))
+                }
+                pids.remove(0)
+                let count = sections.leftBehind.count - skipped
+                if count == 0 {
+                    showToast("Policy blocked every left-behind stop", symbol: "lock.fill")
+                    return
+                }
+                stop(pids: Array(pids), label: "\(count) left-behind server\(count == 1 ? "" : "s")", port: nil, force: false)
+            }
+        } else {
+            requirePro { arm(Self.leftBehindStopID) }
+        }
+    }
+
+    private func stop(pids: [Int32], label: String, port: Int?, force: Bool) {
+        let outcome = ProcessKiller.stop(pids: pids, force: force)
+        finishStop(outcome: outcome, pids: pids, label: label, port: port, force: force)
+    }
+
+    private func finishStop(outcome: ProcessKiller.Outcome, pids: [Int32], label: String, port: Int?, force: Bool) {
+        guard !pids.isEmpty else { return }
+        let where_ = port.map { " on :\($0)" } ?? ""
+        let ok = !(outcome.failed.count == pids.count && outcome.signalled.isEmpty)
+        Audit.record(
+            action: "stop",
+            ok: ok,
+            port: port,
+            command: label,
+            pids: pids,
+            detail: force ? "SIGKILL" : "SIGTERM"
+        )
+        if !ok {
+            errorMessage = "Couldn't stop \(label)"
+            showToast("Couldn't stop \(label)", symbol: "exclamationmark.triangle.fill")
+        } else {
+            let detail = pids.count > 1 ? " · \(pids.count) processes" : ""
+            showToast("Stopped \(label)\(where_)\(detail)", symbol: "stop.circle.fill")
+        }
+
+        if !force {
+            Task {
+                await ProcessKiller.escalate(pids)
+                await refresh()
+            }
+        }
+        scheduleRefresh(after: 0.6)
+    }
+
     func perform(_ action: DockerAction, on container: DockerContainer) {
+        if action == .stop || action == .restart {
+            switch verdict(for: container) {
+            case .deny(let reason):
+                Audit.record(action: "policy_deny", ok: false, command: container.name, detail: reason)
+                showToast(reason, symbol: "lock.fill")
+                return
+            case .confirm(let reason):
+                if pendingStopID != container.id {
+                    arm(container.id)
+                    showToast(reason, symbol: "exclamationmark.triangle.fill")
+                    return
+                }
+                pendingStopID = nil
+            case .allow:
+                break
+            }
+        }
         requirePro {
             pendingDockerActions.insert(container.id)
             Task {
@@ -352,9 +565,11 @@ final class AppState {
                     case .stop: "Stopped"
                     case .restart: "Restarted"
                     }
+                    Audit.record(action: "docker_\(action.rawValue)", command: container.name, detail: container.image)
                     showToast("\(verb) \(container.name)", symbol: "shippingbox.fill")
                 } catch {
                     errorMessage = error.localizedDescription
+                    Audit.record(action: "docker_\(action.rawValue)", ok: false, command: container.name, detail: error.localizedDescription)
                     showToast("Docker: \(error.localizedDescription)", symbol: "exclamationmark.triangle.fill")
                 }
                 await refresh()

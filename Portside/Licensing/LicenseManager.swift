@@ -1,15 +1,11 @@
 import Foundation
 import Observation
 
-/// Trial + license-key gating.
+/// Trial, personal Pro (`PKP-`), and org seats (`PKO-`).
 ///
-/// Portside is distributed outside the Mac App Store (it needs to inspect other
-/// processes, which the sandbox forbids), so StoreKit isn't an option. The
-/// intended production flow is: sell through Paddle / LemonSqueezy / Setapp,
-/// issue a key, and validate it against your backend in `validate(key:)`.
-///
-/// What's here is the complete local half of that flow: trial tracking,
-/// activation UI plumbing, persistence, and the `isPro` gate the UI reads.
+/// Sold outside the Mac App Store (the sandbox cannot inspect other processes).
+/// Personal keys and org keys activate locally today; a licensing backend can
+/// later reject a key or a seat that is already taken. MDM can force `OrgLicense`.
 @MainActor
 @Observable
 final class LicenseManager {
@@ -17,36 +13,59 @@ final class LicenseManager {
         case trial(daysLeft: Int)
         case expired
         case licensed(key: String)
+        case organization(OrgSeat)
     }
 
     static let trialLengthDays = 14
-    static let purchaseURL = URL(string: "https://portside.app/buy")!  // TODO: real checkout link
+    static let purchaseURL = Product.websiteURL
 
     private(set) var status: Status = .expired
     private let defaults: UserDefaults
 
-    init(defaults: UserDefaults = .standard) {
+    init(defaults: UserDefaults = PortkeepDefaults.suite) {
         self.defaults = defaults
         if defaults.object(forKey: Keys.trialStartedAt) == nil {
             defaults.set(Date(), forKey: Keys.trialStartedAt)
         }
+        applyManagedOrgIfNeeded()
         refresh()
     }
 
-    /// Everything gated behind Pro is available during the trial.
+    /// Everything gated behind Pro is available during the trial and on a seat.
     var isPro: Bool {
         if case .expired = status { return false }
         return true
     }
 
     var isLicensed: Bool {
-        if case .licensed = status { return true }
+        switch status {
+        case .licensed, .organization: true
+        default: false
+        }
+    }
+
+    var isOrganization: Bool {
+        if case .organization = status { return true }
         return false
     }
 
+    var orgIsManaged: Bool {
+        defaults.objectIsForced(forKey: ManagedKey.orgLicense)
+    }
+
     func refresh() {
-        if let key = defaults.string(forKey: Keys.licenseKey), !key.isEmpty {
-            status = .licensed(key: key)
+        if let key = LicenseStore.load(), let parsed = try? LicenseKey.parse(key) {
+            switch parsed.kind {
+            case .personal:
+                status = .licensed(key: parsed.key)
+            case .organization(let org, let seats):
+                let claim = OrgClaim.load() ?? (try? OrgClaim.claim(org: org, seats: seats))
+                if let claim {
+                    status = .organization(claim)
+                } else {
+                    status = .licensed(key: parsed.key)
+                }
+            }
             return
         }
         let started = defaults.object(forKey: Keys.trialStartedAt) as? Date ?? Date()
@@ -56,46 +75,37 @@ final class LicenseManager {
     }
 
     func activate(key rawKey: String) async throws {
-        let key = rawKey.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-        try await validate(key: key)
-        // TODO: move to Keychain before shipping; UserDefaults is trivially editable.
-        defaults.set(key, forKey: Keys.licenseKey)
+        try apply(rawKey)
         refresh()
     }
 
     func deactivate() {
-        defaults.removeObject(forKey: Keys.licenseKey)
+        guard !orgIsManaged else { return }
+        LicenseStore.clear()
+        OrgClaim.clear()
+        Audit.record(action: "license_deactivate")
         refresh()
     }
 
-    // MARK: - Validation
-
-    /// Format: PSD-XXXXX-XXXXX-XXXXX (letters/digits).
-    private static let keyPattern = #/^PSD-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}$/#
-
-    private func validate(key: String) async throws {
-        guard key.wholeMatch(of: Self.keyPattern) != nil else {
-            throw LicenseError.malformed
+    private func apply(_ rawKey: String) throws {
+        let parsed = try LicenseKey.parse(rawKey)
+        try LicenseStore.save(parsed.key)
+        switch parsed.kind {
+        case .personal:
+            OrgClaim.clear()
+            Audit.record(action: "license_activate", detail: "personal")
+        case .organization(let org, let seats):
+            let claim = try OrgClaim.claim(org: org, seats: seats)
+            Audit.record(action: "license_activate", command: org, detail: "org \(seats) seats · \(claim.deviceID)")
         }
-        // TODO: POST the key + a device identifier to your licensing backend
-        // (e.g. a Supabase Edge Function) and throw `.rejected` on failure.
-        // Until that exists, any well-formed key activates locally.
+    }
+
+    private func applyManagedOrgIfNeeded() {
+        guard let key = defaults.string(forKey: ManagedKey.orgLicense), !key.isEmpty else { return }
+        try? apply(key)
     }
 
     private enum Keys {
         static let trialStartedAt = "license.trialStartedAt"
-        static let licenseKey = "license.key"
-    }
-}
-
-enum LicenseError: LocalizedError {
-    case malformed
-    case rejected(String)
-
-    var errorDescription: String? {
-        switch self {
-        case .malformed: "That doesn't look like a Portside key. Keys look like PSD-XXXXX-XXXXX-XXXXX."
-        case .rejected(let reason): reason
-        }
     }
 }

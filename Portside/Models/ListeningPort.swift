@@ -10,12 +10,7 @@ struct ListeningPort: Identifiable, Hashable, Sendable {
 
     var id: String { "\(pid):\(port)" }
 
-    var isLocalOnly: Bool {
-        addresses.allSatisfy { address in
-            address == "127.0.0.1" || address == "[::1]" || address == "localhost"
-                || address.hasPrefix("127.")
-        }
-    }
+    var isLocalOnly: Bool { Self.isLoopback(addresses) }
 
     /// Ports published by Docker Desktop / OrbStack show up under their VM
     /// helper process rather than the container itself.

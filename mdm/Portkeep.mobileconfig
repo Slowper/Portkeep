@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadDisplayName</key>
+	<string>Portkeep</string>
+	<key>PayloadDescription</key>
+	<string>Locks Portkeep stop-policy and optional UI settings. Domain com.sajidpalagiri.portkeep. Nothing in this profile leaves the Mac — it only constrains the local app.</string>
+	<key>PayloadIdentifier</key>
+	<string>com.sajidpalagiri.portkeep.profile</string>
+	<key>PayloadOrganization</key>
+	<string>Portkeep</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>38245469-3956-4DF8-B9A9-4746D262AC5B</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadDisplayName</key>
+			<string>Portkeep managed settings</string>
+			<key>PayloadIdentifier</key>
+			<string>com.sajidpalagiri.portkeep.profile.settings</string>
+			<key>PayloadType</key>
+			<string>com.apple.ManagedClient.preferences</string>
+			<key>PayloadUUID</key>
+			<string>4E3FEC2F-1105-442B-8132-E3C97B196598</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>PayloadContent</key>
+			<dict>
+				<key>com.sajidpalagiri.portkeep</key>
+				<dict>
+					<key>Forced</key>
+					<array>
+						<dict>
+							<key>mcx_preference_settings</key>
+							<dict>
+								<key>PolicyEnabled</key>
+								<true/>
+								<key>PolicyRequireLANConfirm</key>
+								<true/>
+								<key>PolicyAllowOutsideHome</key>
+								<false/>
+								<key>PolicyAllowProtectedStop</key>
+								<false/>
+								<key>PolicyAllowedRoots</key>
+								<array>
+									<string>/Users/Shared/src</string>
+								</array>
+								<key>ShowDocker</key>
+								<true/>
+								<key>HotKeyEnabled</key>
+								<true/>
+								<key>AutomaticallyCheckForUpdates</key>
+								<true/>
+							</dict>
+						</dict>
+					</array>
+				</dict>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -8,12 +8,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var hotKeyObservation: Task<Void, Never>?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        AppUpdates.start()
+
         let controller = StatusBarController(state: state)
         statusBar = controller
 
         HotKey.shared.onTrigger = { [weak controller] in controller?.toggle() }
         syncHotKey()
         observeHotKeySetting()
+
+        DistributedNotificationCenter.default().addObserver(
+            self,
+            selector: #selector(openSettingsFromNotification),
+            name: SettingsWindowController.openNotification,
+            object: nil
+        )
 
         if !state.settings.hasSeenWelcome {
             Task { @MainActor in
@@ -25,6 +34,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         false
+    }
+
+    @objc private func openSettingsFromNotification(_ notification: Notification) {
+        statusBar?.openSettings()
     }
 
     private func syncHotKey() {

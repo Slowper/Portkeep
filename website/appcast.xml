@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>Portkeep</title>
+    <link>https://portkeep.sajidpalagiri.com/appcast.xml</link>
+    <description>Portkeep updates</description>
+    <language>en</language>
+    <item>
+      <title>Version 1.0.0</title>
+      <pubDate>Mon, 07 Sep 2026 12:10:05 +0000</pubDate>
+      <sparkle:version>1</sparkle:version>
+      <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
+      <enclosure
+        url="https://portkeep.sajidpalagiri.com/downloads/Portkeep-1.0.0.dmg"
+        length="4863644"
+        type="application/octet-stream"
+        sparkle:edSignature="HyEJRzwb4dqFk7+AnXhFtwf/N9p5PU5aWsTuTL/zAtmGwcs06koe/ei+G8Vl8KtJ4npZJbN7BIpzfABwNX0xDg=="/>
+    </item>
+  </channel>
+</rss>

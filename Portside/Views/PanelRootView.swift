@@ -34,7 +34,6 @@ struct PanelRootView: View {
             }
         }
         .animation(.snappy(duration: 0.25), value: state.toast)
-        .padding(Self.shadowMargin)
         .reportHeight { height in
             NotificationCenter.default.post(name: .panelPreferredHeightDidChange, object: nil, userInfo: ["height": height])
         }
@@ -55,6 +54,7 @@ struct PanelRootView: View {
                     .padding(.horizontal, 10)
                     .padding(.vertical, 8)
                     .reportHeight { listContentHeight = $0 }
+                    .background { ScrollerHider().frame(width: 0, height: 0) }
             }
             .scrollIndicators(.hidden)
             .frame(height: min(max(listContentHeight, 96), maxListHeight))
@@ -82,8 +82,8 @@ private struct HeaderBar: View {
 
     var body: some View {
         HStack(spacing: 10) {
-            IconTile(symbol: "point.3.filled.connected.trianglepath.dotted", tint: Color.accentColor, size: 22)
-            Text("Portside")
+            BrandMarkView(size: 22)
+            Text("Portkeep")
                 .font(.system(size: 13, weight: .semibold))
 
             Spacer()
@@ -183,9 +183,16 @@ private struct ListContent: View {
 
             if !state.hasLoadedOnce {
                 EmptyState(symbol: "antenna.radiowaves.left.and.right", title: "Scanning…", message: "")
-            } else if filtered.isEmpty && !state.showWelcome {
+            } else if filtered.isEmpty && state.remote.peers.isEmpty && !state.showWelcome {
                 emptyState
             } else {
+                if !state.remote.peers.isEmpty {
+                    RemoteMacsSection(peers: state.remote.peers)
+                }
+                if !filtered.leftBehind.isEmpty {
+                    LeftBehindHeader(groups: filtered.leftBehind, memory: filtered.leftBehindMemory)
+                    ForEach(filtered.leftBehind) { GroupCard(group: $0) }
+                }
                 if !filtered.projects.isEmpty {
                     SectionHeader(title: "Projects", count: filtered.projects.count)
                     ForEach(filtered.projects) { GroupCard(group: $0) }
@@ -210,6 +217,12 @@ private struct ListContent: View {
                 if !filtered.other.isEmpty {
                     SectionHeader(title: "Other processes", count: filtered.other.count)
                     ForEach(filtered.other) { GroupCard(group: $0) }
+                }
+                if !filtered.reserved.isEmpty {
+                    SectionHeader(title: "Reserved", count: filtered.reserved.count)
+                    ForEach(filtered.reserved) { lease in
+                        ReservedLeaseCard(lease: lease)
+                    }
                 }
                 if !filtered.stopped.isEmpty {
                     stoppedSection(filtered.stopped)
@@ -287,26 +300,36 @@ private struct ListContent: View {
                 let headerMatch = group.title.lowercased().contains(q)
                     || group.subtitle.lowercased().contains(q)
                     || (group.project?.kind.label.lowercased().contains(q) ?? false)
+                    || (group.origin?.label.lowercased().contains(q) ?? false)
+                    || (group.lineage?.rootCommand.lowercased().contains(q) ?? false)
+                    || group.reserved.contains { $0.name.contains(q) || String($0.port).contains(q) }
                 if headerMatch { return group }
                 let ports = group.ports.filter { String($0.port).contains(q) || $0.command.lowercased().contains(q) }
-                guard !ports.isEmpty else { return nil }
+                let reserved = group.reserved.filter { $0.name.contains(q) || String($0.port).contains(q) }
+                guard !ports.isEmpty || !reserved.isEmpty else { return nil }
                 var copy = group
                 copy.ports = ports
+                copy.reserved = reserved
                 return copy
             }
         }
 
+        sections.leftBehind = filter(sections.leftBehind)
         sections.projects = filter(sections.projects)
         sections.containers = filter(sections.containers)
         sections.other = filter(sections.other)
+        sections.reserved = sections.reserved.filter {
+            $0.name.contains(q) || String($0.port).contains(q) || $0.projectName.lowercased().contains(q)
+        }
         sections.stopped = sections.stopped.filter { $0.name.lowercased().contains(q) || $0.image.lowercased().contains(q) }
         return sections
     }
 
     private func buildRows(_ sections: DashboardSections) -> [(id: String, ref: RowRef)] {
         var rows: [(id: String, ref: RowRef)] = []
-        for group in sections.projects + sections.other {
+        for group in sections.leftBehind + sections.projects + sections.other {
             for port in group.ports { rows.append((GroupCard.rowID(group, port), .port(port))) }
+            for lease in group.reserved { rows.append((GroupCard.reservedID(lease), .reserved(lease))) }
         }
         for group in sections.containers {
             guard let container = group.container else { continue }
@@ -321,7 +344,152 @@ private struct ListContent: View {
                 rows.append(("docker:\(container.id)", .container(container)))
             }
         }
+        for lease in sections.reserved {
+            rows.append((GroupCard.reservedID(lease), .reserved(lease)))
+        }
         return rows
+    }
+}
+
+private struct ReservedLeaseCard: View {
+    @Environment(AppState.self) private var state
+    let lease: PortLease
+
+    var body: some View {
+        GroupCard(group: DashboardGroup(
+            id: "lease:\(lease.id)",
+                kind: .project(ProjectInfo(
+                directory: URL(fileURLWithPath: lease.directory),
+                name: lease.projectName,
+                kind: .generic
+            )),
+            ports: [],
+            reserved: [lease]
+        ))
+    }
+}
+
+// MARK: - Left behind
+
+private struct RemoteMacsSection: View {
+    @Environment(AppState.self) private var state
+    let peers: [RemotePeer]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            SectionHeader(title: "Other Macs", count: peers.count)
+            ForEach(peers) { peer in
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "laptopcomputer")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundStyle(.secondary)
+                        Text(peer.name)
+                            .font(.system(size: 12.5, weight: .semibold))
+                        Spacer()
+                        Text(peer.snapshot.map { "\($0.leftovers.count) left behind" } ?? (peer.lastError ?? "…"))
+                            .font(.system(size: 11))
+                            .foregroundStyle(.secondary)
+                    }
+                    if let leftovers = peer.snapshot?.leftovers, !leftovers.isEmpty {
+                        ForEach(leftovers) { listener in
+                            remoteRow(peer: peer, listener: listener)
+                        }
+                    } else if peer.lastError == nil {
+                        Text("Nothing left behind on that Mac.")
+                            .font(.system(size: 11))
+                            .foregroundStyle(.tertiary)
+                    }
+                }
+                .padding(8)
+                .background(Color.primary.opacity(0.04), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+            }
+        }
+    }
+
+    private func remoteRow(peer: RemotePeer, listener: RemoteListenerDTO) -> some View {
+        let id = "remote:\(peer.deviceID):\(listener.port)"
+        let armed = state.pendingStopID == id
+        return HStack(spacing: 8) {
+            Text(":\(listener.port)")
+                .font(.system(size: 12, weight: .semibold, design: .rounded))
+            Text(listener.project ?? listener.command)
+                .font(.system(size: 12))
+                .lineLimit(1)
+            if listener.lan {
+                Chip(text: "LAN", tint: .orange)
+            }
+            Spacer()
+            Button {
+                state.requestRemoteStop(peer: peer, listener: listener)
+            } label: {
+                Text(armed ? (listener.lan ? "LAN?" : "Stop?") : "Stop")
+                    .font(.system(size: 11, weight: .semibold))
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(armed ? .orange : .secondary)
+        }
+        .padding(.vertical, 2)
+    }
+}
+
+/// Header for servers nobody is looking after any more, with a one-shot cleanup.
+private struct LeftBehindHeader: View {
+    @Environment(AppState.self) private var state
+    let groups: [DashboardGroup]
+    let memory: UInt64
+
+    private var isArmed: Bool { state.pendingStopID == AppState.leftBehindStopID }
+
+    private var summary: String {
+        let orphaned = groups.filter { $0.lineage?.isOrphaned == true }.count
+        let gone = groups.count - orphaned
+        var parts: [String] = []
+        if orphaned > 0 { parts.append("parent exited") }
+        if gone > 0 { parts.append("folder deleted") }
+        var text = parts.joined(separator: " · ")
+        if memory >= 32 * 1024 * 1024 {
+            text += " · holding \(ByteCountFormatter.string(fromByteCount: Int64(memory), countStyle: .memory))"
+        }
+        return text
+    }
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 6) {
+            Image(systemName: "person.slash.fill")
+                .font(.system(size: 9.5, weight: .bold))
+                .foregroundStyle(.orange)
+            Text("LEFT BEHIND")
+                .font(.system(size: 10.5, weight: .semibold))
+                .kerning(0.6)
+                .foregroundStyle(.orange)
+            Text("\(groups.count)")
+                .font(.system(size: 10.5, weight: .semibold, design: .rounded))
+                .foregroundStyle(.orange.opacity(0.7))
+            Text(summary)
+                .font(.system(size: 10.5))
+                .foregroundStyle(.tertiary)
+                .lineLimit(1)
+                .truncationMode(.tail)
+                .layoutPriority(-1)
+            Spacer(minLength: 6)
+            Button {
+                state.requestStopAllLeftBehind()
+            } label: {
+                Text(isArmed ? "Stop all?" : "Stop all")
+                    .font(.system(size: 10.5, weight: .semibold, design: .rounded))
+                    .foregroundStyle(isArmed ? .white : .orange)
+                    .padding(.horizontal, 8)
+                    .frame(height: 19)
+                    .background(isArmed ? Color.red : Color.orange.opacity(0.14), in: Capsule())
+            }
+            .buttonStyle(.plain)
+            .help(isArmed ? "Click again to stop every left-behind process tree" : "Stop every left-behind server and its process tree")
+            .animation(.snappy(duration: 0.18), value: isArmed)
+        }
+        .padding(.horizontal, 4)
+        .padding(.top, 6)
+        .padding(.bottom, 2)
     }
 }
 
@@ -334,7 +502,7 @@ private struct WelcomeCard: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 3) {
-                    Text("Welcome to Portside")
+                    Text("Welcome to Portkeep")
                         .font(.system(size: 13, weight: .semibold))
                     Text("Everything listening on your Mac, one keystroke away.")
                         .font(.system(size: 12))
@@ -425,7 +593,7 @@ private struct FooterBar: View {
                 state.openSettingsWindow?()
             }
 
-            RowButton(symbol: "power", help: "Quit Portside (⌘Q)") {
+            RowButton(symbol: "power", help: "Quit Portkeep (⌘Q)") {
                 state.quit()
             }
         }
@@ -444,6 +612,8 @@ struct LicenseBadge: View {
             switch state.license.status {
             case .licensed:
                 Chip(text: "PRO", tint: .accentColor, filled: true)
+            case .organization(let seat):
+                Chip(text: seat.org, tint: .accentColor, filled: true)
             case .trial(let days):
                 Chip(text: "Trial · \(days)d", tint: days <= 3 ? .orange : .secondary)
             case .expired:
@@ -451,6 +621,6 @@ struct LicenseBadge: View {
             }
         }
         .buttonStyle(.plain)
-        .help(state.showPaywall ? "Back" : "Portside Pro")
+        .help(state.showPaywall ? "Back" : "Portkeep Pro")
     }
 }

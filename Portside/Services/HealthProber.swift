@@ -55,7 +55,7 @@ actor HealthProber {
         guard let url = URL(string: "http://localhost:\(port)/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.setValue("Portside/1.0 (+health)", forHTTPHeaderField: "User-Agent")
+        request.setValue("Portkeep/1.0 (+health)", forHTTPHeaderField: "User-Agent")
 
         let start = DispatchTime.now()
         let kind: ProbeResult.Kind

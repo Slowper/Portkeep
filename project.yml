@@ -1,10 +1,15 @@
-name: Portside
+name: Portkeep
 options:
-  bundleIdPrefix: com.sajid
+  bundleIdPrefix: com.sajidpalagiri
   createIntermediateGroups: true
   deploymentTarget:
     macOS: "14.0"
   xcodeVersion: "16.0"
+
+packages:
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    from: 2.7.0
 
 settings:
   base:
@@ -12,27 +17,74 @@ settings:
     SWIFT_STRICT_CONCURRENCY: complete
     MACOSX_DEPLOYMENT_TARGET: "14.0"
     ENABLE_USER_SCRIPT_SANDBOXING: NO
+    DEVELOPMENT_TEAM: CTGJJTS5R6
+    ENABLE_APP_SANDBOX: NO
+    ENABLE_HARDENED_RUNTIME: YES
+    CODE_SIGN_STYLE: Manual
+  configs:
+    Debug:
+      CODE_SIGN_IDENTITY: "-"
+    Release:
+      CODE_SIGN_IDENTITY: "Developer ID Application"
+      OTHER_CODE_SIGN_FLAGS: "--timestamp"
 
 targets:
-  Portside:
+  PortkeepCLI:
+    type: tool
+    platform: macOS
+    sources:
+      - path: CLI
+      - path: Portside/Models
+      - path: Portside/Services
+      - path: Portside/App/AppSettings.swift
+      - path: Portside/App/Product.swift
+    settings:
+      base:
+        PRODUCT_NAME: portkeep
+        PRODUCT_MODULE_NAME: PortkeepCLI
+        PRODUCT_BUNDLE_IDENTIFIER: com.sajidpalagiri.portkeep.cli
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: 1
+        CODE_SIGN_ENTITLEMENTS: Portside/Resources/Portkeep.entitlements
+
+  Portkeep:
     type: application
     platform: macOS
     sources:
       - path: Portside
+    dependencies:
+      - target: PortkeepCLI
+        embed: false
+      - package: Sparkle
+        product: Sparkle
+    postBuildScripts:
+      - name: Embed portkeep CLI
+        basedOnDependencyAnalysis: false
+        script: |
+          set -e
+          HELPERS="${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Contents/Helpers"
+          mkdir -p "${HELPERS}"
+          cp -f "${BUILT_PRODUCTS_DIR}/portkeep" "${HELPERS}/portkeep"
+          chmod +x "${HELPERS}/portkeep"
     settings:
       base:
-        PRODUCT_NAME: Portside
-        PRODUCT_BUNDLE_IDENTIFIER: com.sajid.Portside
-        MARKETING_VERSION: "0.1.0"
+        PRODUCT_NAME: Portkeep
+        PRODUCT_MODULE_NAME: Portkeep
+        PRODUCT_BUNDLE_IDENTIFIER: com.sajidpalagiri.portkeep
+        MARKETING_VERSION: "1.0.0"
         CURRENT_PROJECT_VERSION: 1
-        # Local dev: ad-hoc signing. For distribution switch to your Developer ID
-        # identity and notarize. The app is intentionally NOT sandboxed: it needs
-        # to inspect other processes (lsof) and talk to the Docker CLI.
-        CODE_SIGN_IDENTITY: "-"
-        CODE_SIGN_STYLE: Manual
-        ENABLE_APP_SANDBOX: NO
-        ENABLE_HARDENED_RUNTIME: YES
         GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: Portside/Resources/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Portside/Resources/Portkeep.entitlements
         INFOPLIST_KEY_LSUIElement: YES
-        INFOPLIST_KEY_NSHumanReadableCopyright: ""
+        INFOPLIST_KEY_CFBundleDisplayName: Portkeep
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.developer-tools
+        INFOPLIST_KEY_NSHumanReadableCopyright: "Copyright © 2026 Sajid Palagiri. All rights reserved."
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+
+schemes:
+  Portkeep:
+    build:
+      targets:
+        PortkeepCLI: all
+        Portkeep: all

@@ -3,26 +3,71 @@ import SwiftUI
 
 // MARK: - Window chrome
 
-/// Native vibrancy for the borderless panel.
-struct VisualEffectView: NSViewRepresentable {
-    var material: NSVisualEffectView.Material = .popover
-    var blending: NSVisualEffectView.BlendingMode = .behindWindow
+/// Removes the AppKit scroller from the enclosing `NSScrollView`.
+///
+/// `.scrollIndicators(.hidden)` is not honored when the user has
+/// "Show scroll bars: Always" set, which leaves a legacy track drawn over the
+/// glass. Place this in the scroll view's content; it reaches up to the
+/// enclosing scroll view once attached to a window.
+struct ScrollerHider: NSViewRepresentable {
+    final class HiderView: NSView {
+        private var observations: [NSKeyValueObservation] = []
+        private weak var observed: NSScrollView?
 
-    func makeNSView(context: Context) -> NSVisualEffectView {
-        let view = NSVisualEffectView()
-        view.material = material
-        view.blendingMode = blending
-        view.state = .active
-        return view
+        override func viewDidMoveToWindow() {
+            super.viewDidMoveToWindow()
+            attach()
+        }
+
+        override func layout() {
+            super.layout()
+            attach()
+        }
+
+        private func attach() {
+            guard let scrollView = enclosingScrollView else { return }
+            if observed !== scrollView {
+                observed = scrollView
+                // SwiftUI re-applies its own scroller configuration on every
+                // update, so watch the properties it touches and re-hide.
+                let rehide: @Sendable (NSScrollView, Any) -> Void = { [weak self] _, _ in
+                    Task { @MainActor [weak self] in
+                        guard let self, let scrollView = self.observed else { return }
+                        self.hide(scrollView)
+                    }
+                }
+                observations = [
+                    scrollView.observe(\.verticalScroller, changeHandler: rehide),
+                    scrollView.observe(\.horizontalScroller, changeHandler: rehide),
+                    scrollView.observe(\.scrollerStyle, changeHandler: rehide),
+                    scrollView.observe(\.hasVerticalScroller, changeHandler: rehide),
+                ]
+            }
+            hide(scrollView)
+        }
+
+        private func hide(_ scrollView: NSScrollView) {
+            // Overlay style keeps the content full-width (legacy reserves a gutter).
+            if scrollView.scrollerStyle != .overlay {
+                scrollView.scrollerStyle = .overlay
+            }
+            // Hiding the scroller views (rather than toggling hasVerticalScroller)
+            // is not something SwiftUI's update path undoes.
+            for scroller in [scrollView.verticalScroller, scrollView.horizontalScroller] {
+                guard let scroller else { continue }
+                if !scroller.isHidden { scroller.isHidden = true }
+                if scroller.alphaValue != 0 { scroller.alphaValue = 0 }
+            }
+        }
     }
 
-    func updateNSView(_ view: NSVisualEffectView, context: Context) {
-        view.material = material
-        view.blendingMode = blending
-    }
+    func makeNSView(context: Context) -> HiderView { HiderView(frame: .zero) }
+    func updateNSView(_ view: HiderView, context: Context) {}
 }
 
-/// Panel background: Liquid Glass on macOS 26+, vibrancy material before that.
+/// Clips panel content to the surface shape. The surface itself (Liquid Glass
+/// on macOS 26+, vibrancy before) is an AppKit view owned by
+/// `StatusBarController`; on older systems we add the hairline edge here.
 struct PanelChrome: ViewModifier {
     static let radius: CGFloat = 18
 
@@ -32,13 +77,9 @@ struct PanelChrome: ViewModifier {
 
     func body(content: Content) -> some View {
         if #available(macOS 26.0, *) {
-            content
-                .clipShape(shape)
-                .glassEffect(.regular, in: shape)
-                .background { PanelShadow(shape: shape) }
+            content.clipShape(shape)
         } else {
             content
-                .background(VisualEffectView())
                 .clipShape(shape)
                 .overlay {
                     shape
@@ -48,30 +89,41 @@ struct PanelChrome: ViewModifier {
                 .overlay {
                     shape.strokeBorder(.black.opacity(0.25), lineWidth: 0.5)
                 }
-                .background { PanelShadow(shape: shape) }
         }
     }
 }
 
-/// A drop shadow that follows the panel's rounded shape and is fully
-/// transparent *inside* it, so Liquid Glass keeps sampling the desktop.
-/// The window's own shadow is disabled because AppKit computes it from a
-/// rectangular opaque region when glass is involved (visible as a square rim).
+/// Drop shadow for the panel, drawn into the transparent margin around it.
+///
+/// The window's own shadow is off because AppKit derives it from a rectangular
+/// opaque region when Liquid Glass is involved (it showed as a square rim).
+/// This draws the shadow explicitly and clips out the interior so nothing sits
+/// behind the glass; glass must keep sampling the desktop, not a fill.
 struct PanelShadow: View {
-    let shape: RoundedRectangle
+    let margin: CGFloat
+    let radius: CGFloat
 
     var body: some View {
-        shape
-            .fill(Color.black)
-            .shadow(color: .black.opacity(0.30), radius: 22, y: 12)
-            .shadow(color: .black.opacity(0.22), radius: 3, y: 1)
-            .mask {
-                Rectangle()
-                    .padding(-200)
-                    .overlay { shape.blendMode(.destinationOut) }
-                    .compositingGroup()
-            }
-            .allowsHitTesting(false)
+        Canvas(rendersAsynchronously: false) { context, size in
+            let panelRect = CGRect(x: margin, y: margin, width: size.width - margin * 2, height: size.height - margin * 2)
+            let panel = Path(roundedRect: panelRect, cornerRadius: radius, style: .continuous)
+
+            // Everything except the panel's own area.
+            var outside = Path()
+            outside.addRect(CGRect(origin: .zero, size: size))
+            outside.addPath(panel)
+            context.clip(to: outside, style: FillStyle(eoFill: true))
+
+            // Ambient shadow + tight contact shadow.
+            var ambient = context
+            ambient.addFilter(.shadow(color: .black.opacity(0.22), radius: 18, x: 0, y: 10))
+            ambient.fill(panel, with: .color(.black))
+
+            var contact = context
+            contact.addFilter(.shadow(color: .black.opacity(0.18), radius: 2.5, x: 0, y: 1))
+            contact.fill(panel, with: .color(.black))
+        }
+        .allowsHitTesting(false)
     }
 }
 

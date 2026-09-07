@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy — Portkeep</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <p class="mark"><a href="index.html">Portkeep</a></p>
+    <nav>
+      <a href="index.html">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <p class="eyebrow">Privacy</p>
+      <h1>Nothing leaves this Mac.</h1>
+      <p class="lede">
+        Portkeep is a local tool. It reads ports, processes, and project folders
+        on your machine so you can see and stop them. That data is not uploaded,
+        sold, or synced.
+      </p>
+
+      <h2>What stays on this Mac</h2>
+      <ul>
+        <li>Listening ports, PIDs, command lines, and working directories</li>
+        <li>Docker container names you already have locally</li>
+        <li>Port reservations in <code>~/.portkeep</code></li>
+        <li>License and trial state in local preferences</li>
+      </ul>
+
+      <h2>What can go to the network</h2>
+      <ul>
+        <li>
+          <strong>Software Update (optional, on by default).</strong>
+          Check for Updates asks
+          <code>https://portkeep.sajidpalagiri.com/appcast.xml</code>
+          for a version number. If you install an update, the signed disk image
+          is downloaded from the same site. No port list, process list, or
+          folder path is included.
+        </li>
+        <li>
+          <strong>Localhost health probes (off unless you enable them).</strong>
+          A GET to <code>http://localhost:&lt;port&gt;/</code> on this Mac only.
+        </li>
+      </ul>
+      <p>
+        There is no account, no analytics, no crash reporter, and no third-party SDK
+        except Sparkle for updates. Turning off automatic update checks in Settings
+        stops the periodic request. You can still check manually.
+      </p>
+
+      <h2>Contact</h2>
+      <p>Questions: the site operator at sajidpalagiri.com.</p>
+      <p class="fine">Last updated 7 September 2026.</p>
+    </section>
+  </main>
+</body>
+</html>

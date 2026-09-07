@@ -1,0 +1,5 @@
+#!/bin/bash
+# Quit a running copy so the new app can replace it.
+osascript -e 'quit app "Portkeep"' >/dev/null 2>&1 || true
+killall Portkeep >/dev/null 2>&1 || true
+exit 0

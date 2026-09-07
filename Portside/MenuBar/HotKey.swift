@@ -28,7 +28,7 @@ final class HotKey {
             return noErr
         }, 1, &eventType, nil, &handlerRef)
 
-        let hotKeyID = EventHotKeyID(signature: 0x5053_4944 /* 'PSID' */, id: 1)
+        let hotKeyID = EventHotKeyID(signature: 0x504B_4550 /* 'PKEP' */, id: 1)
         RegisterEventHotKey(Self.defaultKeyCode, Self.defaultModifiers, hotKeyID, GetApplicationEventTarget(), 0, &hotKeyRef)
     }
 

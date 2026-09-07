@@ -1,0 +1,808 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		011CCE1A5B943A9207F0A6F8 /* PortkeepDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFB68BFAEE267C0DF5CF20A6 /* PortkeepDefaults.swift */; };
+		04F0A7273E6D5F14786C659C /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96ECE8C5472E139DBA549DF1 /* AppState.swift */; };
+		06B7A11A4F4354DD64F6891C /* PortsideApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914AFBE708C531198BC59834 /* PortsideApp.swift */; };
+		0C00AC3277D629598A45A963 /* ProcessTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152DD5CA9B75354C31EEBD43 /* ProcessTree.swift */; };
+		134913FADCAE497FAF275622 /* PortScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED9686F2D9459BF1114DEB0 /* PortScanner.swift */; };
+		13717980B402DC3AADF473A1 /* DockerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FFFAB0351F6DC10BCE2170 /* DockerService.swift */; };
+		1438467D028E461F9C202D80 /* PortAllocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B4BE6D8797D69CAABC9F1C /* PortAllocator.swift */; };
+		1A79DF847CDF4B4B0B01AFED /* PortLease.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5141BF571CF440E056D491A9 /* PortLease.swift */; };
+		2243504B68DD1E2E98C94704 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970ECB7585EC3C588C1746AB /* AppSettings.swift */; };
+		28DFD1AC79F9E98D577E613C /* RuntimeSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DC67C94D509C7E7438C4B /* RuntimeSnapshot.swift */; };
+		2E0E47593511EA16FE73A2CA /* ProcessLineage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A57E6511F2AAF2CC5819DAC /* ProcessLineage.swift */; };
+		3090A9D7D708C5365E3859D2 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56873E54DAAA6B71F0867FED /* Product.swift */; };
+		39A20F55A37696566AF682F7 /* RemoteClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB98ED21751BDD450A6DC695 /* RemoteClient.swift */; };
+		3A166019538AE6944C8429AE /* BrandMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E93B871F2EAD925F157BAC8 /* BrandMark.swift */; };
+		3A48EEBEF336C85DF096D504 /* ProcessTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152DD5CA9B75354C31EEBD43 /* ProcessTree.swift */; };
+		3DB4CE2E08B8F40281E85BEB /* RemoteLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3502EB19FB75C3E031C96F7E /* RemoteLink.swift */; };
+		40173BEB3844E7AF4B02EA47 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3614C177646AA876267B76E /* PaywallView.swift */; };
+		4018CA83534A9BAE6C2F4F04 /* LaunchdControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC06C11784659FBF0F091F4 /* LaunchdControl.swift */; };
+		401A56F71A26E46202AF2B99 /* HealthProber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908AED5C44E2902C43E9E59F /* HealthProber.swift */; };
+		40E77BB98B752E13C20F30D0 /* LicenseKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D6B225C45D0F1915685945 /* LicenseKey.swift */; };
+		412860D5D5B067BE0335DB57 /* Policy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EBC54CF786847A46299619 /* Policy.swift */; };
+		44AE22151D476056A8E6FCCF /* Audit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFA18D56C1F57A4D3837461 /* Audit.swift */; };
+		45E0534EE12CA041BD59E1CE /* MCPInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C204AABE59F1F1FB9A49908 /* MCPInstall.swift */; };
+		475C588C31616727DFBDF08D /* RemoteClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB98ED21751BDD450A6DC695 /* RemoteClient.swift */; };
+		491E4310627F5CE9FFD5BA9F /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56873E54DAAA6B71F0867FED /* Product.swift */; };
+		4A189348E61BFEB34C9EEB53 /* DashboardGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E94FF36876E501D700399E /* DashboardGroup.swift */; };
+		4A8EC3966C41A455C0CAF665 /* ShellRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEA872C40AB967285D81F6B /* ShellRunner.swift */; };
+		4C1945F0D7B7195F8D3B04D2 /* ListeningPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02713E8A45C01B43D2783E19 /* ListeningPort.swift */; };
+		4D1DC6257C9B823B811E3B12 /* ProcessInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CE3457AC499D556685E5D3 /* ProcessInspector.swift */; };
+		56A070B891867E229BBF86CC /* ProcessInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CE3457AC499D556685E5D3 /* ProcessInspector.swift */; };
+		5AE1F86E250BE151DBD50E05 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970ECB7585EC3C588C1746AB /* AppSettings.swift */; };
+		6F74603554ACA5D70BC79063 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9F954CEA7614DFCD7352BC /* SettingsWindowController.swift */; };
+		741B1CBF6B81968CA826E082 /* ProcessLineage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A57E6511F2AAF2CC5819DAC /* ProcessLineage.swift */; };
+		75C76E6C251CB74A7F922FCF /* LicenseKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D6B225C45D0F1915685945 /* LicenseKey.swift */; };
+		75C83D05741CC150881EC6CC /* RemoteServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE13D9FC8BE9F8DA1C7C64B /* RemoteServer.swift */; };
+		77596D5E8AC284CBC7D56CC9 /* RemoteServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE13D9FC8BE9F8DA1C7C64B /* RemoteServer.swift */; };
+		780941AA220FC7098012DA90 /* LicenseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C76571E7B487538A2849E /* LicenseStore.swift */; };
+		7C7BA77592E38DAF6A61A24D /* OrgClaim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93503533B025ABA0BC376CB0 /* OrgClaim.swift */; };
+		7E51DA52969DFEA769502BA2 /* CLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F35BAC49A9516273CF6984 /* CLI.swift */; };
+		7E659B9E7DA72C9A1B971E1B /* CLIInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E9FA866E31E3B2FA0D5990 /* CLIInstall.swift */; };
+		8549CDBEC69EFAB9DD2BB5E5 /* UpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED902EAFE108E6D8A5323DB /* UpdateController.swift */; };
+		856169CBA8CA8E67B90F7546 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 781D358CF39728A3A7B69249 /* Assets.xcassets */; };
+		8579A78B016BA710941090CE /* PortAllocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B4BE6D8797D69CAABC9F1C /* PortAllocator.swift */; };
+		877B9291F6791B7E0A15D8BA /* ProjectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DD86717EB320D2ECE37CE6 /* ProjectInfo.swift */; };
+		8895721C99CFA908151342B1 /* OrgClaim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93503533B025ABA0BC376CB0 /* OrgClaim.swift */; };
+		8AFB7685840049361C7F26E2 /* HealthProber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908AED5C44E2902C43E9E59F /* HealthProber.swift */; };
+		8B16173C85CD7AA447B8AE75 /* MCPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9B4678CE1E55806D6AAD60 /* MCPServer.swift */; };
+		8B6BE4FF4495EA6E4BF4C964 /* HotKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DE5F3A4CF86C3A5E94B19F /* HotKey.swift */; };
+		8E4943C531937FF55805AE92 /* DashboardGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E94FF36876E501D700399E /* DashboardGroup.swift */; };
+		8FB644178D299979DD9ED97C /* GroupCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C423D354A8B44A02127971 /* GroupCard.swift */; };
+		9225ACCAF566CB1B5C34CDF9 /* WorkspaceIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33051649DCB6ACAF91834293 /* WorkspaceIdentity.swift */; };
+		93FE9B8930A7DF0B496195CF /* ShellRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEA872C40AB967285D81F6B /* ShellRunner.swift */; };
+		9418413B96BDFA47F99560CD /* EditorLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9F242ACE27B06B2FAD411 /* EditorLauncher.swift */; };
+		95E6BA194A0C67CA52CFD47F /* RemoteHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB5F941FDCA777A44045417 /* RemoteHub.swift */; };
+		9F6387A8A8BB9F2C661D86CE /* ProcessKiller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372DDB699508C23C7D402F78 /* ProcessKiller.swift */; };
+		A3773371056662F3DF79C4E3 /* LaunchdControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC06C11784659FBF0F091F4 /* LaunchdControl.swift */; };
+		A4A3BC5979173B55FEB63C8D /* ProcessKiller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372DDB699508C23C7D402F78 /* ProcessKiller.swift */; };
+		A5B109823E773B088D90C38A /* DockerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C36720E5E2EE9E1CDC0E92D /* DockerContainer.swift */; };
+		AB294A5F1A0D7A96A1EE0DAB /* LicenseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C76571E7B487538A2849E /* LicenseStore.swift */; };
+		AC8A9FCC2185EC9517548FBA /* MCPInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C204AABE59F1F1FB9A49908 /* MCPInstall.swift */; };
+		ACE70386C910431670DB2049 /* FloatingPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4D01F2AC84392B9B992787 /* FloatingPanel.swift */; };
+		AF30F7F63ABB2A9A5AEE4ADB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072AFF7548B76DBA98E411B2 /* AppDelegate.swift */; };
+		B1567C8CE2A0D40D037C04CF /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787FF8FBDD3A30CCBBC6A4D0 /* StatusBarController.swift */; };
+		B3EA63F093899771B567A158 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACAABFA2C7BCFD637B88621 /* Components.swift */; };
+		B85DBC82102F41C03C3750E2 /* ListeningPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02713E8A45C01B43D2783E19 /* ListeningPort.swift */; };
+		B9FA82A9DC7D910256B63EE6 /* PortkeepDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFB68BFAEE267C0DF5CF20A6 /* PortkeepDefaults.swift */; };
+		BED73087DC7B5944EC98B360 /* EditorLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9F242ACE27B06B2FAD411 /* EditorLauncher.swift */; };
+		C007139467E84846D1C3B266 /* PortLease.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5141BF571CF440E056D491A9 /* PortLease.swift */; };
+		CC0CDEFCA37B002B2BCD2904 /* WorkspaceIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33051649DCB6ACAF91834293 /* WorkspaceIdentity.swift */; };
+		CD27113C86690DA6FE8F4570 /* ProjectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DD86717EB320D2ECE37CE6 /* ProjectInfo.swift */; };
+		CD2C9BA2C1F3ECDB261755B6 /* CLIInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E9FA866E31E3B2FA0D5990 /* CLIInstall.swift */; };
+		CE3437608F173E938389C949 /* DockerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C36720E5E2EE9E1CDC0E92D /* DockerContainer.swift */; };
+		D2E3918CCE7BCD4A444B4918 /* PanelRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E8AB7ED0DBCA4DCEF5517A /* PanelRootView.swift */; };
+		D78D8248E5DA7898D190CAEA /* DockerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FFFAB0351F6DC10BCE2170 /* DockerService.swift */; };
+		EC42A45C53BE82BEEAD68E89 /* Policy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EBC54CF786847A46299619 /* Policy.swift */; };
+		EC6692B87F5903D497BF95A6 /* PortScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED9686F2D9459BF1114DEB0 /* PortScanner.swift */; };
+		EE587396D370869665E2524A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD53F4C8E66D370207C318A /* SettingsView.swift */; };
+		EFA6FA4C5B3F7982BF4CB5BD /* LicenseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA53F2B62D8BF743C240576 /* LicenseManager.swift */; };
+		F11522F7D0AEBB2CEB809ADF /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 5C165E11F04514757DD69AA9 /* Sparkle */; };
+		F1EED47EF70C773BFD6A793B /* RemoteLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3502EB19FB75C3E031C96F7E /* RemoteLink.swift */; };
+		F6E0875D679725B3AAE12A32 /* Audit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFA18D56C1F57A4D3837461 /* Audit.swift */; };
+		FC456FD99EAFA377ADEE6E61 /* RuntimeSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DC67C94D509C7E7438C4B /* RuntimeSnapshot.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A371185F30B106EC31F7E7C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A5807BC0029521640DFBCC5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1117EAD0028C7A1B88E19C24;
+			remoteInfo = PortkeepCLI;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		02713E8A45C01B43D2783E19 /* ListeningPort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningPort.swift; sourceTree = "<group>"; };
+		072AFF7548B76DBA98E411B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		152DD5CA9B75354C31EEBD43 /* ProcessTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessTree.swift; sourceTree = "<group>"; };
+		1CFA18D56C1F57A4D3837461 /* Audit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audit.swift; sourceTree = "<group>"; };
+		1ED902EAFE108E6D8A5323DB /* UpdateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateController.swift; sourceTree = "<group>"; };
+		28DD86717EB320D2ECE37CE6 /* ProjectInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInfo.swift; sourceTree = "<group>"; };
+		2A57E6511F2AAF2CC5819DAC /* ProcessLineage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessLineage.swift; sourceTree = "<group>"; };
+		33051649DCB6ACAF91834293 /* WorkspaceIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceIdentity.swift; sourceTree = "<group>"; };
+		3502EB19FB75C3E031C96F7E /* RemoteLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteLink.swift; sourceTree = "<group>"; };
+		372DDB699508C23C7D402F78 /* ProcessKiller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessKiller.swift; sourceTree = "<group>"; };
+		3C9F954CEA7614DFCD7352BC /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
+		4E93B871F2EAD925F157BAC8 /* BrandMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandMark.swift; sourceTree = "<group>"; };
+		4FA53F2B62D8BF743C240576 /* LicenseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseManager.swift; sourceTree = "<group>"; };
+		5141BF571CF440E056D491A9 /* PortLease.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortLease.swift; sourceTree = "<group>"; };
+		56873E54DAAA6B71F0867FED /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		56E9FA866E31E3B2FA0D5990 /* CLIInstall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLIInstall.swift; sourceTree = "<group>"; };
+		58E8AB7ED0DBCA4DCEF5517A /* PanelRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelRootView.swift; sourceTree = "<group>"; };
+		5C204AABE59F1F1FB9A49908 /* MCPInstall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCPInstall.swift; sourceTree = "<group>"; };
+		5C36720E5E2EE9E1CDC0E92D /* DockerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockerContainer.swift; sourceTree = "<group>"; };
+		623B25045BF69D9263CCC031 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		6AEA872C40AB967285D81F6B /* ShellRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellRunner.swift; sourceTree = "<group>"; };
+		71CE3457AC499D556685E5D3 /* ProcessInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInspector.swift; sourceTree = "<group>"; };
+		75DE5F3A4CF86C3A5E94B19F /* HotKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKey.swift; sourceTree = "<group>"; };
+		75F9F242ACE27B06B2FAD411 /* EditorLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorLauncher.swift; sourceTree = "<group>"; };
+		781D358CF39728A3A7B69249 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		787FF8FBDD3A30CCBBC6A4D0 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
+		7D1DC67C94D509C7E7438C4B /* RuntimeSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeSnapshot.swift; sourceTree = "<group>"; };
+		80F35BAC49A9516273CF6984 /* CLI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLI.swift; sourceTree = "<group>"; };
+		81E45EF9A1769D67A1017814 /* Portkeep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Portkeep.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		85E94FF36876E501D700399E /* DashboardGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardGroup.swift; sourceTree = "<group>"; };
+		8D9CBF2139AC6FC8FAB916FB /* PortkeepCLI */ = {isa = PBXFileReference; includeInIndex = 0; path = PortkeepCLI; sourceTree = BUILT_PRODUCTS_DIR; };
+		908AED5C44E2902C43E9E59F /* HealthProber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthProber.swift; sourceTree = "<group>"; };
+		914AFBE708C531198BC59834 /* PortsideApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortsideApp.swift; sourceTree = "<group>"; };
+		93503533B025ABA0BC376CB0 /* OrgClaim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgClaim.swift; sourceTree = "<group>"; };
+		96ECE8C5472E139DBA549DF1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		970ECB7585EC3C588C1746AB /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		99B4BE6D8797D69CAABC9F1C /* PortAllocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortAllocator.swift; sourceTree = "<group>"; };
+		9ACAABFA2C7BCFD637B88621 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		A48C76571E7B487538A2849E /* LicenseStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseStore.swift; sourceTree = "<group>"; };
+		AED9686F2D9459BF1114DEB0 /* PortScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortScanner.swift; sourceTree = "<group>"; };
+		B7FFFAB0351F6DC10BCE2170 /* DockerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockerService.swift; sourceTree = "<group>"; };
+		BFD53F4C8E66D370207C318A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		CD31DD8696CF9BF37A7A1563 /* Portkeep.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Portkeep.entitlements; sourceTree = "<group>"; };
+		CD9B4678CE1E55806D6AAD60 /* MCPServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCPServer.swift; sourceTree = "<group>"; };
+		D4C423D354A8B44A02127971 /* GroupCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCard.swift; sourceTree = "<group>"; };
+		DBC06C11784659FBF0F091F4 /* LaunchdControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchdControl.swift; sourceTree = "<group>"; };
+		DDE13D9FC8BE9F8DA1C7C64B /* RemoteServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteServer.swift; sourceTree = "<group>"; };
+		DF4D01F2AC84392B9B992787 /* FloatingPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanel.swift; sourceTree = "<group>"; };
+		DFB68BFAEE267C0DF5CF20A6 /* PortkeepDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortkeepDefaults.swift; sourceTree = "<group>"; };
+		EEB5F941FDCA777A44045417 /* RemoteHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteHub.swift; sourceTree = "<group>"; };
+		F3614C177646AA876267B76E /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		F5EBC54CF786847A46299619 /* Policy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Policy.swift; sourceTree = "<group>"; };
+		F8D6B225C45D0F1915685945 /* LicenseKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseKey.swift; sourceTree = "<group>"; };
+		FB98ED21751BDD450A6DC695 /* RemoteClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteClient.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8AE8332F0E94F64D58B9684E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F11522F7D0AEBB2CEB809ADF /* Sparkle in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08461CC7C5D1BB16C1A8A61A /* Portside */ = {
+			isa = PBXGroup;
+			children = (
+				13B6ED593D8892517E6E5848 /* App */,
+				DA1A277ACC1264030993A3C3 /* Licensing */,
+				D886B16B1427B41490F6FFF3 /* MenuBar */,
+				A4FA9CC87F2CEF6D4237DC63 /* Models */,
+				0C89458C926B51D35C5E72BB /* Resources */,
+				E700B191AC8154EAD63944EA /* Services */,
+				363B961630344F661B05893C /* Views */,
+			);
+			path = Portside;
+			sourceTree = "<group>";
+		};
+		0C89458C926B51D35C5E72BB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				781D358CF39728A3A7B69249 /* Assets.xcassets */,
+				623B25045BF69D9263CCC031 /* Info.plist */,
+				CD31DD8696CF9BF37A7A1563 /* Portkeep.entitlements */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		13B6ED593D8892517E6E5848 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				072AFF7548B76DBA98E411B2 /* AppDelegate.swift */,
+				970ECB7585EC3C588C1746AB /* AppSettings.swift */,
+				96ECE8C5472E139DBA549DF1 /* AppState.swift */,
+				4E93B871F2EAD925F157BAC8 /* BrandMark.swift */,
+				914AFBE708C531198BC59834 /* PortsideApp.swift */,
+				56873E54DAAA6B71F0867FED /* Product.swift */,
+				EEB5F941FDCA777A44045417 /* RemoteHub.swift */,
+				3C9F954CEA7614DFCD7352BC /* SettingsWindowController.swift */,
+				1ED902EAFE108E6D8A5323DB /* UpdateController.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		363B961630344F661B05893C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9ACAABFA2C7BCFD637B88621 /* Components.swift */,
+				D4C423D354A8B44A02127971 /* GroupCard.swift */,
+				58E8AB7ED0DBCA4DCEF5517A /* PanelRootView.swift */,
+				F3614C177646AA876267B76E /* PaywallView.swift */,
+				BFD53F4C8E66D370207C318A /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4BCB8C49AC047FCB748BAA3D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				81E45EF9A1769D67A1017814 /* Portkeep.app */,
+				8D9CBF2139AC6FC8FAB916FB /* PortkeepCLI */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		99A205F34C76738B21E7FF50 /* CLI */ = {
+			isa = PBXGroup;
+			children = (
+				80F35BAC49A9516273CF6984 /* CLI.swift */,
+				CD9B4678CE1E55806D6AAD60 /* MCPServer.swift */,
+			);
+			path = CLI;
+			sourceTree = "<group>";
+		};
+		A4FA9CC87F2CEF6D4237DC63 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				85E94FF36876E501D700399E /* DashboardGroup.swift */,
+				5C36720E5E2EE9E1CDC0E92D /* DockerContainer.swift */,
+				02713E8A45C01B43D2783E19 /* ListeningPort.swift */,
+				5141BF571CF440E056D491A9 /* PortLease.swift */,
+				2A57E6511F2AAF2CC5819DAC /* ProcessLineage.swift */,
+				28DD86717EB320D2ECE37CE6 /* ProjectInfo.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D886B16B1427B41490F6FFF3 /* MenuBar */ = {
+			isa = PBXGroup;
+			children = (
+				DF4D01F2AC84392B9B992787 /* FloatingPanel.swift */,
+				75DE5F3A4CF86C3A5E94B19F /* HotKey.swift */,
+				787FF8FBDD3A30CCBBC6A4D0 /* StatusBarController.swift */,
+			);
+			path = MenuBar;
+			sourceTree = "<group>";
+		};
+		DA1A277ACC1264030993A3C3 /* Licensing */ = {
+			isa = PBXGroup;
+			children = (
+				4FA53F2B62D8BF743C240576 /* LicenseManager.swift */,
+			);
+			path = Licensing;
+			sourceTree = "<group>";
+		};
+		E700B191AC8154EAD63944EA /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				1CFA18D56C1F57A4D3837461 /* Audit.swift */,
+				56E9FA866E31E3B2FA0D5990 /* CLIInstall.swift */,
+				B7FFFAB0351F6DC10BCE2170 /* DockerService.swift */,
+				75F9F242ACE27B06B2FAD411 /* EditorLauncher.swift */,
+				908AED5C44E2902C43E9E59F /* HealthProber.swift */,
+				DBC06C11784659FBF0F091F4 /* LaunchdControl.swift */,
+				F8D6B225C45D0F1915685945 /* LicenseKey.swift */,
+				A48C76571E7B487538A2849E /* LicenseStore.swift */,
+				5C204AABE59F1F1FB9A49908 /* MCPInstall.swift */,
+				93503533B025ABA0BC376CB0 /* OrgClaim.swift */,
+				F5EBC54CF786847A46299619 /* Policy.swift */,
+				99B4BE6D8797D69CAABC9F1C /* PortAllocator.swift */,
+				DFB68BFAEE267C0DF5CF20A6 /* PortkeepDefaults.swift */,
+				AED9686F2D9459BF1114DEB0 /* PortScanner.swift */,
+				71CE3457AC499D556685E5D3 /* ProcessInspector.swift */,
+				372DDB699508C23C7D402F78 /* ProcessKiller.swift */,
+				152DD5CA9B75354C31EEBD43 /* ProcessTree.swift */,
+				FB98ED21751BDD450A6DC695 /* RemoteClient.swift */,
+				3502EB19FB75C3E031C96F7E /* RemoteLink.swift */,
+				DDE13D9FC8BE9F8DA1C7C64B /* RemoteServer.swift */,
+				7D1DC67C94D509C7E7438C4B /* RuntimeSnapshot.swift */,
+				6AEA872C40AB967285D81F6B /* ShellRunner.swift */,
+				33051649DCB6ACAF91834293 /* WorkspaceIdentity.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		F810CD302208FA15A1CE1568 = {
+			isa = PBXGroup;
+			children = (
+				99A205F34C76738B21E7FF50 /* CLI */,
+				08461CC7C5D1BB16C1A8A61A /* Portside */,
+				4BCB8C49AC047FCB748BAA3D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1117EAD0028C7A1B88E19C24 /* PortkeepCLI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4FB9BEFFADF741CEC926B17E /* Build configuration list for PBXNativeTarget "PortkeepCLI" */;
+			buildPhases = (
+				1D26B9037C523A19E1A6F04B /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PortkeepCLI;
+			packageProductDependencies = (
+			);
+			productName = PortkeepCLI;
+			productReference = 8D9CBF2139AC6FC8FAB916FB /* PortkeepCLI */;
+			productType = "com.apple.product-type.tool";
+		};
+		E13FE8FE90A18A355B88910C /* Portkeep */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 666B38F8705E883ED4A2503D /* Build configuration list for PBXNativeTarget "Portkeep" */;
+			buildPhases = (
+				B225B2B163DF70080A08B59F /* Sources */,
+				68B79FE90B14C910680AD1B8 /* Resources */,
+				8AE8332F0E94F64D58B9684E /* Frameworks */,
+				EAC6C44E8A9B6DC2358E71C2 /* Embed portkeep CLI */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F6E416F9A034ACC5960CF4D9 /* PBXTargetDependency */,
+			);
+			name = Portkeep;
+			packageProductDependencies = (
+				5C165E11F04514757DD69AA9 /* Sparkle */,
+			);
+			productName = Portkeep;
+			productReference = 81E45EF9A1769D67A1017814 /* Portkeep.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A5807BC0029521640DFBCC5C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					1117EAD0028C7A1B88E19C24 = {
+						DevelopmentTeam = CTGJJTS5R6;
+						ProvisioningStyle = Manual;
+					};
+					E13FE8FE90A18A355B88910C = {
+						DevelopmentTeam = CTGJJTS5R6;
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 1EBA911ED5ED62DBD2B2C175 /* Build configuration list for PBXProject "Portkeep" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = F810CD302208FA15A1CE1568;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D22C65C9E6F571CA5C55DFDD /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 4BCB8C49AC047FCB748BAA3D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E13FE8FE90A18A355B88910C /* Portkeep */,
+				1117EAD0028C7A1B88E19C24 /* PortkeepCLI */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		68B79FE90B14C910680AD1B8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				856169CBA8CA8E67B90F7546 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		EAC6C44E8A9B6DC2358E71C2 /* Embed portkeep CLI */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Embed portkeep CLI";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nHELPERS=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Contents/Helpers\"\nmkdir -p \"${HELPERS}\"\ncp -f \"${BUILT_PRODUCTS_DIR}/portkeep\" \"${HELPERS}/portkeep\"\nchmod +x \"${HELPERS}/portkeep\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1D26B9037C523A19E1A6F04B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2243504B68DD1E2E98C94704 /* AppSettings.swift in Sources */,
+				F6E0875D679725B3AAE12A32 /* Audit.swift in Sources */,
+				7E51DA52969DFEA769502BA2 /* CLI.swift in Sources */,
+				7E659B9E7DA72C9A1B971E1B /* CLIInstall.swift in Sources */,
+				4A189348E61BFEB34C9EEB53 /* DashboardGroup.swift in Sources */,
+				A5B109823E773B088D90C38A /* DockerContainer.swift in Sources */,
+				D78D8248E5DA7898D190CAEA /* DockerService.swift in Sources */,
+				BED73087DC7B5944EC98B360 /* EditorLauncher.swift in Sources */,
+				401A56F71A26E46202AF2B99 /* HealthProber.swift in Sources */,
+				A3773371056662F3DF79C4E3 /* LaunchdControl.swift in Sources */,
+				40E77BB98B752E13C20F30D0 /* LicenseKey.swift in Sources */,
+				AB294A5F1A0D7A96A1EE0DAB /* LicenseStore.swift in Sources */,
+				B85DBC82102F41C03C3750E2 /* ListeningPort.swift in Sources */,
+				45E0534EE12CA041BD59E1CE /* MCPInstall.swift in Sources */,
+				8B16173C85CD7AA447B8AE75 /* MCPServer.swift in Sources */,
+				8895721C99CFA908151342B1 /* OrgClaim.swift in Sources */,
+				EC42A45C53BE82BEEAD68E89 /* Policy.swift in Sources */,
+				1438467D028E461F9C202D80 /* PortAllocator.swift in Sources */,
+				1A79DF847CDF4B4B0B01AFED /* PortLease.swift in Sources */,
+				EC6692B87F5903D497BF95A6 /* PortScanner.swift in Sources */,
+				B9FA82A9DC7D910256B63EE6 /* PortkeepDefaults.swift in Sources */,
+				56A070B891867E229BBF86CC /* ProcessInspector.swift in Sources */,
+				A4A3BC5979173B55FEB63C8D /* ProcessKiller.swift in Sources */,
+				741B1CBF6B81968CA826E082 /* ProcessLineage.swift in Sources */,
+				0C00AC3277D629598A45A963 /* ProcessTree.swift in Sources */,
+				3090A9D7D708C5365E3859D2 /* Product.swift in Sources */,
+				CD27113C86690DA6FE8F4570 /* ProjectInfo.swift in Sources */,
+				475C588C31616727DFBDF08D /* RemoteClient.swift in Sources */,
+				3DB4CE2E08B8F40281E85BEB /* RemoteLink.swift in Sources */,
+				77596D5E8AC284CBC7D56CC9 /* RemoteServer.swift in Sources */,
+				28DFD1AC79F9E98D577E613C /* RuntimeSnapshot.swift in Sources */,
+				93FE9B8930A7DF0B496195CF /* ShellRunner.swift in Sources */,
+				9225ACCAF566CB1B5C34CDF9 /* WorkspaceIdentity.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B225B2B163DF70080A08B59F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AF30F7F63ABB2A9A5AEE4ADB /* AppDelegate.swift in Sources */,
+				5AE1F86E250BE151DBD50E05 /* AppSettings.swift in Sources */,
+				04F0A7273E6D5F14786C659C /* AppState.swift in Sources */,
+				44AE22151D476056A8E6FCCF /* Audit.swift in Sources */,
+				3A166019538AE6944C8429AE /* BrandMark.swift in Sources */,
+				CD2C9BA2C1F3ECDB261755B6 /* CLIInstall.swift in Sources */,
+				B3EA63F093899771B567A158 /* Components.swift in Sources */,
+				8E4943C531937FF55805AE92 /* DashboardGroup.swift in Sources */,
+				CE3437608F173E938389C949 /* DockerContainer.swift in Sources */,
+				13717980B402DC3AADF473A1 /* DockerService.swift in Sources */,
+				9418413B96BDFA47F99560CD /* EditorLauncher.swift in Sources */,
+				ACE70386C910431670DB2049 /* FloatingPanel.swift in Sources */,
+				8FB644178D299979DD9ED97C /* GroupCard.swift in Sources */,
+				8AFB7685840049361C7F26E2 /* HealthProber.swift in Sources */,
+				8B6BE4FF4495EA6E4BF4C964 /* HotKey.swift in Sources */,
+				4018CA83534A9BAE6C2F4F04 /* LaunchdControl.swift in Sources */,
+				75C76E6C251CB74A7F922FCF /* LicenseKey.swift in Sources */,
+				EFA6FA4C5B3F7982BF4CB5BD /* LicenseManager.swift in Sources */,
+				780941AA220FC7098012DA90 /* LicenseStore.swift in Sources */,
+				4C1945F0D7B7195F8D3B04D2 /* ListeningPort.swift in Sources */,
+				AC8A9FCC2185EC9517548FBA /* MCPInstall.swift in Sources */,
+				7C7BA77592E38DAF6A61A24D /* OrgClaim.swift in Sources */,
+				D2E3918CCE7BCD4A444B4918 /* PanelRootView.swift in Sources */,
+				40173BEB3844E7AF4B02EA47 /* PaywallView.swift in Sources */,
+				412860D5D5B067BE0335DB57 /* Policy.swift in Sources */,
+				8579A78B016BA710941090CE /* PortAllocator.swift in Sources */,
+				C007139467E84846D1C3B266 /* PortLease.swift in Sources */,
+				134913FADCAE497FAF275622 /* PortScanner.swift in Sources */,
+				011CCE1A5B943A9207F0A6F8 /* PortkeepDefaults.swift in Sources */,
+				06B7A11A4F4354DD64F6891C /* PortsideApp.swift in Sources */,
+				4D1DC6257C9B823B811E3B12 /* ProcessInspector.swift in Sources */,
+				9F6387A8A8BB9F2C661D86CE /* ProcessKiller.swift in Sources */,
+				2E0E47593511EA16FE73A2CA /* ProcessLineage.swift in Sources */,
+				3A48EEBEF336C85DF096D504 /* ProcessTree.swift in Sources */,
+				491E4310627F5CE9FFD5BA9F /* Product.swift in Sources */,
+				877B9291F6791B7E0A15D8BA /* ProjectInfo.swift in Sources */,
+				39A20F55A37696566AF682F7 /* RemoteClient.swift in Sources */,
+				95E6BA194A0C67CA52CFD47F /* RemoteHub.swift in Sources */,
+				F1EED47EF70C773BFD6A793B /* RemoteLink.swift in Sources */,
+				75C83D05741CC150881EC6CC /* RemoteServer.swift in Sources */,
+				FC456FD99EAFA377ADEE6E61 /* RuntimeSnapshot.swift in Sources */,
+				EE587396D370869665E2524A /* SettingsView.swift in Sources */,
+				6F74603554ACA5D70BC79063 /* SettingsWindowController.swift in Sources */,
+				4A8EC3966C41A455C0CAF665 /* ShellRunner.swift in Sources */,
+				B1567C8CE2A0D40D037C04CF /* StatusBarController.swift in Sources */,
+				8549CDBEC69EFAB9DD2BB5E5 /* UpdateController.swift in Sources */,
+				CC0CDEFCA37B002B2BCD2904 /* WorkspaceIdentity.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F6E416F9A034ACC5960CF4D9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1117EAD0028C7A1B88E19C24 /* PortkeepCLI */;
+			targetProxy = A371185F30B106EC31F7E7C8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		160C49AF6AEFB407C601A5F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = CTGJJTS5R6;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_CODE_SIGN_FLAGS = "--timestamp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		5F3BF6626736EFE8EFC59772 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = CTGJJTS5R6;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		62A16DDD7FD32D86E1071FC4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Portside/Resources/Portkeep.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sajidpalagiri.portkeep.cli;
+				PRODUCT_MODULE_NAME = PortkeepCLI;
+				PRODUCT_NAME = portkeep;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		6A21501EB0ED9A227F3D982A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Portside/Resources/Portkeep.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sajidpalagiri.portkeep.cli;
+				PRODUCT_MODULE_NAME = PortkeepCLI;
+				PRODUCT_NAME = portkeep;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		8C7FD631EB554C32089B3B7C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Portside/Resources/Portkeep.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Portside/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Portkeep;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Sajid Palagiri. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sajidpalagiri.portkeep;
+				PRODUCT_MODULE_NAME = Portkeep;
+				PRODUCT_NAME = Portkeep;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		DCB741B53732559635820D10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Portside/Resources/Portkeep.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Portside/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Portkeep;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Sajid Palagiri. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sajidpalagiri.portkeep;
+				PRODUCT_MODULE_NAME = Portkeep;
+				PRODUCT_NAME = Portkeep;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1EBA911ED5ED62DBD2B2C175 /* Build configuration list for PBXProject "Portkeep" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5F3BF6626736EFE8EFC59772 /* Debug */,
+				160C49AF6AEFB407C601A5F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		4FB9BEFFADF741CEC926B17E /* Build configuration list for PBXNativeTarget "PortkeepCLI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A21501EB0ED9A227F3D982A /* Debug */,
+				62A16DDD7FD32D86E1071FC4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		666B38F8705E883ED4A2503D /* Build configuration list for PBXNativeTarget "Portkeep" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCB741B53732559635820D10 /* Debug */,
+				8C7FD631EB554C32089B3B7C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D22C65C9E6F571CA5C55DFDD /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5C165E11F04514757DD69AA9 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D22C65C9E6F571CA5C55DFDD /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = A5807BC0029521640DFBCC5C /* Project object */;
+}

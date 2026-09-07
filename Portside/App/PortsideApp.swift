@@ -1,15 +1,14 @@
 import SwiftUI
 
 @main
-struct PortsideApp: App {
+struct PortkeepApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
 
     var body: some Scene {
-        // The menu bar item and panel are managed by StatusBarController.
-        // SwiftUI only owns the Settings window.
+        // Real Settings UI is an NSWindow we own. A SwiftUI Settings scene
+        // never appears for an LSUIElement menu-bar app.
         Settings {
-            SettingsView()
-                .environment(delegate.state)
+            EmptyView()
         }
     }
 }

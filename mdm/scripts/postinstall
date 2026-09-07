@@ -1,0 +1,16 @@
+#!/bin/bash
+# Install the CLI next to the system tools so agents find `portkeep` without
+# each user clicking Settings → Agents.
+set -euo pipefail
+
+APP="/Applications/Portkeep.app"
+HELPER="${APP}/Contents/Helpers/portkeep"
+BIN="/usr/local/bin/portkeep"
+
+if [[ -x "$HELPER" ]]; then
+    mkdir -p /usr/local/bin
+    cp -f "$HELPER" "$BIN"
+    chmod 755 "$BIN"
+fi
+
+exit 0

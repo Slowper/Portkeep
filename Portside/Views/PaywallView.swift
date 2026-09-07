@@ -3,9 +3,6 @@ import SwiftUI
 struct PaywallView: View {
     @Environment(AppState.self) private var state
 
-    private enum Plan: Hashable { case monthly, yearly }
-
-    @State private var plan: Plan = .yearly
     @State private var showKeyEntry = false
     @State private var key = ""
     @State private var isActivating = false
@@ -18,10 +15,10 @@ struct PaywallView: View {
             hero
 
             VStack(alignment: .leading, spacing: 9) {
-                feature("xmark.circle.fill", "Stop or force-kill any process", "Right from the panel, with a two-click safety.")
-                feature("shippingbox.fill", "Control Docker containers", "Start, stop and restart without leaving your editor.")
+                feature("xmark.circle.fill", "Stop the whole process tree", "Not just the leaf pid. Policy still protects postgres and ollama.")
+                feature("person.2.fill", "Org seats", "IT assigns who is on which Mac. Leave, and the seat comes back.")
                 feature("keyboard.fill", "Global hotkey & keyboard flow", "\(HotKey.displayString) anywhere, ↑↓ ⏎ ⌘⌫ inside.")
-                feature("waveform.path.ecg", "Live health probing", "See 200 · 12ms instead of guessing which port is alive.")
+                feature("list.clipboard", "Audit + MDM", "Local log. Locked policy. A pkg Jamf can push.")
             }
 
             if license.isLicensed {
@@ -34,8 +31,6 @@ struct PaywallView: View {
         .padding(14)
         .frame(width: StatusBarController.panelWidth)
     }
-
-    // MARK: - Pieces
 
     private var hero: some View {
         HStack(alignment: .top, spacing: 12) {
@@ -52,7 +47,7 @@ struct PaywallView: View {
             .help("Back (esc)")
 
             VStack(alignment: .leading, spacing: 4) {
-                Text("Portside Pro")
+                Text("Portkeep Pro")
                     .font(.system(size: 17, weight: .bold))
                 Text(statusText)
                     .font(.system(size: 12))
@@ -66,6 +61,7 @@ struct PaywallView: View {
     private var statusText: String {
         switch license.status {
         case .licensed(let key): "Licensed · key ending \(key.suffix(5))"
+        case .organization(let seat): "\(seat.org) · \(seat.seats) seats · this Mac claimed"
         case .trial(let days): "\(days) day\(days == 1 ? "" : "s") left in your free trial"
         case .expired: "Trial ended — viewing ports stays free forever"
         }
@@ -73,7 +69,7 @@ struct PaywallView: View {
 
     private var statusTint: Color {
         switch license.status {
-        case .licensed: .green
+        case .licensed, .organization: .green
         case .trial(let days): days <= 3 ? .orange : .secondary
         case .expired: .orange
         }
@@ -94,11 +90,17 @@ struct PaywallView: View {
     }
 
     private var purchase: some View {
-        VStack(spacing: 8) {
-            HStack(spacing: 6) {
-                planButton(.monthly, title: "Monthly", price: "$6", note: "per month")
-                planButton(.yearly, title: "Yearly", price: "$49", note: "save 32%")
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                Text("$29")
+                    .font(.system(size: 22, weight: .bold, design: .rounded))
+                Text("once, this person, their Macs")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.secondary)
             }
+            Text("Companies buy seats, not a monthly fee for a local app. IT pushes the pkg and an OrgLicense.")
+                .font(.system(size: 11))
+                .foregroundStyle(.secondary)
 
             Link(destination: LicenseManager.purchaseURL) {
                 HStack {
@@ -118,44 +120,7 @@ struct PaywallView: View {
                 .overlay(RoundedRectangle(cornerRadius: 9, style: .continuous).strokeBorder(.white.opacity(0.18), lineWidth: 0.5))
             }
             .buttonStyle(.plain)
-
-            Text("One license covers all your Macs. Cancel anytime.")
-                .font(.system(size: 10.5))
-                .foregroundStyle(.tertiary)
         }
-    }
-
-    private func planButton(_ value: Plan, title: String, price: String, note: String) -> some View {
-        let selected = plan == value
-        return Button {
-            withAnimation(.snappy(duration: 0.18)) { plan = value }
-        } label: {
-            VStack(alignment: .leading, spacing: 2) {
-                HStack {
-                    Text(title).font(.system(size: 12, weight: .semibold))
-                    Spacer()
-                    if value == .yearly {
-                        Chip(text: "BEST", tint: .green, filled: true)
-                    }
-                }
-                HStack(alignment: .firstTextBaseline, spacing: 4) {
-                    Text(price).font(.system(size: 17, weight: .bold, design: .rounded))
-                    Text(note).font(.system(size: 11)).foregroundStyle(.secondary)
-                }
-            }
-            .padding(10)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(selected ? Color.accentColor.opacity(0.12) : Color.primary.opacity(0.04))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .strokeBorder(selected ? Color.accentColor.opacity(0.7) : Color.primary.opacity(0.08), lineWidth: selected ? 1.5 : 0.5)
-            )
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
     }
 
     private var keyEntry: some View {
@@ -167,7 +132,7 @@ struct PaywallView: View {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 9, weight: .bold))
                         .rotationEffect(.degrees(showKeyEntry ? 90 : 0))
-                    Text("Already have a license key?")
+                    Text("Already have a key?")
                         .font(.system(size: 11.5, weight: .medium))
                 }
                 .foregroundStyle(.secondary)
@@ -176,7 +141,7 @@ struct PaywallView: View {
 
             if showKeyEntry {
                 HStack(spacing: 6) {
-                    TextField("PSD-XXXXX-XXXXX-XXXXX", text: $key)
+                    TextField("PKP-… or PKO-ACME-10-…", text: $key)
                         .textFieldStyle(.roundedBorder)
                         .font(.system(size: 12, design: .monospaced))
                         .onSubmit(activate)
@@ -205,14 +170,16 @@ struct PaywallView: View {
 
     private var licensedFooter: some View {
         HStack {
-            Label("Thanks for supporting Portside", systemImage: "heart.fill")
+            Label(license.isOrganization ? "This Mac has an org seat" : "Thanks for supporting Portkeep", systemImage: "heart.fill")
                 .font(.system(size: 12))
                 .foregroundStyle(.secondary)
             Spacer()
-            Button("Deactivate this Mac", role: .destructive) {
-                license.deactivate()
+            if !license.orgIsManaged {
+                Button("Deactivate this Mac", role: .destructive) {
+                    license.deactivate()
+                }
+                .controlSize(.small)
             }
-            .controlSize(.small)
         }
     }
 
@@ -225,7 +192,7 @@ struct PaywallView: View {
             do {
                 try await license.activate(key: key)
                 key = ""
-                state.showToast("Portside Pro activated", symbol: "checkmark.seal.fill")
+                state.showToast("Portkeep activated", symbol: "checkmark.seal.fill")
             } catch {
                 self.error = error.localizedDescription
             }

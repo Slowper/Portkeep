@@ -1,0 +1,72 @@
+Portkeep — Jamf / Kandji rollout
+================================
+
+What you are deploying
+  1. Portkeep-x.y.z.pkg     → Applications/Portkeep.app + /usr/local/bin/portkeep
+  2. This settings payload  → locks safety rules so a user cannot turn them off
+
+Preference domain (required)
+  com.sajidpalagiri.portkeep
+
+  The CLI reads the same domain. Do not target com.sajidpalagiri.portkeep.cli.
+
+Jamf Pro
+  1. Upload the pkg as a package. Scope to computers. Install automatically.
+  2. Computers → Configuration Profiles → New
+     Application & Custom Settings → Upload
+     Preference Domain: com.sajidpalagiri.portkeep
+     Upload: com.sajidpalagiri.portkeep.plist
+     (edit the plist first — remove keys you do not want to force)
+  3. Or upload Portkeep.mobileconfig as a custom profile.
+
+Kandji
+  1. Library → Custom Apps → upload the pkg (install to /Applications).
+  2. Library → Custom Profile → upload Portkeep.mobileconfig
+     or Custom Preferences with domain com.sajidpalagiri.portkeep.
+
+Keys (forced keys are greyed out in Settings)
+  PolicyEnabled                 bool    refuse dangerous stops
+  PolicyRequireLANConfirm       bool    confirm LAN / 0.0.0.0 binds
+  PolicyAllowOutsideHome        bool    allow stops outside $HOME
+  PolicyAllowProtectedStop      bool    break-glass for postgres/redis/ollama
+  PolicyAllowedRoots            array   extra folders stops may touch
+  PolicyProtectedNames          array   extra process names that must not be killed
+  ShowDocker                    bool
+  HotKeyEnabled                 bool    Control-Option-P
+  ProbeHealth                   bool    HTTP probe of localhost
+  ShowCountInMenuBar            bool
+  AutomaticallyCheckForUpdates  bool    daily Sparkle check (metadata only)
+  OrgLicense                    string  PKO-ACME-10-XXXXX-XXXXX (or a PKP- personal key)
+  OrgName                       string  display name
+  OrgSeats                      int     purchased seats (the key already encodes this)
+  RemoteSharingEnabled          bool    allow this Mac to advertise leftovers on the LAN
+
+Org seats
+  Personal Pro is PKP-XXXXX-XXXXX-XXXXX — one person, their Macs.
+  A company key is PKO-<ORG>-<SEATS>-XXXXX-XXXXX.
+  Push OrgLicense only to the Macs that should consume a seat. That is the
+  assignment. A licensing server can later reject a 11th device; today IT
+  is the source of truth by who gets the profile.
+
+  On a Mac: portkeep license
+            portkeep seats --json
+
+Recommended locked baseline
+  PolicyEnabled = true
+  PolicyRequireLANConfirm = true
+  PolicyAllowOutsideHome = false
+  PolicyAllowProtectedStop = false
+
+Verify on a Mac after the profile lands
+  portkeep mdm
+  portkeep stop 11434
+    → should print "Protected: ollama…" and exit 4 if ollama is running
+
+Signing
+  The app inside the pkg is Developer ID signed.
+  The pkg itself is signed only if a "Developer ID Installer" certificate
+  is in the keychain. Request one from Apple Developer if your MDM requires
+  a signed installer. Internal Jamf/Kandji catalogs accept an unsigned pkg.
+
+Nothing in Portkeep phones home except an optional Sparkle version check.
+Ports, processes, and project paths stay on the Mac.

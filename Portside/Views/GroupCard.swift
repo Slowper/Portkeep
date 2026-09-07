@@ -11,6 +11,10 @@ struct GroupCard: View {
         "\(group.id)|\(port.id)"
     }
 
+    static func reservedID(_ lease: PortLease) -> String {
+        "reserved:\(lease.id)"
+    }
+
     private var isBusy: Bool {
         group.container.map { state.pendingDockerActions.contains($0.id) } ?? false
     }
@@ -20,16 +24,65 @@ struct GroupCard: View {
         return state.meta[pid]?.uptimeLabel
     }
 
+    /// Memory of the whole process tree, shown once it's worth knowing about.
+    private var memory: String? {
+        guard let lineage = group.lineage, lineage.treeMemory >= 64 * 1024 * 1024 else { return nil }
+        return lineage.treeMemoryLabel
+    }
+
+    private var memoryHelp: String {
+        guard let lineage = group.lineage else { return "" }
+        let count = lineage.treePIDs.count
+        return "\(lineage.treeMemoryLabel) across \(count) process\(count == 1 ? "" : "es") in the \(lineage.rootCommand) tree"
+    }
+
+    @ViewBuilder
+    private func originChip(_ lineage: ProcessLineage) -> some View {
+        if lineage.directoryMissing {
+            Chip(text: "folder gone", tint: .orange)
+                .help("The directory this was started from no longer exists")
+        } else if lineage.origin.isNotable {
+            HStack(spacing: 3) {
+                Image(systemName: lineage.origin.symbol)
+                    .font(.system(size: 8.5, weight: .bold))
+                Text(lineage.origin.label)
+                    .font(.system(size: 10.5, weight: .semibold, design: .rounded))
+            }
+            .padding(.horizontal, 6)
+            .padding(.vertical, 2)
+            .background(lineage.origin.tint.opacity(0.14), in: Capsule())
+            .foregroundStyle(lineage.origin.tint)
+            .fixedSize()
+            .help(originHelp(lineage))
+        }
+    }
+
+    private func originHelp(_ lineage: ProcessLineage) -> String {
+        switch lineage.origin {
+        case .orphaned:
+            return "Whatever started this has exited — it was reparented to launchd. Started as “\(lineage.rootCommand)”."
+        case .cursorAgent:
+            return "Started by a Cursor agent terminal (“\(lineage.rootCommand)”)"
+        case .claudeCode, .codex, .geminiCLI, .aider, .openCode:
+            return "Started by \(lineage.origin.label) (“\(lineage.rootCommand)”)"
+        default:
+            return "Started from \(lineage.origin.label) as “\(lineage.rootCommand)”"
+        }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             header
-            if !group.ports.isEmpty {
+            if !group.ports.isEmpty || !group.reserved.isEmpty {
                 Divider()
                     .opacity(0.5)
                     .padding(.leading, 14)
                 VStack(spacing: 1) {
                     ForEach(group.ports) { port in
                         PortLine(group: group, port: port)
+                    }
+                    ForEach(group.reserved) { lease in
+                        ReservedLine(group: group, lease: lease)
                     }
                 }
                 .padding(.vertical, 4)
@@ -62,9 +115,15 @@ struct GroupCard: View {
                         .lineLimit(1)
                         .truncationMode(.middle)
                     if let project = group.project {
-                        Chip(text: project.kind.label, tint: project.kind.badgeTint)
+                        // The folder tile already says "generic project"; the chip adds nothing.
+                        if project.kind != .generic {
+                            Chip(text: project.kind.label, tint: project.kind.badgeTint)
+                        }
                     } else if let container = group.container {
                         Chip(text: container.isRunning ? "running" : container.state, tint: container.isRunning ? .green : .secondary)
+                    }
+                    if let lineage = group.lineage {
+                        originChip(lineage)
                     }
                 }
                 Text(subtitle)
@@ -81,12 +140,22 @@ struct GroupCard: View {
             } else if hovering {
                 headerActions
                     .transition(.opacity.combined(with: .scale(scale: 0.96)))
-            } else if let uptime {
-                Text("up \(uptime)")
-                    .font(.system(size: 11, weight: .medium, design: .rounded))
-                    .foregroundStyle(.tertiary)
-                    .monospacedDigit()
-                    .transition(.opacity)
+            } else if uptime != nil || memory != nil {
+                HStack(spacing: 6) {
+                    if let memory {
+                        Text(memory)
+                            .foregroundStyle(group.isLeftBehind ? Color.orange : Color.secondary.opacity(0.9))
+                            .help(memoryHelp)
+                    }
+                    if let uptime {
+                        Text("up \(uptime)")
+                            .foregroundStyle(.tertiary)
+                    }
+                }
+                .font(.system(size: 11, weight: .medium, design: .rounded))
+                .monospacedDigit()
+                .fixedSize()
+                .transition(.opacity)
             }
         }
         .padding(.horizontal, 10)
@@ -116,15 +185,19 @@ struct GroupCard: View {
             return project.abbreviatedPath
         case .container(let container):
             return "\(container.image) · \(container.status)"
-        case .process(let command, let pid):
+        case .process(_, let pid):
             let meta = state.meta[pid]
+            // Where it was started from says more than which interpreter runs it.
+            if let cwd = meta?.cwd, cwd != "/", cwd != FileManager.default.homeDirectoryForCurrentUser.path {
+                let path = (cwd as NSString).abbreviatingWithTildeInPath
+                if let root = meta?.lineage?.rootCommand, root.lowercased() != group.title.lowercased() {
+                    return "\(root) · \(path)"
+                }
+                return path
+            }
             if let exe = meta?.executable, exe.contains("/") {
                 return (exe as NSString).abbreviatingWithTildeInPath
             }
-            if let cwd = meta?.cwd, cwd != "/", cwd != FileManager.default.homeDirectoryForCurrentUser.path {
-                return "pid \(pid) · \((cwd as NSString).abbreviatingWithTildeInPath)"
-            }
-            _ = command
             return "pid \(pid)"
         }
     }
@@ -209,7 +282,9 @@ struct PortLine: View {
     private var detail: String? {
         switch group.kind {
         case .project: return "\(port.command) · \(port.pid)"
-        case .process: return nil
+        case .process(let command, let pid):
+            // A merged tree (bun + cloudflared) needs per-line identification.
+            return (port.command != command || port.pid != pid) ? "\(port.command) · \(port.pid)" : nil
         case .container: return port.addresses.first.map { $0 == "*" ? "all interfaces" : $0 }
         }
     }
@@ -268,8 +343,19 @@ struct PortLine: View {
             RowButton(symbol: "safari", help: "Open in browser (⏎)") { state.open(ref) }
             RowButton(symbol: "doc.on.doc", help: "Copy URL (⌘C)") { state.copyURL(of: ref) }
             if !isSynthetic && group.container == nil {
-                ArmedStopButton(isArmed: isArmed, idleHelp: "Stop process (⌘⌫)") {
-                    state.requestStop(port, rowID: rowID)
+                let verdict = state.verdict(for: port)
+                if verdict.isDenied {
+                    RowButton(symbol: "lock.fill", help: verdict.message ?? "Protected by policy") {
+                        state.requestStop(port, rowID: rowID)
+                    }
+                } else {
+                    ArmedStopButton(
+                        isArmed: isArmed,
+                        idleHelp: verdict.needsConfirm ? (verdict.message ?? "Confirm stop") : "Stop process (⌘⌫)",
+                        armedLabel: verdict.needsConfirm ? "LAN?" : "Stop?"
+                    ) {
+                        state.requestStop(port, rowID: rowID)
+                    }
                 }
             }
         }
@@ -282,13 +368,82 @@ struct PortLine: View {
         Button("Copy Port") { state.copyText(String(port.port), label: "port") }
         if !isSynthetic && group.container == nil {
             Divider()
-            Button("Stop \(port.command) (SIGTERM)") { state.requestStop(port, rowID: rowID, force: false) }
-            Button("Force Kill (SIGKILL)") { state.requestStop(port, rowID: rowID, force: true) }
+            if let lineage = state.meta[port.pid]?.lineage, lineage.treePIDs.count > 1 {
+                Button("Stop \(lineage.rootCommand) · \(lineage.treePIDs.count) processes") { state.requestStop(port, rowID: rowID, immediate: true) }
+                Button("Stop only \(port.command) (pid \(port.pid))") { state.stopOnly(port) }
+            } else {
+                Button("Stop \(port.command) (SIGTERM)") { state.requestStop(port, rowID: rowID, immediate: true) }
+            }
+            Button("Force Kill (SIGKILL)") { state.stopOnly(port, force: true) }
         }
         Divider()
         Text("Bound to \(port.addresses.joined(separator: ", "))")
         if !isSynthetic {
             Text("pid \(port.pid) · \(port.command)")
+            if let lineage = state.meta[port.pid]?.lineage, lineage.origin.isNotable {
+                Text("Started by \(lineage.origin.label) · \(lineage.treeMemoryLabel)")
+            }
         }
+    }
+}
+
+/// A port reserved for this worktree that nothing is listening on yet.
+struct ReservedLine: View {
+    @Environment(AppState.self) private var state
+    let group: DashboardGroup
+    let lease: PortLease
+
+    @State private var hovering = false
+
+    private var rowID: String { GroupCard.reservedID(lease) }
+    private var isSelected: Bool { state.selectedRowID == rowID }
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Text(":\(String(lease.port))")
+                .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                .foregroundStyle(.secondary)
+                .frame(minWidth: 52, alignment: .leading)
+                .fixedSize()
+
+            Chip(text: "reserved", tint: .secondary)
+            Text(lease.name)
+                .font(.system(size: 11))
+                .foregroundStyle(.tertiary)
+                .lineLimit(1)
+            if let worktree = lease.worktreeName {
+                Text(worktree)
+                    .font(.system(size: 11))
+                    .foregroundStyle(.tertiary)
+                    .lineLimit(1)
+            }
+
+            Spacer(minLength: 4)
+
+            if hovering || isSelected {
+                HStack(spacing: 2) {
+                    RowButton(symbol: "doc.on.doc", help: "Copy URL") { state.copyURL(of: .reserved(lease)) }
+                    RowButton(symbol: "bookmark.slash", help: "Release reservation") { state.release(lease) }
+                }
+                .transition(.opacity)
+            }
+        }
+        .padding(.horizontal, 8)
+        .padding(.vertical, 5)
+        .background(
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .fill(isSelected ? Color.accentColor.opacity(0.13) : hovering ? Color.primary.opacity(0.05) : .clear)
+        )
+        .contentShape(Rectangle())
+        .onHover { hovering = $0 }
+        .onTapGesture { state.selectedRowID = rowID }
+        .contextMenu {
+            Button("Copy URL") { state.copyURL(of: .reserved(lease)) }
+            Button("Copy portkeep env") { state.copyText("export PORT=\(lease.port)", label: "env") }
+            Divider()
+            Button("Release :\(lease.port)") { state.release(lease) }
+        }
+        .help("Agents call `portkeep alloc \(lease.name)` in this folder to get :\(lease.port) every time")
+        .id(rowID)
     }
 }

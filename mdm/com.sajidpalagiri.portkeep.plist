@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PolicyEnabled</key>
+	<true/>
+	<key>PolicyRequireLANConfirm</key>
+	<true/>
+	<key>PolicyAllowOutsideHome</key>
+	<false/>
+	<key>PolicyAllowProtectedStop</key>
+	<false/>
+	<key>PolicyAllowedRoots</key>
+	<array>
+		<string>/Users/Shared/src</string>
+	</array>
+	<key>PolicyProtectedNames</key>
+	<array>
+		<string>vault</string>
+	</array>
+	<key>ShowDocker</key>
+	<true/>
+	<key>HotKeyEnabled</key>
+	<true/>
+	<key>ProbeHealth</key>
+	<true/>
+	<key>ShowCountInMenuBar</key>
+	<true/>
+	<key>AutomaticallyCheckForUpdates</key>
+	<true/>
+	<key>OrgName</key>
+	<string>Acme</string>
+	<key>OrgSeats</key>
+	<integer>10</integer>
+	<key>OrgLicense</key>
+	<string>PKO-ACME-10-XXXXX-XXXXX</string>
+</dict>
+</plist>
