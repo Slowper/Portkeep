@@ -72,6 +72,15 @@ enum ProjectKind: String, Sendable, CaseIterable {
         }
     }
 
+    /// Tint for text badges. Brand colors that are near-black (Next.js) are
+    /// unreadable as a translucent label, so those fall back to a neutral gray.
+    var badgeTint: Color {
+        switch self {
+        case .next: Color(red: 0.62, green: 0.63, blue: 0.68)
+        default: tint
+        }
+    }
+
     /// Process names that plausibly serve this kind of project. Used so a
     /// stray `ollama` started from a Next.js folder isn't shown as that app.
     var runtimeNames: [String] {

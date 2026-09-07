@@ -22,22 +22,40 @@ struct VisualEffectView: NSViewRepresentable {
     }
 }
 
+/// Panel background: Liquid Glass on macOS 26+, vibrancy material before that.
 struct PanelChrome: ViewModifier {
-    static let radius: CGFloat = 14
+    static let radius: CGFloat = 18
+
+    private var shape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: Self.radius, style: .continuous)
+    }
 
     func body(content: Content) -> some View {
-        content
-            .background(VisualEffectView())
-            .clipShape(RoundedRectangle(cornerRadius: Self.radius, style: .continuous))
-            .overlay {
-                RoundedRectangle(cornerRadius: Self.radius, style: .continuous)
-                    .strokeBorder(.white.opacity(0.14), lineWidth: 1)
-                    .blendMode(.plusLighter)
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: Self.radius, style: .continuous)
-                    .strokeBorder(.black.opacity(0.25), lineWidth: 0.5)
-            }
+        if #available(macOS 26.0, *) {
+            content
+                .clipShape(shape)
+                .glassEffect(.regular, in: shape)
+        } else {
+            content
+                .background(VisualEffectView())
+                .clipShape(shape)
+                .overlay {
+                    shape
+                        .strokeBorder(.white.opacity(0.14), lineWidth: 1)
+                        .blendMode(.plusLighter)
+                }
+                .overlay {
+                    shape.strokeBorder(.black.opacity(0.25), lineWidth: 0.5)
+                }
+        }
+    }
+}
+
+/// True when the panel is drawn with Liquid Glass; inner surfaces adapt.
+enum GlassSupport {
+    static var isAvailable: Bool {
+        if #available(macOS 26.0, *) { return true }
+        return false
     }
 }
 

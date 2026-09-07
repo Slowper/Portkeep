@@ -62,7 +62,7 @@ struct GroupCard: View {
                         .lineLimit(1)
                         .truncationMode(.middle)
                     if let project = group.project {
-                        Chip(text: project.kind.label, tint: project.kind.tint)
+                        Chip(text: project.kind.label, tint: project.kind.badgeTint)
                     } else if let container = group.container {
                         Chip(text: container.isRunning ? "running" : container.state, tint: container.isRunning ? .green : .secondary)
                     }
