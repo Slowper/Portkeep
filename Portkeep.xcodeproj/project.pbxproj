@@ -23,10 +23,8 @@
 		3A166019538AE6944C8429AE /* BrandMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E93B871F2EAD925F157BAC8 /* BrandMark.swift */; };
 		3A48EEBEF336C85DF096D504 /* ProcessTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152DD5CA9B75354C31EEBD43 /* ProcessTree.swift */; };
 		3DB4CE2E08B8F40281E85BEB /* RemoteLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3502EB19FB75C3E031C96F7E /* RemoteLink.swift */; };
-		40173BEB3844E7AF4B02EA47 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3614C177646AA876267B76E /* PaywallView.swift */; };
 		4018CA83534A9BAE6C2F4F04 /* LaunchdControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC06C11784659FBF0F091F4 /* LaunchdControl.swift */; };
 		401A56F71A26E46202AF2B99 /* HealthProber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908AED5C44E2902C43E9E59F /* HealthProber.swift */; };
-		40E77BB98B752E13C20F30D0 /* LicenseKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D6B225C45D0F1915685945 /* LicenseKey.swift */; };
 		412860D5D5B067BE0335DB57 /* Policy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EBC54CF786847A46299619 /* Policy.swift */; };
 		44AE22151D476056A8E6FCCF /* Audit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFA18D56C1F57A4D3837461 /* Audit.swift */; };
 		45E0534EE12CA041BD59E1CE /* MCPInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C204AABE59F1F1FB9A49908 /* MCPInstall.swift */; };
@@ -40,18 +38,14 @@
 		5AE1F86E250BE151DBD50E05 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970ECB7585EC3C588C1746AB /* AppSettings.swift */; };
 		6F74603554ACA5D70BC79063 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9F954CEA7614DFCD7352BC /* SettingsWindowController.swift */; };
 		741B1CBF6B81968CA826E082 /* ProcessLineage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A57E6511F2AAF2CC5819DAC /* ProcessLineage.swift */; };
-		75C76E6C251CB74A7F922FCF /* LicenseKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D6B225C45D0F1915685945 /* LicenseKey.swift */; };
 		75C83D05741CC150881EC6CC /* RemoteServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE13D9FC8BE9F8DA1C7C64B /* RemoteServer.swift */; };
 		77596D5E8AC284CBC7D56CC9 /* RemoteServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE13D9FC8BE9F8DA1C7C64B /* RemoteServer.swift */; };
-		780941AA220FC7098012DA90 /* LicenseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C76571E7B487538A2849E /* LicenseStore.swift */; };
-		7C7BA77592E38DAF6A61A24D /* OrgClaim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93503533B025ABA0BC376CB0 /* OrgClaim.swift */; };
 		7E51DA52969DFEA769502BA2 /* CLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F35BAC49A9516273CF6984 /* CLI.swift */; };
 		7E659B9E7DA72C9A1B971E1B /* CLIInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E9FA866E31E3B2FA0D5990 /* CLIInstall.swift */; };
 		8549CDBEC69EFAB9DD2BB5E5 /* UpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED902EAFE108E6D8A5323DB /* UpdateController.swift */; };
 		856169CBA8CA8E67B90F7546 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 781D358CF39728A3A7B69249 /* Assets.xcassets */; };
 		8579A78B016BA710941090CE /* PortAllocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B4BE6D8797D69CAABC9F1C /* PortAllocator.swift */; };
 		877B9291F6791B7E0A15D8BA /* ProjectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DD86717EB320D2ECE37CE6 /* ProjectInfo.swift */; };
-		8895721C99CFA908151342B1 /* OrgClaim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93503533B025ABA0BC376CB0 /* OrgClaim.swift */; };
 		8AFB7685840049361C7F26E2 /* HealthProber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908AED5C44E2902C43E9E59F /* HealthProber.swift */; };
 		8B16173C85CD7AA447B8AE75 /* MCPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9B4678CE1E55806D6AAD60 /* MCPServer.swift */; };
 		8B6BE4FF4495EA6E4BF4C964 /* HotKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DE5F3A4CF86C3A5E94B19F /* HotKey.swift */; };
@@ -65,7 +59,6 @@
 		A3773371056662F3DF79C4E3 /* LaunchdControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC06C11784659FBF0F091F4 /* LaunchdControl.swift */; };
 		A4A3BC5979173B55FEB63C8D /* ProcessKiller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372DDB699508C23C7D402F78 /* ProcessKiller.swift */; };
 		A5B109823E773B088D90C38A /* DockerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C36720E5E2EE9E1CDC0E92D /* DockerContainer.swift */; };
-		AB294A5F1A0D7A96A1EE0DAB /* LicenseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C76571E7B487538A2849E /* LicenseStore.swift */; };
 		AC8A9FCC2185EC9517548FBA /* MCPInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C204AABE59F1F1FB9A49908 /* MCPInstall.swift */; };
 		ACE70386C910431670DB2049 /* FloatingPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4D01F2AC84392B9B992787 /* FloatingPanel.swift */; };
 		AF30F7F63ABB2A9A5AEE4ADB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072AFF7548B76DBA98E411B2 /* AppDelegate.swift */; };
@@ -84,7 +77,6 @@
 		EC42A45C53BE82BEEAD68E89 /* Policy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EBC54CF786847A46299619 /* Policy.swift */; };
 		EC6692B87F5903D497BF95A6 /* PortScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED9686F2D9459BF1114DEB0 /* PortScanner.swift */; };
 		EE587396D370869665E2524A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD53F4C8E66D370207C318A /* SettingsView.swift */; };
-		EFA6FA4C5B3F7982BF4CB5BD /* LicenseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA53F2B62D8BF743C240576 /* LicenseManager.swift */; };
 		F11522F7D0AEBB2CEB809ADF /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 5C165E11F04514757DD69AA9 /* Sparkle */; };
 		F1EED47EF70C773BFD6A793B /* RemoteLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3502EB19FB75C3E031C96F7E /* RemoteLink.swift */; };
 		F6E0875D679725B3AAE12A32 /* Audit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFA18D56C1F57A4D3837461 /* Audit.swift */; };
@@ -114,7 +106,6 @@
 		372DDB699508C23C7D402F78 /* ProcessKiller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessKiller.swift; sourceTree = "<group>"; };
 		3C9F954CEA7614DFCD7352BC /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
 		4E93B871F2EAD925F157BAC8 /* BrandMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandMark.swift; sourceTree = "<group>"; };
-		4FA53F2B62D8BF743C240576 /* LicenseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseManager.swift; sourceTree = "<group>"; };
 		5141BF571CF440E056D491A9 /* PortLease.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortLease.swift; sourceTree = "<group>"; };
 		56873E54DAAA6B71F0867FED /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		56E9FA866E31E3B2FA0D5990 /* CLIInstall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLIInstall.swift; sourceTree = "<group>"; };
@@ -135,12 +126,10 @@
 		8D9CBF2139AC6FC8FAB916FB /* PortkeepCLI */ = {isa = PBXFileReference; includeInIndex = 0; path = PortkeepCLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		908AED5C44E2902C43E9E59F /* HealthProber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthProber.swift; sourceTree = "<group>"; };
 		914AFBE708C531198BC59834 /* PortsideApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortsideApp.swift; sourceTree = "<group>"; };
-		93503533B025ABA0BC376CB0 /* OrgClaim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgClaim.swift; sourceTree = "<group>"; };
 		96ECE8C5472E139DBA549DF1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		970ECB7585EC3C588C1746AB /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		99B4BE6D8797D69CAABC9F1C /* PortAllocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortAllocator.swift; sourceTree = "<group>"; };
 		9ACAABFA2C7BCFD637B88621 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
-		A48C76571E7B487538A2849E /* LicenseStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseStore.swift; sourceTree = "<group>"; };
 		AED9686F2D9459BF1114DEB0 /* PortScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortScanner.swift; sourceTree = "<group>"; };
 		B7FFFAB0351F6DC10BCE2170 /* DockerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockerService.swift; sourceTree = "<group>"; };
 		BFD53F4C8E66D370207C318A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -152,9 +141,7 @@
 		DF4D01F2AC84392B9B992787 /* FloatingPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanel.swift; sourceTree = "<group>"; };
 		DFB68BFAEE267C0DF5CF20A6 /* PortkeepDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortkeepDefaults.swift; sourceTree = "<group>"; };
 		EEB5F941FDCA777A44045417 /* RemoteHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteHub.swift; sourceTree = "<group>"; };
-		F3614C177646AA876267B76E /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		F5EBC54CF786847A46299619 /* Policy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Policy.swift; sourceTree = "<group>"; };
-		F8D6B225C45D0F1915685945 /* LicenseKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseKey.swift; sourceTree = "<group>"; };
 		FB98ED21751BDD450A6DC695 /* RemoteClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -174,7 +161,6 @@
 			isa = PBXGroup;
 			children = (
 				13B6ED593D8892517E6E5848 /* App */,
-				DA1A277ACC1264030993A3C3 /* Licensing */,
 				D886B16B1427B41490F6FFF3 /* MenuBar */,
 				A4FA9CC87F2CEF6D4237DC63 /* Models */,
 				0C89458C926B51D35C5E72BB /* Resources */,
@@ -216,7 +202,6 @@
 				9ACAABFA2C7BCFD637B88621 /* Components.swift */,
 				D4C423D354A8B44A02127971 /* GroupCard.swift */,
 				58E8AB7ED0DBCA4DCEF5517A /* PanelRootView.swift */,
-				F3614C177646AA876267B76E /* PaywallView.swift */,
 				BFD53F4C8E66D370207C318A /* SettingsView.swift */,
 			);
 			path = Views;
@@ -263,14 +248,6 @@
 			path = MenuBar;
 			sourceTree = "<group>";
 		};
-		DA1A277ACC1264030993A3C3 /* Licensing */ = {
-			isa = PBXGroup;
-			children = (
-				4FA53F2B62D8BF743C240576 /* LicenseManager.swift */,
-			);
-			path = Licensing;
-			sourceTree = "<group>";
-		};
 		E700B191AC8154EAD63944EA /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -280,10 +257,7 @@
 				75F9F242ACE27B06B2FAD411 /* EditorLauncher.swift */,
 				908AED5C44E2902C43E9E59F /* HealthProber.swift */,
 				DBC06C11784659FBF0F091F4 /* LaunchdControl.swift */,
-				F8D6B225C45D0F1915685945 /* LicenseKey.swift */,
-				A48C76571E7B487538A2849E /* LicenseStore.swift */,
 				5C204AABE59F1F1FB9A49908 /* MCPInstall.swift */,
-				93503533B025ABA0BC376CB0 /* OrgClaim.swift */,
 				F5EBC54CF786847A46299619 /* Policy.swift */,
 				99B4BE6D8797D69CAABC9F1C /* PortAllocator.swift */,
 				DFB68BFAEE267C0DF5CF20A6 /* PortkeepDefaults.swift */,
@@ -442,12 +416,9 @@
 				BED73087DC7B5944EC98B360 /* EditorLauncher.swift in Sources */,
 				401A56F71A26E46202AF2B99 /* HealthProber.swift in Sources */,
 				A3773371056662F3DF79C4E3 /* LaunchdControl.swift in Sources */,
-				40E77BB98B752E13C20F30D0 /* LicenseKey.swift in Sources */,
-				AB294A5F1A0D7A96A1EE0DAB /* LicenseStore.swift in Sources */,
 				B85DBC82102F41C03C3750E2 /* ListeningPort.swift in Sources */,
 				45E0534EE12CA041BD59E1CE /* MCPInstall.swift in Sources */,
 				8B16173C85CD7AA447B8AE75 /* MCPServer.swift in Sources */,
-				8895721C99CFA908151342B1 /* OrgClaim.swift in Sources */,
 				EC42A45C53BE82BEEAD68E89 /* Policy.swift in Sources */,
 				1438467D028E461F9C202D80 /* PortAllocator.swift in Sources */,
 				1A79DF847CDF4B4B0B01AFED /* PortLease.swift in Sources */,
@@ -488,14 +459,9 @@
 				8AFB7685840049361C7F26E2 /* HealthProber.swift in Sources */,
 				8B6BE4FF4495EA6E4BF4C964 /* HotKey.swift in Sources */,
 				4018CA83534A9BAE6C2F4F04 /* LaunchdControl.swift in Sources */,
-				75C76E6C251CB74A7F922FCF /* LicenseKey.swift in Sources */,
-				EFA6FA4C5B3F7982BF4CB5BD /* LicenseManager.swift in Sources */,
-				780941AA220FC7098012DA90 /* LicenseStore.swift in Sources */,
 				4C1945F0D7B7195F8D3B04D2 /* ListeningPort.swift in Sources */,
 				AC8A9FCC2185EC9517548FBA /* MCPInstall.swift in Sources */,
-				7C7BA77592E38DAF6A61A24D /* OrgClaim.swift in Sources */,
 				D2E3918CCE7BCD4A444B4918 /* PanelRootView.swift in Sources */,
-				40173BEB3844E7AF4B02EA47 /* PaywallView.swift in Sources */,
 				412860D5D5B067BE0335DB57 /* Policy.swift in Sources */,
 				8579A78B016BA710941090CE /* PortAllocator.swift in Sources */,
 				C007139467E84846D1C3B266 /* PortLease.swift in Sources */,
@@ -715,7 +681,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Portkeep;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Sajid Palagiri. All rights reserved.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Sajid Palagiri";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -740,7 +706,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Portkeep;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Sajid Palagiri. All rights reserved.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Sajid Palagiri";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

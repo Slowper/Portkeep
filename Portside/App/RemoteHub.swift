@@ -25,7 +25,7 @@ final class RemoteHub {
     }
 
     func stop(peer: RemotePeer, port: Int, confirmLAN: Bool) async throws {
-        guard let pin = RemotePIN.load() else { throw LicenseError.rejected("Set a PIN in Settings → Devices.") }
+        guard let pin = RemotePIN.load() else { throw PortkeepError.message("Set a PIN in Settings → Devices.") }
         try await RemoteClient.stop(peer: peer, port: port, pin: pin, confirmLAN: confirmLAN)
         await refreshPeers()
     }

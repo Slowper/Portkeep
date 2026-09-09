@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Portkeep shots</title>
+  <style>
+    :root {
+      --blue: #2f7bff;
+      --ink: #f4f4f6;
+      --muted: rgba(255,255,255,0.55);
+      --line: rgba(255,255,255,0.10);
+      --card: rgba(255,255,255,0.045);
+      --orange: #f5a524;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font: 13px/1.35 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      background: #07080a;
+      color: var(--ink);
+    }
+    .scene {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 40px;
+    }
+    #hero {
+      width: 1280px;
+      height: 720px;
+      padding: 0;
+      flex-direction: column;
+      background:
+        radial-gradient(900px 420px at 70% 18%, rgba(47,123,255,0.22), transparent 55%),
+        radial-gradient(700px 380px at 20% 80%, rgba(20,40,80,0.45), transparent 50%),
+        linear-gradient(180deg, #1a1d24 0%, #0b0c10 100%);
+      overflow: hidden;
+    }
+    .menubar {
+      width: 100%;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      background: rgba(12,12,14,0.55);
+      backdrop-filter: blur(20px);
+      color: rgba(255,255,255,0.88);
+      font-size: 12px;
+      font-weight: 510;
+    }
+    .menubar .left, .menubar .right { display: flex; align-items: center; gap: 14px; }
+    .desk { flex: 1; display: flex; justify-content: center; align-items: flex-start; padding-top: 10px; }
+    .panel {
+      width: 420px;
+      border-radius: 18px;
+      background: rgba(28, 29, 33, 0.78);
+      backdrop-filter: blur(36px) saturate(140%);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.55), 0 0 0 0.5px rgba(255,255,255,0.12);
+      overflow: hidden;
+    }
+    .head {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 12px 8px;
+    }
+    .mark {
+      width: 22px; height: 22px; color: var(--blue);
+    }
+    .title { font-size: 13px; font-weight: 600; }
+    .spacer { flex: 1; }
+    .live { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 11px; font-weight: 500; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: #34c759; box-shadow: 0 0 8px #34c759; }
+    .pin {
+      width: 22px; height: 22px; display: grid; place-items: center;
+      color: var(--muted); font-size: 11px;
+    }
+    .search {
+      margin: 0 12px 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 0.5px solid rgba(255,255,255,0.07);
+      color: var(--muted);
+      display: flex; gap: 8px; align-items: center;
+    }
+    .list { padding: 8px 10px 10px; }
+    .sec {
+      display: flex; align-items: baseline; gap: 6px;
+      font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em;
+      color: var(--muted); padding: 4px 6px 8px;
+    }
+    .sec.left { color: var(--orange); }
+    .sec .count { font-weight: 500; letter-spacing: 0; opacity: 0.8; }
+    .stopall {
+      margin-left: auto; letter-spacing: 0; font-weight: 600;
+      color: var(--orange); background: rgba(245,165,36,0.12);
+      padding: 3px 8px; border-radius: 6px; font-size: 11px;
+    }
+    .card {
+      background: var(--card);
+      border: 0.5px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    .card.sel { background: rgba(47,123,255,0.14); border-color: rgba(47,123,255,0.28); }
+    .ch {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px 8px;
+    }
+    .ico {
+      width: 28px; height: 28px; border-radius: 8px;
+      display: grid; place-items: center;
+      background: rgba(255,255,255,0.06);
+      font-size: 13px;
+    }
+    .name { font-size: 13px; font-weight: 600; }
+    .sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 3px;
+      font-size: 10.5px; font-weight: 650; border-radius: 999px;
+      padding: 2px 6px; margin-left: 6px;
+    }
+    .chip.next { color: #fff; background: #000; }
+    .chip.cursor { color: #7aa2ff; background: rgba(47,123,255,0.16); }
+    .chip.claude { color: #d4a574; background: rgba(212,165,116,0.16); }
+    .chip.lan { color: var(--orange); background: rgba(245,165,36,0.14); }
+    .mem { margin-left: auto; font-size: 11px; color: var(--orange); }
+    .mem.quiet { color: var(--muted); }
+    hr { border: 0; border-top: 0.5px solid rgba(255,255,255,0.08); margin-left: 14px; }
+    .port {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 10px; font-size: 12px;
+    }
+    .port b { font-variant-numeric: tabular-nums; font-weight: 620; width: 44px; }
+    .port .cmd { color: var(--muted); }
+    .foot {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 10px 8px;
+      border-top: 0.5px solid rgba(255,255,255,0.08);
+      color: var(--muted); font-size: 11px;
+    }
+    kbd {
+      font: 10px/1 -apple-system, sans-serif;
+      border: 0.5px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.06);
+      padding: 2px 5px; border-radius: 4px; color: rgba(255,255,255,0.75);
+    }
+    .iconbtn {
+      width: 22px; height: 22px; display: grid; place-items: center;
+      border-radius: 6px; color: var(--muted);
+    }
+    #panel-scene {
+      width: 520px;
+      min-height: 680px;
+      background: #0b0c10;
+    }
+    #cli {
+      width: 920px;
+      height: 420px;
+      background:
+        radial-gradient(600px 280px at 80% 0%, rgba(47,123,255,0.18), transparent 50%),
+        #0b0c10;
+    }
+    .term {
+      width: 820px;
+      border-radius: 12px;
+      background: #16171c;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.45), 0 0 0 0.5px rgba(255,255,255,0.08);
+      overflow: hidden;
+      font: 13px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .termbar {
+      height: 36px; display: flex; align-items: center; gap: 7px;
+      padding: 0 12px; background: #1f2026; color: var(--muted); font: 12px -apple-system, sans-serif;
+    }
+    .t { width: 10px; height: 10px; border-radius: 50%; }
+    .term body, .termcode { padding: 16px 18px 20px; }
+    .g { color: #7ee787; }
+    .c { color: #8b949e; }
+    .w { color: #e6edf3; }
+    .o { color: #ffa657; }
+    .b { color: #79c0ff; }
+  </style>
+</head>
+<body>
+  <section class="scene" id="hero">
+    <div class="menubar">
+      <div class="left">
+        <strong></strong>
+        <span>Finder</span>
+        <span>File</span>
+        <span>Edit</span>
+        <span>View</span>
+      </div>
+      <div class="right">
+        <svg class="mark" viewBox="0 0 22 22" width="14" height="14" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M5.2 5.2h11.6a1.4 1.4 0 0 1 1.4 1.4v11.6a1.4 1.4 0 0 1-1.4 1.4H5.2a1.4 1.4 0 0 1-1.4-1.4V6.6a1.4 1.4 0 0 1 1.4-1.4zm3.3-.8h5v2.1h-5V4.4zm0 13.3h5v2.1h-5v-2.1zM8.2 8.4h5.6v1.9H8.2V8.4zm0 5.3h5.6v1.9H8.2v-1.9z"/></svg>
+        <span>Tue 9:04</span>
+      </div>
+    </div>
+    <div class="desk" id="hero-panel">
+      <!-- panel injected below via same markup -->
+    </div>
+  </section>
+
+  <section class="scene" id="panel-scene">
+    <div id="panel-only"></div>
+  </section>
+
+  <section class="scene" id="cli">
+    <div class="term" id="cli-term">
+      <div class="termbar">
+        <span class="t" style="background:#ff5f57"></span>
+        <span class="t" style="background:#febc2e"></span>
+        <span class="t" style="background:#28c840"></span>
+        <span class="spacer"></span>
+        <span>zsh — ~/dev/northwind</span>
+      </div>
+      <div class="termcode">
+        <div><span class="c">$</span> <span class="w">portkeep list</span></div>
+        <div><span class="b">:3000</span>  northwind  Next.js  <span class="g">Cursor Agent</span></div>
+        <div class="c">  next-server · 48211  186 MB  up 2h 14m</div>
+        <div><span class="b">:5173</span>  lighthouse  Vite</div>
+        <div class="c">  vite · 19302  up 18m</div>
+        <div><span class="o">:3737</span>  leftover  <span class="o">parent exited</span></div>
+        <div class="c">  bun · 1104  94 MB  ~/dev/harbor</div>
+        <div style="height:10px"></div>
+        <div><span class="c">$</span> <span class="w">portkeep who 3000</span></div>
+        <div><span class="w">Cursor Agent started next-server in ~/dev/northwind</span></div>
+        <div style="height:10px"></div>
+        <div><span class="c">$</span> <span class="w">portkeep stop 3737</span></div>
+        <div><span class="g">Stopped bun on :3737 · 3 processes</span></div>
+      </div>
+    </div>
+  </section>
+
+  <template id="panel-tpl">
+    <div class="panel">
+      <div class="head">
+        <svg class="mark" viewBox="0 0 22 22"><path fill="currentColor" fill-rule="evenodd" d="M4.8 4.8h12.4c.77 0 1.4.63 1.4 1.4v12.4c0 .77-.63 1.4-1.4 1.4H4.8c-.77 0-1.4-.63-1.4-1.4V6.2c0-.77.63-1.4 1.4-1.4zm3.6-.9h5.2v2.2H8.4V3.9zm0 14.8h5.2v2.2H8.4v-2.2zM7.9 8.2h6.2v2H7.9v-2zm0 5.6h6.2v2H7.9v-2z"/></svg>
+        <div class="title">Portkeep</div>
+        <div class="spacer"></div>
+        <div class="live"><span class="dot"></span> Live</div>
+        <div class="pin">⌖</div>
+      </div>
+      <div class="search">⌕ &nbsp; Filter ports, projects, containers…</div>
+      <div class="list">
+        <div class="sec left">LEFT BEHIND <span class="count">· parent exited · holding 94 MB</span> <span class="stopall">Stop all</span></div>
+        <div class="card">
+          <div class="ch">
+            <div class="ico">⬡</div>
+            <div>
+              <div><span class="name">harbor</span><span class="chip cursor">Cursor Agent</span></div>
+              <div class="sub">~/dev/harbor · bun</div>
+            </div>
+            <div class="mem">94 MB</div>
+          </div>
+          <hr>
+          <div class="port"><b>:3737</b> <span class="cmd">bun gateway</span> <span class="chip lan">LAN</span></div>
+        </div>
+
+        <div class="sec">PROJECTS <span class="count">2</span></div>
+        <div class="card sel">
+          <div class="ch">
+            <div class="ico">▲</div>
+            <div>
+              <div><span class="name">northwind</span><span class="chip next">Next.js</span><span class="chip cursor">Cursor Agent</span></div>
+              <div class="sub">~/dev/northwind · next-server</div>
+            </div>
+            <div class="mem quiet">2h</div>
+          </div>
+          <hr>
+          <div class="port"><b>:3000</b> <span class="cmd">next-server</span></div>
+          <div class="port"><b>:3001</b> <span class="cmd">turbopack</span></div>
+        </div>
+        <div class="card">
+          <div class="ch">
+            <div class="ico">◈</div>
+            <div>
+              <div><span class="name">lighthouse</span><span class="chip claude">Claude Code</span></div>
+              <div class="sub">~/dev/lighthouse · vite</div>
+            </div>
+            <div class="mem quiet">18m</div>
+          </div>
+          <hr>
+          <div class="port"><b>:5173</b> <span class="cmd">vite</span></div>
+        </div>
+      </div>
+      <div class="foot">
+        <kbd>↑↓</kbd><kbd>⏎</kbd><kbd>⌘⌫</kbd>
+        <div class="spacer"></div>
+        <div class="iconbtn">↻</div>
+        <div class="iconbtn">⚙</div>
+      </div>
+    </div>
+  </template>
+  <script>
+    const tpl = document.getElementById('panel-tpl').innerHTML;
+    document.getElementById('hero-panel').innerHTML = tpl;
+    document.getElementById('panel-only').innerHTML = tpl;
+  </script>
+</body>
+</html>

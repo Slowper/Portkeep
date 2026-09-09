@@ -52,10 +52,6 @@ enum CLI {
                 try runSnippet(parsed)
             case .mdm:
                 showMDM(json: parsed.json)
-            case .license:
-                try runLicense(parsed)
-            case .seats:
-                showSeats(json: parsed.json)
             case .peers:
                 await showPeers(json: parsed.json)
             case .audit:
@@ -341,91 +337,6 @@ enum CLI {
         }
     }
 
-    private static func runLicense(_ parsed: Arguments) throws {
-        let action = parsed.positional
-        switch action {
-        case "activate":
-            let raw = parsed.tokens.dropFirst().first ?? ""
-            guard !raw.isEmpty else { fail("usage: portkeep license activate <key>", code: 3) }
-            let parsedKey = try LicenseKey.parse(raw)
-            try LicenseStore.save(parsedKey.key)
-            switch parsedKey.kind {
-            case .personal:
-                OrgClaim.clear()
-                Audit.record(action: "license_activate", detail: "personal")
-                print("Activated personal Pro on this Mac.")
-            case .organization(let org, let seats):
-                let claim = try OrgClaim.claim(org: org, seats: seats)
-                Audit.record(action: "license_activate", command: org, detail: "org \(seats) seats")
-                print("Claimed a seat for \(org) (\(seats) purchased) as \(claim.user)@\(claim.host).")
-            }
-        case "deactivate":
-            if PortkeepDefaults.suite.objectIsForced(forKey: ManagedKey.orgLicense) {
-                fail("This seat is assigned by your organization.", code: 4)
-            }
-            LicenseStore.clear()
-            OrgClaim.clear()
-            Audit.record(action: "license_deactivate")
-            print("Released the license on this Mac.")
-        default:
-            showSeats(json: parsed.json)
-        }
-    }
-
-    private static func showSeats(json: Bool) {
-        let key = LicenseStore.load()
-        let parsed = key.flatMap { try? LicenseKey.parse($0) }
-        let claim = OrgClaim.load()
-        if json {
-            var dict: [String: Any] = [
-                "device": DeviceIdentity.uuid,
-                "host": ProcessInfo.processInfo.hostName,
-                "user": NSUserName(),
-            ]
-            if let parsed {
-                dict["keySuffix"] = String(parsed.key.suffix(5))
-                switch parsed.kind {
-                case .personal:
-                    dict["kind"] = "personal"
-                case .organization(let org, let seats):
-                    dict["kind"] = "organization"
-                    dict["org"] = org
-                    dict["seats"] = seats
-                }
-            } else {
-                dict["kind"] = "none"
-            }
-            if let claim {
-                dict["claimed"] = true
-                dict["org"] = claim.org
-                dict["seats"] = claim.seats
-            }
-            printJSON(dict)
-            return
-        }
-        guard let parsed else {
-            print("No license on this Mac. Trial or activate a PKP / PKO key.")
-            print("  portkeep license activate PKO-ACME-10-XXXXX-XXXXX")
-            return
-        }
-        switch parsed.kind {
-        case .personal:
-            print("Personal Pro  ···\(parsed.key.suffix(5))")
-            print("This Mac      \(NSUserName())@\(ProcessInfo.processInfo.hostName)")
-        case .organization(let org, let seats):
-            print("Org           \(org)")
-            print("Seats         \(seats) purchased")
-            if let claim {
-                print("This Mac      \(claim.user)@\(claim.host)")
-                print("Device        …\(claim.deviceID.suffix(8))")
-                print("Claimed       \(claim.activatedAt)")
-            } else {
-                print("This Mac      not yet claimed")
-            }
-            print("Other Macs are assigned by IT (MDM OrgLicense) until a Portkeep account exists.")
-        }
-    }
-
     private static func showPeers(json: Bool) async {
         guard let pin = RemotePIN.load() else {
             fail("Turn on Settings → Devices and set a PIN first.", code: 1)
@@ -550,10 +461,6 @@ enum CLI {
       portkeep settings              open the Settings window
       portkeep audit [n]             last n local audit events (default 50)
       portkeep mdm                   show MDM domain and which keys are locked
-      portkeep license               this Mac's license / seat
-      portkeep license activate <key>
-      portkeep license deactivate
-      portkeep seats                 same as license (org seat view)
       portkeep peers                 other Portkeep Macs on this LAN
 
     Options:
@@ -577,7 +484,7 @@ enum CLI {
 
 struct Arguments {
     enum Command: String {
-        case list, ls, who, alloc, free, leases, env, stop, mcp, install, uninstall, snippet, settings, audit, mdm, license, seats, peers, help
+        case list, ls, who, alloc, free, leases, env, stop, mcp, install, uninstall, snippet, settings, audit, mdm, peers, help
     }
 
     var command: Command?

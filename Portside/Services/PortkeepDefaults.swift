@@ -17,9 +17,6 @@ enum ManagedKey {
     static let probeHealth = "ProbeHealth"
     static let showCountInMenuBar = "ShowCountInMenuBar"
     static let autoUpdate = "AutomaticallyCheckForUpdates"
-    static let orgLicense = "OrgLicense"
-    static let orgName = "OrgName"
-    static let orgSeats = "OrgSeats"
     static let remoteSharing = "RemoteSharingEnabled"
 
     static let all: [(key: String, meaning: String)] = [
@@ -34,9 +31,6 @@ enum ManagedKey {
         (probeHealth, "HTTP-probe localhost ports"),
         (showCountInMenuBar, "Show the listening-port count in the menu bar"),
         (autoUpdate, "Daily Sparkle update check"),
-        (orgLicense, "Forced org / personal license key"),
-        (orgName, "Organization display name"),
-        (orgSeats, "Purchased seat count (informational if the key already encodes it)"),
         (remoteSharing, "Advertise this Mac on the LAN so other Portkeeps can see leftovers"),
     ]
 }

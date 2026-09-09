@@ -28,11 +28,5 @@
 	<true/>
 	<key>AutomaticallyCheckForUpdates</key>
 	<true/>
-	<key>OrgName</key>
-	<string>Acme</string>
-	<key>OrgSeats</key>
-	<integer>10</integer>
-	<key>OrgLicense</key>
-	<string>PKO-ACME-10-XXXXX-XXXXX</string>
 </dict>
 </plist>

@@ -20,7 +20,7 @@ enum RemoteClient {
 
     static func stop(peer: RemotePeer, port: Int, pin: String, confirmLAN: Bool) async throws {
         guard let url = URL(string: "http://\(peer.endpoint)/v1/stop") else {
-            throw LicenseError.rejected("Bad peer address.")
+            throw PortkeepError.message("Bad peer address.")
         }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -35,7 +35,7 @@ enum RemoteClient {
         let code = (response as? HTTPURLResponse)?.statusCode ?? 0
         if code == 200 { return }
         let object = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any]
-        throw LicenseError.rejected(object?["error"] as? String ?? "Remote stop failed (\(code)).")
+        throw PortkeepError.message(object?["error"] as? String ?? "Remote stop failed (\(code)).")
     }
 
     private static func fetch(endpoint: String, token: String, mine: String) async -> RemotePeer? {

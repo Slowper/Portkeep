@@ -16,11 +16,7 @@ struct PanelRootView: View {
             SearchBar(focused: $searchFocused)
             Divider().opacity(0.6)
 
-            if state.showPaywall {
-                PaywallView()
-            } else {
-                list
-            }
+            list
 
             Divider().opacity(0.6)
             FooterBar()
@@ -39,9 +35,6 @@ struct PanelRootView: View {
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .onAppear { searchFocused = true }
-        .onChange(of: state.showPaywall) { _, showing in
-            if !showing { searchFocused = true }
-        }
     }
 
     // MARK: - List
@@ -558,8 +551,6 @@ private struct FooterBar: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            LicenseBadge()
-
             if let error = state.errorMessage {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .font(.system(size: 11))
@@ -599,28 +590,5 @@ private struct FooterBar: View {
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 6)
-    }
-}
-
-struct LicenseBadge: View {
-    @Environment(AppState.self) private var state
-
-    var body: some View {
-        Button {
-            state.showPaywall.toggle()
-        } label: {
-            switch state.license.status {
-            case .licensed:
-                Chip(text: "PRO", tint: .accentColor, filled: true)
-            case .organization(let seat):
-                Chip(text: seat.org, tint: .accentColor, filled: true)
-            case .trial(let days):
-                Chip(text: "Trial · \(days)d", tint: days <= 3 ? .orange : .secondary)
-            case .expired:
-                Chip(text: "Upgrade", tint: .accentColor, filled: true)
-            }
-        }
-        .buttonStyle(.plain)
-        .help(state.showPaywall ? "Back" : "Portkeep Pro")
     }
 }

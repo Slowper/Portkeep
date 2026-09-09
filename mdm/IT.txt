@@ -36,20 +36,7 @@ Keys (forced keys are greyed out in Settings)
   ProbeHealth                   bool    HTTP probe of localhost
   ShowCountInMenuBar            bool
   AutomaticallyCheckForUpdates  bool    daily Sparkle check (metadata only)
-  OrgLicense                    string  PKO-ACME-10-XXXXX-XXXXX (or a PKP- personal key)
-  OrgName                       string  display name
-  OrgSeats                      int     purchased seats (the key already encodes this)
   RemoteSharingEnabled          bool    allow this Mac to advertise leftovers on the LAN
-
-Org seats
-  Personal Pro is PKP-XXXXX-XXXXX-XXXXX — one person, their Macs.
-  A company key is PKO-<ORG>-<SEATS>-XXXXX-XXXXX.
-  Push OrgLicense only to the Macs that should consume a seat. That is the
-  assignment. A licensing server can later reject a 11th device; today IT
-  is the source of truth by who gets the profile.
-
-  On a Mac: portkeep license
-            portkeep seats --json
 
 Recommended locked baseline
   PolicyEnabled = true

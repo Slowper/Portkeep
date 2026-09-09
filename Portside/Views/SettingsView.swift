@@ -4,7 +4,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 private enum SettingsPane: String, CaseIterable, Identifiable, Hashable {
-    case general, workspace, agents, devices, policy, audit, license
+    case general, workspace, agents, devices, policy, audit
 
     var id: Self { self }
 
@@ -16,7 +16,6 @@ private enum SettingsPane: String, CaseIterable, Identifiable, Hashable {
         case .devices: "Devices"
         case .policy: "Policy"
         case .audit: "Audit"
-        case .license: "License"
         }
     }
 
@@ -28,7 +27,6 @@ private enum SettingsPane: String, CaseIterable, Identifiable, Hashable {
         case .devices: "laptopcomputer.and.iphone"
         case .policy: "lock.shield"
         case .audit: "list.clipboard"
-        case .license: "key"
         }
     }
 }
@@ -57,7 +55,6 @@ struct SettingsView: View {
                 case .devices: DeviceSettings()
                 case .policy: PolicySettings()
                 case .audit: AuditSettings()
-                case .license: LicenseSettings()
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -137,6 +134,10 @@ private struct GeneralSettings: View {
                 .disabled(settings.isLocked(ManagedKey.probeHealth, user: "probeHealth"))
             } header: {
                 Text("Scanning")
+            }
+
+            Section {
+                LabeledContent("Version", value: Bundle.main.versionString)
             }
         }
         .formStyle(.grouped)
@@ -603,98 +604,6 @@ private struct AuditSettings: View {
             exportError = nil
         } catch {
             exportError = error.localizedDescription
-        }
-    }
-}
-
-// MARK: - License
-
-private struct LicenseSettings: View {
-    @Environment(AppState.self) private var state
-
-    @State private var key = ""
-    @State private var isActivating = false
-    @State private var error: String?
-
-    var body: some View {
-        Form {
-            Section {
-                switch state.license.status {
-                case .licensed(let licensed):
-                    LabeledContent("Status") {
-                        Label("Pro", systemImage: "checkmark.seal.fill").foregroundStyle(.green)
-                    }
-                    LabeledContent("Key", value: "•••••-•••••-\(licensed.suffix(5))")
-                    if !state.license.orgIsManaged {
-                        Button("Deactivate this Mac", role: .destructive) { state.license.deactivate() }
-                    }
-                case .organization(let seat):
-                    LabeledContent("Status") {
-                        Label("Organization", systemImage: "building.2.fill").foregroundStyle(.green)
-                    }
-                    LabeledContent("Org", value: seat.org)
-                    LabeledContent("Seats", value: "\(seat.seats) purchased")
-                    LabeledContent("This Mac", value: "\(seat.user) · \(seat.host)")
-                    LabeledContent("Device", value: String(seat.deviceID.suffix(8)))
-                    if !state.license.orgIsManaged {
-                        Button("Release this seat", role: .destructive) { state.license.deactivate() }
-                    } else {
-                        Text("Assigned by your organization. This seat cannot be removed here.")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                case .trial(let days):
-                    LabeledContent("Status", value: "Trial · \(days) day\(days == 1 ? "" : "s") left")
-                case .expired:
-                    LabeledContent("Status", value: "Trial ended")
-                }
-            } footer: {
-                Text("Personal key: PKP-XXXXX-XXXXX-XXXXX (this person, their Macs). Org key: PKO-ACME-10-XXXXX-XXXXX (ten seats). IT can force OrgLicense on domain com.sajidpalagiri.portkeep.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
-            if !state.license.isLicensed {
-                Section {
-                    TextField("License key", text: $key, prompt: Text("PKP-… or PKO-…"))
-                        .font(.system(.body, design: .monospaced))
-                        .onSubmit(activate)
-                    HStack {
-                        Link("Buy Portkeep Pro", destination: LicenseManager.purchaseURL)
-                        Spacer()
-                        Button(action: activate) {
-                            if isActivating { ProgressView().controlSize(.small) } else { Text("Activate") }
-                        }
-                        .disabled(key.isEmpty || isActivating)
-                    }
-                    if let error {
-                        Text(error).font(.caption).foregroundStyle(.red)
-                    }
-                } header: {
-                    Text("Activate")
-                }
-            }
-
-            Section {
-                LabeledContent("Version", value: Bundle.main.versionString)
-            }
-        }
-        .formStyle(.grouped)
-        .padding(.vertical, 4)
-    }
-
-    private func activate() {
-        guard !key.isEmpty, !isActivating else { return }
-        isActivating = true
-        error = nil
-        Task {
-            defer { isActivating = false }
-            do {
-                try await state.license.activate(key: key)
-                key = ""
-            } catch {
-                self.error = error.localizedDescription
-            }
         }
     }
 }

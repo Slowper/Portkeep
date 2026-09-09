@@ -329,10 +329,8 @@ final class StatusBarController: NSObject {
         case kVK_UpArrow:
             state.moveSelection(by: -1); return true
         case kVK_Return, kVK_ANSI_KeypadEnter:
-            if state.showPaywall { return false }
             state.activateSelection(); return true
         case kVK_Escape:
-            if state.showPaywall { state.showPaywall = false; return true }
             if state.pendingStopID != nil { state.cancelPendingStop(); return true }
             if !state.query.isEmpty { state.query = ""; return true }
             hide(); return true

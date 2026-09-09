@@ -40,7 +40,6 @@ final class AppState {
     // UI state
     var query = ""
     var errorMessage: String?
-    var showPaywall = false
     var isPinned = false
     var selectedRowID: String?
     var pendingStopID: String?
@@ -52,7 +51,6 @@ final class AppState {
     private(set) var rows: [(id: String, ref: RowRef)] = []
 
     let settings = AppSettings()
-    let license = LicenseManager()
     let remote = RemoteHub()
 
     /// Set by the status bar controller so views can ask to close the panel.
@@ -110,7 +108,6 @@ final class AppState {
     func panelDidDisappear() {
         isPanelVisible = false
         pendingStopID = nil
-        showPaywall = false
         restartRefreshLoop()
     }
 
@@ -257,15 +254,6 @@ final class AppState {
 
     // MARK: - Actions
 
-    /// Runs `action` if Pro is active, otherwise routes to the paywall.
-    func requirePro(_ action: () -> Void) {
-        if license.isPro {
-            action()
-        } else {
-            showPaywall = true
-        }
-    }
-
     func open(_ ref: RowRef) {
         guard let url = ref.url else { return }
         NSWorkspace.shared.open(url)
@@ -328,22 +316,20 @@ final class AppState {
 
     func requestRemoteStop(peer: RemotePeer, listener: RemoteListenerDTO) {
         let id = "remote:\(peer.deviceID):\(listener.port)"
-        requirePro {
-            if pendingStopID == id {
-                pendingStopID = nil
-                Task {
-                    do {
-                        try await remote.stop(peer: peer, port: listener.port, confirmLAN: listener.lan)
-                        showToast("Stopped :\(listener.port) on \(peer.name)", symbol: "stop.circle.fill")
-                    } catch {
-                        showToast(error.localizedDescription, symbol: "lock.fill")
-                    }
+        if pendingStopID == id {
+            pendingStopID = nil
+            Task {
+                do {
+                    try await remote.stop(peer: peer, port: listener.port, confirmLAN: listener.lan)
+                    showToast("Stopped :\(listener.port) on \(peer.name)", symbol: "stop.circle.fill")
+                } catch {
+                    showToast(error.localizedDescription, symbol: "lock.fill")
                 }
-            } else {
-                arm(id)
-                if listener.lan {
-                    showToast("LAN bind on \(peer.name) — click again to stop", symbol: "exclamationmark.triangle.fill")
-                }
+            }
+        } else {
+            arm(id)
+            if listener.lan {
+                showToast("LAN bind on \(peer.name) — click again to stop", symbol: "exclamationmark.triangle.fill")
             }
         }
     }
@@ -353,27 +339,25 @@ final class AppState {
     /// Policy can still deny, or force a confirm for LAN / protected break-glass.
     func requestStop(_ port: ListeningPort, rowID: String? = nil, force: Bool = false, immediate: Bool = false) {
         let id = rowID ?? port.id
-        requirePro {
-            switch verdict(for: port) {
-            case .deny(let reason):
+        switch verdict(for: port) {
+        case .deny(let reason):
+            pendingStopID = nil
+            Audit.record(action: "policy_deny", ok: false, port: port.port, command: port.command, detail: reason)
+            showToast(reason, symbol: "lock.fill")
+        case .confirm(let reason):
+            if pendingStopID == id {
                 pendingStopID = nil
-                Audit.record(action: "policy_deny", ok: false, port: port.port, command: port.command, detail: reason)
-                showToast(reason, symbol: "lock.fill")
-            case .confirm(let reason):
-                if pendingStopID == id {
-                    pendingStopID = nil
-                    terminate(port, force: force)
-                } else {
-                    arm(id)
-                    showToast(reason, symbol: "exclamationmark.triangle.fill")
-                }
-            case .allow:
-                if pendingStopID == id || immediate || force {
-                    pendingStopID = nil
-                    terminate(port, force: force)
-                } else {
-                    arm(id)
-                }
+                terminate(port, force: force)
+            } else {
+                arm(id)
+                showToast(reason, symbol: "exclamationmark.triangle.fill")
+            }
+        case .allow:
+            if pendingStopID == id || immediate || force {
+                pendingStopID = nil
+                terminate(port, force: force)
+            } else {
+                arm(id)
             }
         }
     }
@@ -383,27 +367,25 @@ final class AppState {
             perform(.start, on: container)
             return
         }
-        requirePro {
-            switch verdict(for: container) {
-            case .deny(let reason):
+        switch verdict(for: container) {
+        case .deny(let reason):
+            pendingStopID = nil
+            Audit.record(action: "policy_deny", ok: false, command: container.name, detail: reason)
+            showToast(reason, symbol: "lock.fill")
+        case .confirm(let reason):
+            if pendingStopID == rowID {
                 pendingStopID = nil
-                Audit.record(action: "policy_deny", ok: false, command: container.name, detail: reason)
-                showToast(reason, symbol: "lock.fill")
-            case .confirm(let reason):
-                if pendingStopID == rowID {
-                    pendingStopID = nil
-                    perform(.stop, on: container)
-                } else {
-                    arm(rowID)
-                    showToast(reason, symbol: "exclamationmark.triangle.fill")
-                }
-            case .allow:
-                if pendingStopID == rowID {
-                    pendingStopID = nil
-                    perform(.stop, on: container)
-                } else {
-                    arm(rowID)
-                }
+                perform(.stop, on: container)
+            } else {
+                arm(rowID)
+                showToast(reason, symbol: "exclamationmark.triangle.fill")
+            }
+        case .allow:
+            if pendingStopID == rowID {
+                pendingStopID = nil
+                perform(.stop, on: container)
+            } else {
+                arm(rowID)
             }
         }
     }
@@ -448,22 +430,20 @@ final class AppState {
 
     /// Stops only the process on the port, leaving its parents and siblings alone.
     func stopOnly(_ port: ListeningPort, force: Bool = false) {
-        requirePro {
-            switch verdict(for: port) {
-            case .deny(let reason):
-                Audit.record(action: "policy_deny", ok: false, port: port.port, command: port.command, detail: reason)
-                showToast(reason, symbol: "lock.fill")
-            case .confirm(let reason):
-                if pendingStopID == port.id {
-                    pendingStopID = nil
-                    stop(pids: [port.pid], label: port.command, port: port.port, force: force)
-                } else {
-                    arm(port.id)
-                    showToast(reason, symbol: "exclamationmark.triangle.fill")
-                }
-            case .allow:
+        switch verdict(for: port) {
+        case .deny(let reason):
+            Audit.record(action: "policy_deny", ok: false, port: port.port, command: port.command, detail: reason)
+            showToast(reason, symbol: "lock.fill")
+        case .confirm(let reason):
+            if pendingStopID == port.id {
+                pendingStopID = nil
                 stop(pids: [port.pid], label: port.command, port: port.port, force: force)
+            } else {
+                arm(port.id)
+                showToast(reason, symbol: "exclamationmark.triangle.fill")
             }
+        case .allow:
+            stop(pids: [port.pid], label: port.command, port: port.port, force: force)
         }
     }
 
@@ -473,31 +453,29 @@ final class AppState {
     func requestStopAllLeftBehind() {
         if pendingStopID == Self.leftBehindStopID {
             pendingStopID = nil
-            requirePro {
-                var pids = Set<Int32>()
-                var skipped = 0
-                for group in sections.leftBehind {
-                    let blocked = group.ports.contains { verdict(for: $0).isDenied }
-                    if blocked {
-                        skipped += 1
-                        if let port = group.ports.first {
-                            Audit.record(action: "policy_deny", ok: false, port: port.port, command: port.command, detail: "left-behind stop")
-                        }
-                        continue
+            var pids = Set<Int32>()
+            var skipped = 0
+            for group in sections.leftBehind {
+                let blocked = group.ports.contains { verdict(for: $0).isDenied }
+                if blocked {
+                    skipped += 1
+                    if let port = group.ports.first {
+                        Audit.record(action: "policy_deny", ok: false, port: port.port, command: port.command, detail: "left-behind stop")
                     }
-                    if let lineage = group.lineage { pids.formUnion(lineage.treePIDs) }
-                    pids.formUnion(group.ports.map(\.pid))
+                    continue
                 }
-                pids.remove(0)
-                let count = sections.leftBehind.count - skipped
-                if count == 0 {
-                    showToast("Policy blocked every left-behind stop", symbol: "lock.fill")
-                    return
-                }
-                stop(pids: Array(pids), label: "\(count) left-behind server\(count == 1 ? "" : "s")", port: nil, force: false)
+                if let lineage = group.lineage { pids.formUnion(lineage.treePIDs) }
+                pids.formUnion(group.ports.map(\.pid))
             }
+            pids.remove(0)
+            let count = sections.leftBehind.count - skipped
+            if count == 0 {
+                showToast("Policy blocked every left-behind stop", symbol: "lock.fill")
+                return
+            }
+            stop(pids: Array(pids), label: "\(count) left-behind server\(count == 1 ? "" : "s")", port: nil, force: false)
         } else {
-            requirePro { arm(Self.leftBehindStopID) }
+            arm(Self.leftBehindStopID)
         }
     }
 
@@ -553,27 +531,25 @@ final class AppState {
                 break
             }
         }
-        requirePro {
-            pendingDockerActions.insert(container.id)
-            Task {
-                defer { pendingDockerActions.remove(container.id) }
-                do {
-                    try await DockerService.perform(action, on: container)
-                    errorMessage = nil
-                    let verb = switch action {
-                    case .start: "Started"
-                    case .stop: "Stopped"
-                    case .restart: "Restarted"
-                    }
-                    Audit.record(action: "docker_\(action.rawValue)", command: container.name, detail: container.image)
-                    showToast("\(verb) \(container.name)", symbol: "shippingbox.fill")
-                } catch {
-                    errorMessage = error.localizedDescription
-                    Audit.record(action: "docker_\(action.rawValue)", ok: false, command: container.name, detail: error.localizedDescription)
-                    showToast("Docker: \(error.localizedDescription)", symbol: "exclamationmark.triangle.fill")
+        pendingDockerActions.insert(container.id)
+        Task {
+            defer { pendingDockerActions.remove(container.id) }
+            do {
+                try await DockerService.perform(action, on: container)
+                errorMessage = nil
+                let verb = switch action {
+                case .start: "Started"
+                case .stop: "Stopped"
+                case .restart: "Restarted"
                 }
-                await refresh()
+                Audit.record(action: "docker_\(action.rawValue)", command: container.name, detail: container.image)
+                showToast("\(verb) \(container.name)", symbol: "shippingbox.fill")
+            } catch {
+                errorMessage = error.localizedDescription
+                Audit.record(action: "docker_\(action.rawValue)", ok: false, command: container.name, detail: error.localizedDescription)
+                showToast("Docker: \(error.localizedDescription)", symbol: "exclamationmark.triangle.fill")
             }
+            await refresh()
         }
     }
 

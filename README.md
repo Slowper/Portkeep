@@ -1,32 +1,77 @@
-# Portkeep
+<p align="center">
+  <img src="docs/assets/icon.png" width="88" alt="Portkeep">
+</p>
 
-A macOS menu bar app for leftover localhost ports. It shows who is listening, which project they belong to, and whether a human, Cursor, or Claude Code started them. You can stop the whole process tree, reserve a stable port per worktree, and give agents a CLI plus MCP.
+<h1 align="center">Portkeep</h1>
 
-Nothing leaves this Mac except an optional Sparkle version check.
+<p align="center">
+  Local runtimes, on this Mac.<br>
+  See who owns <code>:3000</code>. Stop the leftover tree.
+</p>
 
-## Requirements
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2f7bff?style=flat-square" alt="MIT"></a>
+  <a href="https://github.com/Slowper/Portkeep"><img src="https://img.shields.io/badge/macOS-14%2B-black?style=flat-square" alt="macOS 14+"></a>
+  <a href="https://github.com/Slowper/Portkeep"><img src="https://img.shields.io/badge/Swift-6-F05138?style=flat-square" alt="Swift 6"></a>
+  <img src="https://img.shields.io/badge/menu%20bar-local%20only-1f4d3a?style=flat-square" alt="Menu bar, local only">
+</p>
 
-- macOS 14 or later
-- Xcode 16+
-- [XcodeGen](https://github.com/yonaskolb/XcodeGen)
+<p align="center">
+  <img src="docs/assets/banner.png" alt="Portkeep — local runtimes, on this Mac">
+</p>
 
-## Build
+Portkeep is a macOS menu bar app for leftover localhost ports. It shows what is listening, which project it belongs to, and whether a human, Cursor, or Claude Code started it. Stop the whole process tree. Reserve a stable port per worktree. Give agents a CLI and MCP.
+
+**Yours, with no catch.** Ports, PIDs, command lines, and folders stay on this Mac. There is no account, no analytics, and no paid tier. The only optional network call is a Sparkle version check you can turn off.
+
+<p align="center">
+  <img src="docs/assets/panel.png" width="420" alt="Portkeep panel — leftovers, projects, and who started them">
+</p>
+
+## What it looks like
+
+<p align="center">
+  <img src="docs/assets/hero.png" alt="Portkeep on the Mac menu bar">
+</p>
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="docs/assets/panel.png" alt="The menu bar panel">
+      <p align="center"><sub>The panel. Leftovers first. Then your projects.</sub></p>
+    </td>
+    <td width="50%">
+      <img src="docs/assets/cli.png" alt="portkeep CLI">
+      <p align="center"><sub>Same picture from the terminal.</sub></p>
+    </td>
+  </tr>
+</table>
+
+- **Who started this** — Cursor Agent, Claude Code, your terminal, or an orphan reparented to launchd.
+- **Stop the tree** — not just the pid on the port. The wrapper, the children, then SIGKILL if it hangs.
+- **Stable ports** — `portkeep alloc web` gives the same port back in this worktree.
+- **Policy** — postgres, redis, ollama, and other known services stay locked. `--force` is SIGKILL only; it does not bypass policy.
+
+## Install
+
+Menu bar extra — no Dock icon. Hotkey: Control-Option-P.
 
 ```sh
+git clone https://github.com/Slowper/Portkeep.git
+cd Portkeep
 xcodegen generate
-export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
 xcodebuild -project Portkeep.xcodeproj -scheme Portkeep -configuration Debug \
   -derivedDataPath /tmp/portkeep-dd build
 open /tmp/portkeep-dd/Build/Products/Debug/Portkeep.app
 ```
 
-The app is a menu bar extra (`LSUIElement`), not a Dock app. Open Settings from the panel, or run `portkeep settings`. Hotkey: Control-Option-P.
+Needs macOS 14+, Xcode 16+, and [XcodeGen](https://github.com/yonaskolb/XcodeGen). Open Settings from the panel, or run `portkeep settings`.
 
-A signed, notarized disk image is not in this repo. Build one with `./scripts/release.sh` if you have a Developer ID and App Store Connect notary credentials. The Sparkle private key and Apple API key stay on the maintainer’s machine.
+A signed, notarized disk image is not in this repo. Build one with `./scripts/release.sh` if you have a Developer ID.
 
 ## CLI
 
-After `portkeep install`, or from `Portkeep.app/Contents/Helpers/portkeep`:
+After Settings → Agents → Install, or from `Portkeep.app/Contents/Helpers/portkeep`:
 
 ```
 portkeep list                 what's listening
@@ -37,20 +82,18 @@ portkeep install --mcp        CLI + Cursor / Claude Code MCP
 portkeep snippet --write      AGENTS.md block for this folder
 ```
 
-`portkeep stop` will not kill protected names such as postgres, redis, or ollama. `--force` is SIGKILL only; it does not bypass policy.
-
-## License
-
-Source is [MIT](LICENSE). Viewing ports stays free. Portkeep Pro is a one-time $29 unlock for stop, alloc, leftovers, MCP, audit, and org seats. Keys are honor-system (`PKP-…` personal, `PKO-<ORG>-<SEATS>-…` company) and stored in the Keychain, not this repository.
+<p align="center">
+  <img src="docs/assets/cli.png" width="720" alt="portkeep list, who, and stop">
+</p>
 
 ## Privacy
 
-Ports, PIDs, command lines, and folders stay on the Mac. See [website/privacy.html](website/privacy.html).
+Nothing leaves this Mac except an optional Sparkle version check. See [website/privacy.html](website/privacy.html).
 
 ## MDM
 
-`mdm/` has a sample profile and `scripts/pkg.sh` builds an installer pkg. Preference domain: `com.sajidpalagiri.portkeep`. See `mdm/IT.txt`.
+`mdm/` has a sample profile. `scripts/pkg.sh` builds an installer pkg. Preference domain: `com.sajidpalagiri.portkeep`. See `mdm/IT.txt`.
 
-## Contributing
+## License
 
-Issues and pull requests are welcome. Keep stops policy-safe: do not add a flag that bypasses protected processes or allowed roots. Do not commit signing keys, notarized disk images, or `~/.portkeep` data.
+[MIT](LICENSE). Issues and pull requests are welcome. Keep stops policy-safe. Do not commit signing keys, notarized disk images, or `~/.portkeep` data.

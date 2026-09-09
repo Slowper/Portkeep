@@ -1,6 +1,33 @@
 import CryptoKit
 import Foundation
+import IOKit
 import Security
+
+enum PortkeepError: LocalizedError {
+    case message(String)
+
+    var errorDescription: String? {
+        switch self {
+        case .message(let reason): reason
+        }
+    }
+}
+
+enum DeviceIdentity {
+    static var uuid: String {
+        let service = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+        guard service != 0 else { return fallback }
+        defer { IOObjectRelease(service) }
+        guard let cf = IORegistryEntryCreateCFProperty(service, "IOPlatformUUID" as CFString, kCFAllocatorDefault, 0) else {
+            return fallback
+        }
+        return (cf.takeRetainedValue() as? String) ?? fallback
+    }
+
+    static var fallback: String {
+        "\(NSUserName())@\(ProcessInfo.processInfo.hostName)"
+    }
+}
 
 enum RemoteLink {
     static let serviceType = "_portkeep._tcp"
