@@ -19,7 +19,7 @@
 		<string>_portkeep._tcp</string>
 	</array>
 	<key>SUFeedURL</key>
-	<string>https://portkeep.sajidpalagiri.com/appcast.xml</string>
+	<string>https://slowper.github.io/Portkeep/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>1rgk3X/4mA/V7NYRL7rEZC5gH6yzK/EYwBrB36qa+tw=</string>
 	<key>SUEnableAutomaticChecks</key>

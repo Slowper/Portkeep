@@ -10,6 +10,14 @@
 </p>
 
 <p align="center">
+  <a href="https://slowper.github.io/Portkeep/">Website</a>
+  ·
+  <a href="https://slowper.github.io/Portkeep/privacy.html">Privacy</a>
+  ·
+  <a href="https://github.com/Slowper/Portkeep">Source</a>
+</p>
+
+<p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2f7bff?style=flat-square" alt="MIT"></a>
   <a href="https://github.com/Slowper/Portkeep"><img src="https://img.shields.io/badge/macOS-14%2B-black?style=flat-square" alt="macOS 14+"></a>
   <a href="https://github.com/Slowper/Portkeep"><img src="https://img.shields.io/badge/Swift-6-F05138?style=flat-square" alt="Swift 6"></a>
@@ -88,7 +96,7 @@ portkeep snippet --write      AGENTS.md block for this folder
 
 ## Privacy
 
-Nothing leaves this Mac except an optional Sparkle version check. See [website/privacy.html](website/privacy.html).
+Nothing leaves this Mac except an optional Sparkle version check. See the [privacy page](https://slowper.github.io/Portkeep/privacy.html).
 
 ## MDM
 

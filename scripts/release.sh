@@ -143,7 +143,7 @@ cat > "$ROOT/website/appcast.xml" <<EOF
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
   <channel>
     <title>Portkeep</title>
-    <link>https://portkeep.sajidpalagiri.com/appcast.xml</link>
+    <link>https://slowper.github.io/Portkeep/appcast.xml</link>
     <description>Portkeep updates</description>
     <language>en</language>
     <item>
@@ -152,7 +152,7 @@ cat > "$ROOT/website/appcast.xml" <<EOF
       <sparkle:version>${BUILD}</sparkle:version>
       <sparkle:shortVersionString>${VERSION}</sparkle:shortVersionString>
       <enclosure
-        url="https://portkeep.sajidpalagiri.com/downloads/${DMG_NAME}"
+        url="https://github.com/Slowper/Portkeep/releases/download/v${VERSION}/${DMG_NAME}"
         length="${SIZE}"
         type="application/octet-stream"
         sparkle:edSignature="${SIG}"/>
@@ -167,7 +167,7 @@ CHECKSUM="$(shasum -a 256 "$DIST/$DMG_NAME" | awk '{print $1}')"
     echo "version:  $VERSION ($BUILD)"
     echo "identity: $IDENTITY"
     echo "sha256:   $CHECKSUM"
-    echo "site:     website/ (deploy to portkeep.sajidpalagiri.com)"
+    echo "site:     website/ (GitHub Pages: https://slowper.github.io/Portkeep/)"
 } | tee "$DIST/Portkeep-${VERSION}.sha256.txt"
 
 say "done. DMG is at $DIST/$DMG_NAME"
