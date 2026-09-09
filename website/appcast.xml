@@ -7,14 +7,14 @@
     <language>en</language>
     <item>
       <title>Version 1.0.0</title>
-      <pubDate>Mon, 07 Sep 2026 12:10:05 +0000</pubDate>
+      <pubDate>Wed, 09 Sep 2026 03:50:53 +0000</pubDate>
       <sparkle:version>1</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <enclosure
         url="https://github.com/Slowper/Portkeep/releases/download/v1.0.0/Portkeep-1.0.0.dmg"
-        length="4863644"
+        length="4658509"
         type="application/octet-stream"
-        sparkle:edSignature="HyEJRzwb4dqFk7+AnXhFtwf/N9p5PU5aWsTuTL/zAtmGwcs06koe/ei+G8Vl8KtJ4npZJbN7BIpzfABwNX0xDg=="/>
+        sparkle:edSignature="QeV/5JzxsP7vUyzNH6ZCW5L+90a6tVkkrc/wynv34wAcCSXiVzPLUb4jT7inokXC5lnLQNaUFG2+yqV/1QkAAA=="/>
     </item>
   </channel>
 </rss>

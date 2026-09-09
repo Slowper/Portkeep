@@ -62,7 +62,9 @@ Portkeep is a macOS menu bar app for leftover localhost ports. It shows what is 
 
 ## Install
 
-Menu bar extra — no Dock icon. Hotkey: Control-Option-P.
+[Download Portkeep 1.0.0 for Mac](https://github.com/Slowper/Portkeep/releases/download/v1.0.0/Portkeep-1.0.0.dmg) — signed and notarized. Menu bar extra, no Dock icon. Hotkey: Control-Option-P.
+
+Or build from source (macOS 14+, Xcode 16+, [XcodeGen](https://github.com/yonaskolb/XcodeGen)):
 
 ```sh
 git clone https://github.com/Slowper/Portkeep.git
@@ -73,9 +75,7 @@ xcodebuild -project Portkeep.xcodeproj -scheme Portkeep -configuration Debug \
 open /tmp/portkeep-dd/Build/Products/Debug/Portkeep.app
 ```
 
-Needs macOS 14+, Xcode 16+, and [XcodeGen](https://github.com/yonaskolb/XcodeGen). Open Settings from the panel, or run `portkeep settings`.
-
-A signed, notarized disk image is not in this repo. Build one with `./scripts/release.sh` if you have a Developer ID.
+Open Settings from the panel, or run `portkeep settings`.
 
 ## CLI
 
